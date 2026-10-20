@@ -1,4 +1,4 @@
-﻿const configuredApiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const configuredApiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 const normalizedApiUrl = configuredApiUrl.replace(/\/+$/, '');
 const API_URL = normalizedApiUrl.endsWith('/api') ? normalizedApiUrl : `${normalizedApiUrl}/api`;
 
