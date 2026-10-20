@@ -93,6 +93,22 @@ const Register = () => {
             </div>
           </div>
 
+          <div className="register-workflow" aria-label="Les étapes de suivi d’une réparation">
+            <div className="workflow-heading">
+              <div>
+                <span>UN PARCOURS LISIBLE</span>
+                <strong>Du dépôt à la restitution</strong>
+              </div>
+              <span className="workflow-count">4 étapes</span>
+            </div>
+            <div className="workflow-steps">
+              <div className="workflow-step"><span>01</span><strong>Dépôt</strong></div>
+              <div className="workflow-step"><span>02</span><strong>Diagnostic</strong></div>
+              <div className="workflow-step"><span>03</span><strong>Réparation</strong></div>
+              <div className="workflow-step"><span>04</span><strong>Restitution</strong></div>
+            </div>
+            <div className="workflow-caption"><span aria-hidden="true">✦</span> Chaque étape reste claire pour toute l’équipe.</div>
+          </div>
           <div className="story-footer"><span>✳</span> Un atelier bien organisé commence ici.</div>
         </section>
 
