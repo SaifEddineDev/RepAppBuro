@@ -170,7 +170,7 @@
 .quick-access-button:hover .quick-access-check, .quick-access-button.is-selected .quick-access-check { color: #fff; background: #46c5aa; }
 .quick-access-button:focus-visible { outline: 3px solid rgba(54, 167, 153, .32); outline-offset: 2px; }
 .quick-access-button:disabled { opacity: .6; cursor: wait; }
-.quick-access-note { display: block; margin-top: 9px; color: #929dad; font-size: 9px; line-height: 1.5; }
+.quick-access-note { display: block; margin-top: 9px; color: #929dad; font-size: 9px; line-height: 1.5; text-align: center; }
 
 @media (max-width: 420px) {
   .quick-access-options { gap: 6px; }
