@@ -643,3 +643,118 @@
     margin-top: 10px;
   }
 }
+
+/* Simplify the registration story panel while preserving its useful content. */
+.register-features {
+  gap: 3px;
+  margin-top: 22px;
+}
+
+.register-feature {
+  min-height: 48px;
+  padding: 5px 8px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  transition: background .18s ease;
+}
+
+.register-feature:hover {
+  background: rgba(255, 255, 255, .045);
+}
+
+.feature-icon {
+  flex-basis: 30px;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: rgba(55, 214, 189, .09);
+}
+
+.feature-icon-blue {
+  background: rgba(130, 157, 239, .09);
+}
+
+.feature-check {
+  width: 17px;
+  height: 17px;
+  flex-basis: 17px;
+  color: #55ddc1;
+  background: rgba(55, 214, 189, .12);
+  font-size: 10px;
+}
+
+.register-workflow {
+  margin-top: 12px;
+  padding: 12px 8px 8px;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.register-workflow::after {
+  display: none;
+}
+
+.workflow-heading {
+  margin-bottom: 10px;
+}
+
+.workflow-count {
+  padding: 4px 7px;
+  border-color: transparent;
+  background: rgba(55, 214, 189, .07);
+}
+
+.workflow-steps {
+  gap: 0;
+}
+
+.workflow-step {
+  position: relative;
+  gap: 5px;
+  padding: 4px 7px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.workflow-step + .workflow-step::before {
+  content: "";
+  position: absolute;
+  top: 13px;
+  left: -1px;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: rgba(134, 170, 200, .55);
+}
+
+.workflow-step > span {
+  width: 17px;
+  height: 17px;
+  border: 0;
+  border-radius: 5px;
+  background: rgba(55, 214, 189, .1);
+}
+
+.workflow-step strong {
+  font-size: 8px;
+}
+
+.workflow-caption {
+  margin-top: 7px;
+  color: #91a9c2;
+}
+
+@media (min-width: 721px) and (max-width: 900px) {
+  .register-features {
+    margin-top: 16px;
+  }
+
+  .register-feature {
+    min-height: 43px;
+  }
+}
