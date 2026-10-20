@@ -523,3 +523,70 @@
     margin-top: 7px;
   }
 }
+
+/* Match the registration form rhythm to the login form. */
+@media (min-width: 721px) {
+  .register-panel .login-form-heading {
+    margin-bottom: 32px;
+  }
+
+  .register-form {
+    gap: 21px;
+  }
+
+  .register-form .login-input-wrap,
+  .register-form .login-input-wrap input {
+    min-height: 52px;
+    height: 52px;
+  }
+
+  .register-form .login-field label {
+    margin-bottom: 9px;
+  }
+
+  .register-form .login-submit {
+    min-height: 52px;
+    margin-top: 4px;
+  }
+
+  .register-login-link {
+    margin-top: 25px;
+  }
+
+  .register-panel .login-security {
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 720px) {
+  .register-panel .login-form-heading {
+    margin-bottom: 27px;
+  }
+
+  .register-form {
+    gap: 19px;
+  }
+
+  .register-form .login-input-wrap,
+  .register-form .login-input-wrap input {
+    min-height: 52px;
+    height: 52px;
+  }
+
+  .register-form .login-field label {
+    margin-bottom: 9px;
+  }
+
+  .register-form .login-submit {
+    min-height: 52px;
+    margin-top: 4px;
+  }
+
+  .register-login-link {
+    margin-top: 25px;
+  }
+
+  .register-panel .login-security {
+    margin-top: 20px;
+  }
+}
