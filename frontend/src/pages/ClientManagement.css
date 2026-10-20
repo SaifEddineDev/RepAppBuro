@@ -1,0 +1,149 @@
+/* Conteneur principal */
+.client-management-container {
+  padding: 20px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Titre */
+.client-management-title {
+  color: #2c3e50;
+  margin-bottom: 25px;
+  font-size: 28px;
+  font-weight: 600;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+}
+
+/* Message de développement */
+.development-message {
+  color: #7f8c8d;
+  font-style: italic;
+  margin-bottom: 25px;
+  padding: 10px;
+  background-color: #f1f8ff;
+  border-radius: 5px;
+  border-left: 4px solid #3498db;
+}
+
+/* Bouton */
+.new-client-btn {
+  padding: 12px 24px;
+  margin: 10px 0;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.new-client-btn:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.new-client-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.new-client-btn:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Table */
+.clients-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 30px;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* En-tête du tableau */
+.clients-table thead {
+  background-color: #2c3e50;
+  color: white;
+}
+
+.clients-table th {
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+}
+
+/* Cellules du tableau */
+.clients-table td {
+  padding: 15px;
+  border-bottom: 1px solid #ecf0f1;
+  color: #34495e;
+  font-size: 14px;
+}
+
+.clients-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.clients-table tbody tr:hover {
+  background-color: #f8fafc;
+  transition: background-color 0.2s ease;
+}
+
+/* Ligne "Aucun client" */
+.no-clients-row {
+  color: #95a5a6;
+  font-style: italic;
+}
+
+/* Message pour tableau vide */
+.empty-table-message {
+  text-align: center;
+  padding: 40px;
+  color: #7f8c8d;
+  background-color: #f9f9f9;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .client-management-container {
+    padding: 15px;
+  }
+  
+  .client-management-title {
+    font-size: 24px;
+  }
+  
+  .clients-table {
+    display: block;
+    overflow-x: auto;
+  }
+  
+  .clients-table th,
+  .clients-table td {
+    padding: 10px;
+    min-width: 150px;
+  }
+}
+
+/* Animation pour le chargement futur */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+.development-message {
+  animation: pulse 2s infinite;
+}
