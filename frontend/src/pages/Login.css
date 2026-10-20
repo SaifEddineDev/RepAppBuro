@@ -183,3 +183,177 @@
 @media (prefers-reduced-motion: reduce) {
   .login-page *, .login-page *::before, .login-page *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
+/* Keep the complete desktop login card within a typical laptop viewport. */
+@media (min-width: 721px) {
+  .login-page {
+    min-height: 100svh;
+    padding: clamp(16px, 3vh, 28px) 32px;
+  }
+
+  .login-shell {
+    height: min(790px, calc(100svh - 48px));
+    min-height: 0;
+  }
+
+  .login-story {
+    min-height: 0;
+    padding: 34px 44px 22px;
+  }
+
+  .story-copy {
+    margin-top: clamp(20px, 3.8vh, 34px);
+  }
+
+  .story-copy h1 {
+    margin: 14px 0 10px;
+    font-size: clamp(35px, 3.25vw, 45px);
+  }
+
+  .story-copy p {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .dashboard-preview {
+    margin-top: clamp(16px, 2.5vh, 24px);
+  }
+
+  .preview-body {
+    padding-top: 12px;
+    padding-bottom: 10px;
+  }
+
+  .preview-heading {
+    margin-bottom: 9px;
+  }
+
+  .metric-card {
+    min-height: 66px;
+    padding-top: 8px;
+  }
+
+  .preview-list-title {
+    margin-top: 11px;
+  }
+
+  .preview-row {
+    min-height: 32px;
+  }
+
+  .story-footer {
+    padding-top: 14px;
+  }
+
+  .login-panel {
+    min-height: 0;
+    padding: 38px clamp(38px, 5vw, 66px) 30px;
+  }
+
+  .login-form-heading {
+    margin-bottom: 24px;
+  }
+
+  .login-form {
+    gap: 17px;
+  }
+
+  .login-register {
+    margin-top: 19px;
+  }
+
+  .login-security {
+    margin-top: 27px;
+  }
+}
+
+@media (min-width: 721px) and (max-height: 760px) {
+  .login-story {
+    padding-top: 26px;
+    padding-bottom: 16px;
+  }
+
+  .story-copy {
+    margin-top: 18px;
+  }
+
+  .story-copy h1 {
+    margin-top: 10px;
+    margin-bottom: 7px;
+    font-size: clamp(32px, 3vw, 40px);
+  }
+
+  .story-copy p {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .dashboard-preview {
+    margin-top: 12px;
+  }
+
+  .preview-topbar {
+    height: 31px;
+  }
+
+  .preview-body {
+    padding: 9px 14px 8px;
+  }
+
+  .preview-metrics {
+    gap: 7px;
+  }
+
+  .metric-card {
+    min-height: 56px;
+  }
+
+  .preview-list-title {
+    margin-top: 8px;
+    margin-bottom: 4px;
+  }
+
+  .preview-row {
+    min-height: 28px;
+  }
+
+  .story-footer {
+    padding-top: 8px;
+    font-size: 10px;
+  }
+
+  .login-panel {
+    padding-top: 24px;
+    padding-bottom: 20px;
+  }
+
+  .login-form-heading {
+    margin-bottom: 18px;
+  }
+
+  .login-form-heading h2 {
+    margin-top: 8px;
+    font-size: 29px;
+  }
+
+  .login-form {
+    gap: 13px;
+  }
+
+  .login-input-wrap,
+  .login-input-wrap input {
+    min-height: 46px;
+    height: 46px;
+  }
+
+  .login-submit {
+    min-height: 46px;
+  }
+
+  .login-register {
+    margin-top: 14px;
+  }
+
+  .login-security {
+    margin-top: 18px;
+  }
+}
