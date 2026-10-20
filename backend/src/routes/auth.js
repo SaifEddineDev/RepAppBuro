@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const User = require('../models/User');
 
 // ⭐⭐ IMPORTANT : Ajouter ce middleware pour vérifier que JWT_SECRET existe ⭐⭐
@@ -178,6 +179,69 @@ router.post('/login', async (req, res) => {
       message: 'Erreur interne du serveur',
       error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
+  }
+});
+
+router.post('/demo-login', async (req, res) => {
+  if (process.env.DEMO_MODE !== 'true') {
+    return res.status(404).json({ success: false, message: 'Demo access is unavailable.' });
+  }
+
+  const role = String(req.body?.role || '').trim().toUpperCase();
+  const demoAccounts = {
+    USER: { username: 'demo_client', email: 'demo.client@repappburo.test', prenom: 'Client', nom: 'Démo' },
+    RSC: { username: 'demo_rsc', email: 'demo.rsc@repappburo.test', prenom: 'Accueil', nom: 'Démo' },
+    TECHNICIEN: { username: 'demo_technicien', email: 'demo.technicien@repappburo.test', prenom: 'Technicien', nom: 'Démo' },
+    RESPONSABLE: { username: 'demo_responsable', email: 'demo.responsable@repappburo.test', prenom: 'Responsable', nom: 'Démo' },
+    ADMIN: { username: 'demo_admin', email: 'demo.admin@repappburo.test', prenom: 'Admin', nom: 'Démo' }
+  };
+  const account = demoAccounts[role];
+  if (!account) {
+    return res.status(400).json({ success: false, message: 'Unknown demo role.' });
+  }
+
+  try {
+    let user = await User.findOne({ username: account.username });
+    if (!user) {
+      const password = await bcrypt.hash(crypto.randomBytes(32).toString('hex'), 12);
+      try {
+        user = await User.create({ ...account, role, password, actif: true });
+      } catch (error) {
+        if (error.code !== 11000) throw error;
+        user = await User.findOne({ $or: [{ username: account.username }, { email: account.email }] });
+      }
+    }
+
+    if (!user || user.role !== role || !user.actif) {
+      return res.status(409).json({ success: false, message: 'Demo account is unavailable.' });
+    }
+
+    user.lastLogin = new Date();
+    await user.save();
+    const token = jwt.sign(
+      { userId: user._id, username: user.username, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '4h' }
+    );
+
+    return res.json({
+      success: true,
+      demo: true,
+      token,
+      user: {
+        id: user._id,
+        username: user.username,
+        prenom: user.prenom,
+        nom: user.nom,
+        role: user.role,
+        email: user.email,
+        actif: user.actif,
+        lastLogin: user.lastLogin
+      }
+    });
+  } catch (error) {
+    console.error('Demo login failed:', error.message);
+    return res.status(500).json({ success: false, message: 'Demo sign-in is temporarily unavailable.' });
   }
 });
 

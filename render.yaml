@@ -32,6 +32,53 @@ services:
           type: web
           name: repappburo-api
           envVarKey: RENDER_EXTERNAL_URL
+      - key: REACT_APP_DEMO_WEB_URL
+        fromService:
+          type: web
+          name: repappburo-demo-web
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: PUBLIC_URL
+        value: /
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+  - type: web
+    name: repappburo-demo-api
+    runtime: node
+    plan: free
+    region: frankfurt
+    rootDir: backend
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DEMO_MODE
+        value: "true"
+      - key: DEMO_MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        value: https://repappburo-demo-web.onrender.com
+  - type: web
+    name: repappburo-demo-web
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: build
+    envVars:
+      - key: REACT_APP_API_URL
+        fromService:
+          type: web
+          name: repappburo-demo-api
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: REACT_APP_DEMO_MODE
+        value: "true"
+      - key: PUBLIC_URL
+        value: /
     routes:
       - type: rewrite
         source: /*

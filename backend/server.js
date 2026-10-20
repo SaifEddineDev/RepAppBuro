@@ -27,7 +27,14 @@ app.use(express.urlencoded({ extended: true }));
 
 // Variables d'environnement
 const PORT = process.env.PORT || 5000;
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/RepAppBruno';
+const DEMO_MODE = process.env.DEMO_MODE === 'true';
+const MONGODB_URI = DEMO_MODE
+  ? process.env.DEMO_MONGODB_URI
+  : process.env.MONGODB_URI || 'mongodb://localhost:27017/RepAppBruno';
+
+if (DEMO_MODE && !/\/repappburo-demo(?:\?|$)/i.test(MONGODB_URI || '')) {
+  throw new Error('DEMO_MODE requires DEMO_MONGODB_URI to target the isolated repappburo-demo database.');
+}
 
 // Connexion Ã  MongoDB
 mongoose.connect(MONGODB_URI, {

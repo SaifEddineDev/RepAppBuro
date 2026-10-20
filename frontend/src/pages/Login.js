@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import BrandMark from '../components/BrandMark';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -11,8 +11,35 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [selectedRole, setSelectedRole] = useState('');
-  const { login } = useAuth();
+  const { login, loginDemo } = useAuth();
   const navigate = useNavigate();
+  const isDemoBuild = process.env.REACT_APP_DEMO_MODE === 'true';
+  const demoLoginStarted = useRef(false);
+
+  const authenticateDemo = useCallback(async (role) => {
+    setSelectedRole(role);
+    setError('');
+    setIsLoading(true);
+    try {
+      await loginDemo(role);
+      navigate('/dashboard', { replace: true });
+    } catch (err) {
+      setError(err.message || 'La démonstration est momentanément indisponible.');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [loginDemo, navigate]);
+
+  useEffect(() => {
+    if (!isDemoBuild || demoLoginStarted.current) return;
+    const hashQuery = window.location.hash.split('?')[1] || '';
+    const role = new URLSearchParams(hashQuery).get('demoRole')?.toUpperCase();
+    const allowedRoles = ['USER', 'RSC', 'TECHNICIEN', 'RESPONSABLE', 'ADMIN'];
+    if (allowedRoles.includes(role)) {
+      demoLoginStarted.current = true;
+      authenticateDemo(role);
+    }
+  }, [authenticateDemo, isDemoBuild]);
 
   const authenticate = async (expectedRole) => {
     if (!username.trim() || !password) {
@@ -55,11 +82,17 @@ const Login = () => {
   const handleRoleShortcut = (role) => {
     setSelectedRole(role);
     setError('');
-    if (username.trim() && password) {
-      authenticate(role);
+    if (isDemoBuild) {
+      authenticateDemo(role);
       return;
     }
-    document.getElementById(username.trim() ? 'login-password' : 'login-username')?.focus();
+    const demoWebUrl = process.env.REACT_APP_DEMO_WEB_URL;
+    if (demoWebUrl) {
+      window.location.assign(`${demoWebUrl.replace(/\/+$/, '')}/#/login?demoRole=${encodeURIComponent(role)}`);
+      return;
+    }
+    setError('La démonstration isolée n’est pas encore déployée.');
+    return;
   };
 
   return (
@@ -180,8 +213,8 @@ const Login = () => {
             <div className="quick-access-heading">
               <span className="quick-access-heading-icon" aria-hidden="true">↗</span>
               <div>
-                <p>Accès rapide à un espace</p>
-                <span>Choisissez votre rôle pour continuer</span>
+                <p>Accès rapide à la démo</p>
+                <span>Ouvrir un espace avec des données de démonstration isolées</span>
               </div>
             </div>
             <div className="quick-access-options">
@@ -206,7 +239,7 @@ const Login = () => {
                 </button>
               ))}
             </div>
-            <span className="quick-access-note">Choisissez un rôle, saisissez les identifiants du compte correspondant, puis validez pour ouvrir son tableau de bord.</span>
+            <span className="quick-access-note">Les comptes et données de cette démonstration sont séparés des comptes réels.</span>
           </div>
 
           <div className="login-register">

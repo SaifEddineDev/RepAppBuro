@@ -31,6 +31,7 @@ jobs:
       - name: Build React app
         env:
           REACT_APP_API_URL: https://repappburo-api.onrender.com/api
+          REACT_APP_DEMO_WEB_URL: https://repappburo-demo-web.onrender.com
         run: npm run build --prefix frontend
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

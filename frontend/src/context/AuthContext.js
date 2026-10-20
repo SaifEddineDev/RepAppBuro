@@ -75,6 +75,22 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const loginDemo = async (role) => {
+    try {
+      setLoading(true);
+      const response = await authService.demoLogin(role);
+      if (!response?.user || !response?.token || response.user.role !== role) {
+        throw new Error('La connexion de démonstration est indisponible.');
+      }
+      authService.saveUserData(response.user, response.token);
+      setUser(response.user);
+      setToken(response.token);
+      return response.user;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Fonction d'inscription
   const register = async (userData) => {
     try {
@@ -138,6 +154,7 @@ export const AuthProvider = ({ children }) => {
     user,
     token,
     login,
+    loginDemo,
     register,
     logout,
     loading,

@@ -54,6 +54,7 @@ export const authService = {
       password 
     });
   },
+  demoLogin: (role) => apiRequest('/auth/demo-login', 'POST', { role }),
   
   // Inscription
   register: async (userData) => {
