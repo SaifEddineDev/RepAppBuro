@@ -617,3 +617,20 @@
     transform: translateY(40px);
   }
 }
+
+/* Shift only the highlighted login copy and dashboard preview lower. */
+@media (min-width: 721px) {
+  .login-story > .story-copy {
+    transform: translateY(40px);
+  }
+
+  .login-story > .dashboard-preview {
+    transform: translateY(56px) rotate(-1deg);
+  }
+}
+
+@media (min-width: 721px) and (max-width: 900px) {
+  .login-story > .dashboard-preview {
+    transform: translateY(56px);
+  }
+}
