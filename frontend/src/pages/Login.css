@@ -585,3 +585,17 @@
     transform: translateY(10px);
   }
 }
+
+/* More visible vertical shift for the complete blue panel content. */
+@media (min-width: 721px) {
+  .login-story > .login-brand,
+  .login-story > .story-copy,
+  .login-story > .dashboard-preview,
+  .login-story > .story-footer {
+    transform: translateY(24px);
+  }
+
+  .login-story > .dashboard-preview {
+    transform: translateY(24px) rotate(-1deg);
+  }
+}
