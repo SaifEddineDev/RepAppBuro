@@ -49,6 +49,10 @@ const Register = () => {
       });
 
       if (result.success) {
+        if (result.authenticated) {
+          navigate('/dashboard');
+          return;
+        }
         setSuccess('Compte créé avec succès. Redirection vers la connexion…');
         setTimeout(() => navigate('/login'), 2000);
       } else {

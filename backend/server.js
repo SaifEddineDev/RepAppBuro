@@ -41,6 +41,9 @@ mongoose.connect(MONGODB_URI, {
 const authRoutes = require('./src/routes/auth');
 app.use('/api/auth', authRoutes);
 
+const userRoutes = require('./src/routes/users');
+app.use('/api/users', userRoutes);
+
 // Routes Dashboard (avec gestion d'erreur)
 try {
   const dashboardRoutes = require('./routes/dashboardRoutes');

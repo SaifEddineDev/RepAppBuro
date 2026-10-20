@@ -7,6 +7,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(() => localStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
 
   // Vérifier si l'utilisateur est déjà connecté au chargement
@@ -24,6 +25,7 @@ export const AuthProvider = ({ children }) => {
             
             if (response && response.user) {
               setUser(response.user);
+              setToken(response.token || token);
               // Mettre à jour les données utilisateur dans localStorage
               authService.saveUserData(response.user, response.token || token);
             } else {
@@ -61,6 +63,7 @@ export const AuthProvider = ({ children }) => {
         }
         authService.saveUserData(response.user, response.token);
         setUser(response.user);
+        setToken(response.token);
         return response.user;
       }
       return false;
@@ -84,8 +87,9 @@ export const AuthProvider = ({ children }) => {
         if (response.token) {
           authService.saveUserData(response.user, response.token);
           setUser(response.user);
+          setToken(response.token);
         }
-        return { success: true, user: response.user };
+        return { success: true, user: response.user, authenticated: Boolean(response.token) };
       }
       return { success: false, message: response?.message || 'Erreur lors de l\'inscription' };
     } catch (error) {
@@ -110,6 +114,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       setUser(null);
+      setToken(null);
       setLoading(false);
       
       // Rediriger vers la page de connexion
@@ -131,6 +136,7 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     user,
+    token,
     login,
     register,
     logout,

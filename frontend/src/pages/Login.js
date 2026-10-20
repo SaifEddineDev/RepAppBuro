@@ -120,7 +120,7 @@ const Login = () => {
             {error && <div className="login-error" role="alert">{error}</div>}
 
             <div className="login-field">
-              <label htmlFor="login-username">Nom d’utilisateur</label>
+              <label htmlFor="login-username">Email ou nom d’utilisateur</label>
               <div className="login-input-wrap">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5" /><path d="M5 20c.5-3.2 3.2-5 7-5s6.5 1.8 7 5" /></svg>
                 <input
@@ -128,7 +128,7 @@ const Login = () => {
                   type="text"
                   value={username}
                   onChange={(event) => setUsername(event.target.value)}
-                  placeholder="Votre nom d’utilisateur"
+                  placeholder="Votre email ou nom d’utilisateur"
                   autoComplete="username"
                   autoCapitalize="none"
                   required
