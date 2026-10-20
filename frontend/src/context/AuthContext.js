@@ -50,15 +50,18 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Fonction de connexion
-  const login = async (username, password) => {
+  const login = async (username, password, expectedRole) => {
     try {
       setLoading(true);
       const response = await authService.login(username, password);
 
       if (response && response.user && response.token) {
+        if (expectedRole && response.user.role !== expectedRole) {
+          throw new Error('Ce compte ne correspond pas au rôle sélectionné.');
+        }
         authService.saveUserData(response.user, response.token);
         setUser(response.user);
-        return true;
+        return response.user;
       }
       return false;
     } catch (error) {

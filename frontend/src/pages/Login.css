@@ -149,6 +149,15 @@
 .login-security { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 38px 0 0; color: #9aa4b2; font-size: 10px; }
 .login-security svg { width: 15px; height: 15px; fill: none; stroke: #6db5a2; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
 
+.quick-access { margin-top: 20px; }
+.quick-access > p { margin: 0 0 9px; color: #647287; font-size: 11px; font-weight: 700; }
+.quick-access-options { display: flex; flex-wrap: wrap; gap: 7px; }
+.quick-access-button { min-height: 32px; padding: 6px 10px; border: 1px solid #dce4ec; border-radius: 8px; color: #526177; background: #fff; font: inherit; font-size: 10px; font-weight: 650; cursor: pointer; transition: border-color .15s ease, color .15s ease, background .15s ease; }
+.quick-access-button:hover, .quick-access-button.is-selected { border-color: #65cdb2; color: #176f67; background: #effbf7; }
+.quick-access-button:focus-visible { outline: 3px solid rgba(54, 167, 153, .32); outline-offset: 2px; }
+.quick-access-button:disabled { opacity: .6; cursor: wait; }
+.quick-access > span { display: block; margin-top: 8px; color: #929dad; font-size: 10px; line-height: 1.5; }
+
 @media (max-width: 960px) {
   .login-page { padding: 24px; }
   .login-shell { grid-template-columns: minmax(0, 1fr) minmax(380px, .92fr); min-height: 650px; }

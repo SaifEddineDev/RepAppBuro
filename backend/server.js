@@ -9,6 +9,7 @@ const app = express();
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:3001',
+  'https://saifeddinedev.github.io',
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
@@ -73,10 +74,11 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/health', (req, res) => {
-  res.json({ 
-    status: 'healthy',
+  const databaseConnected = mongoose.connection.readyState === 1;
+  res.status(databaseConnected ? 200 : 503).json({
+    status: databaseConnected ? 'healthy' : 'unhealthy',
     timestamp: new Date().toISOString(),
-    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+    database: databaseConnected ? 'connected' : 'disconnected',
     services: {
       auth: 'active',
       dashboards: 'checking...',

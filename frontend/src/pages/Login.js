@@ -10,6 +10,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [selectedRole, setSelectedRole] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -19,8 +20,8 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const success = await login(username, password);
-      if (success) {
+      const authenticatedUser = await login(username, password, selectedRole || undefined);
+      if (authenticatedUser) {
         navigate('/dashboard');
       } else {
         setError("Nom d'utilisateur ou mot de passe incorrect.");
@@ -153,6 +154,35 @@ const Login = () => {
               {isLoading ? <><span className="login-spinner" /> Connexion en cours…</> : <>Se connecter <span aria-hidden="true">→</span></>}
             </button>
           </form>
+
+          <div className="quick-access" aria-label="Accès rapide par rôle">
+            <p>Accès rapide à un espace</p>
+            <div className="quick-access-options">
+              {[
+                { role: 'USER', label: 'Client' },
+                { role: 'RSC', label: 'RSC' },
+                { role: 'TECHNICIEN', label: 'Technicien' },
+                { role: 'RESPONSABLE', label: 'Responsable' },
+                { role: 'ADMIN', label: 'Administrateur' }
+              ].map(({ role, label }) => (
+                <button
+                  key={role}
+                  type="button"
+                  className={`quick-access-button${selectedRole === role ? ' is-selected' : ''}`}
+                  aria-pressed={selectedRole === role}
+                  disabled={isLoading}
+                  onClick={() => {
+                    setSelectedRole(role);
+                    setError('');
+                    document.getElementById('login-username')?.focus();
+                  }}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            <span>Votre rôle sera vérifié après la connexion.</span>
+          </div>
 
           <div className="login-register">
             <span>Vous découvrez RepAppBuro ?</span>
