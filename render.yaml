@@ -16,10 +16,7 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: FRONTEND_URL
-        fromService:
-          type: web
-          name: repappburo-web
-          envVarKey: RENDER_EXTERNAL_URL
+        value: https://saifeddinedev.github.io,https://repappburo-web.onrender.com
   - type: web
     name: repappburo-web
     runtime: static

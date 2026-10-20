@@ -10,8 +10,8 @@ const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:3001',
   'https://saifeddinedev.github.io',
-  process.env.FRONTEND_URL
-].filter(Boolean);
+  ...(process.env.FRONTEND_URL || '').split(',')
+].map(origin => origin.trim()).filter(Boolean);
 
 app.use(cors({
   origin: (origin, callback) => {
