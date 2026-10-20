@@ -758,3 +758,142 @@
     min-height: 43px;
   }
 }
+
+/* Restore the spacious card design for the registration story section. */
+.register-features {
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.register-feature {
+  min-height: 64px;
+  padding: 11px 13px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, .06);
+}
+
+.register-feature:hover {
+  background: rgba(255, 255, 255, .085);
+}
+
+.feature-icon {
+  flex-basis: 36px;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: rgba(55, 214, 189, .13);
+}
+
+.feature-icon-blue {
+  background: rgba(130, 157, 239, .15);
+}
+
+.feature-check {
+  width: 21px;
+  height: 21px;
+  flex-basis: 21px;
+  color: #153c47;
+  background: #52ddbf;
+  font-size: 12px;
+}
+
+.register-workflow {
+  margin-top: 16px;
+  padding: 16px 16px 14px;
+  border: 1px solid rgba(151, 183, 221, .22);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, .11), rgba(255, 255, 255, .045));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06), 0 12px 28px rgba(9, 23, 44, .12);
+}
+
+.register-workflow::after {
+  display: block;
+}
+
+.workflow-heading {
+  margin-bottom: 13px;
+}
+
+.workflow-heading > div > span {
+  font-size: 8px;
+}
+
+.workflow-heading strong {
+  font-size: 12px;
+}
+
+.workflow-count {
+  padding: 5px 9px;
+  border-color: rgba(76, 221, 193, .2);
+  background: rgba(55, 214, 189, .08);
+}
+
+.workflow-steps {
+  gap: 7px;
+}
+
+.workflow-step {
+  gap: 7px;
+  min-height: 60px;
+  padding: 9px 8px;
+  border: 1px solid rgba(255, 255, 255, .09);
+  border-radius: 10px;
+  background: rgba(12, 30, 51, .2);
+}
+
+.workflow-step + .workflow-step::before {
+  display: none;
+}
+
+.workflow-step > span {
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(75, 220, 192, .27);
+  border-radius: 6px;
+  background: rgba(55, 214, 189, .1);
+}
+
+.workflow-step strong {
+  font-size: 9px;
+}
+
+.workflow-caption {
+  margin-top: 11px;
+  color: #9eb3ca;
+}
+
+@media (min-width: 721px) and (max-width: 900px) {
+  .register-features {
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .register-feature {
+    min-height: 54px;
+    padding: 8px 9px;
+  }
+
+  .register-workflow {
+    margin-top: 12px;
+    padding: 11px 10px 10px;
+  }
+
+  .workflow-heading {
+    margin-bottom: 8px;
+  }
+
+  .workflow-step {
+    gap: 4px;
+    min-height: 48px;
+    padding: 6px 5px;
+  }
+
+  .workflow-step strong {
+    font-size: 7px;
+  }
+
+  .workflow-caption {
+    margin-top: 7px;
+  }
+}
