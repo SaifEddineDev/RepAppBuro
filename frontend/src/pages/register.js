@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import BrandMark from '../components/BrandMark';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Login.css';
@@ -68,9 +69,7 @@ const Register = () => {
       <div className="login-shell register-shell">
         <section className="login-story register-story" aria-label="Présentation de RepAppBuro">
           <div className="login-brand">
-            <span className="brand-mark" aria-hidden="true">
-              <svg viewBox="0 0 32 32" fill="none"><path d="M18.7 5.3a8.1 8.1 0 0 0-9.6 10.2L4.4 20.2a3 3 0 0 0 4.2 4.2l4.7-4.7a8.1 8.1 0 0 0 10.2-9.6l-4.8 4.8-4.2-4.2 4.2-4.2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            </span>
+            <BrandMark />
             <span className="brand-name">RepApp<span>Buro</span></span>
           </div>
 
@@ -114,9 +113,7 @@ const Register = () => {
 
         <section className="login-panel register-panel" aria-labelledby="register-title">
           <div className="mobile-brand login-brand">
-            <span className="brand-mark" aria-hidden="true">
-              <svg viewBox="0 0 32 32" fill="none"><path d="M18.7 5.3a8.1 8.1 0 0 0-9.6 10.2L4.4 20.2a3 3 0 0 0 4.2 4.2l4.7-4.7a8.1 8.1 0 0 0 10.2-9.6l-4.8 4.8-4.2-4.2 4.2-4.2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            </span>
+            <BrandMark />
             <span className="brand-name">RepApp<span>Buro</span></span>
           </div>
 
