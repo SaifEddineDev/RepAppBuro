@@ -590,3 +590,56 @@
     margin-top: 20px;
   }
 }
+
+/* Reduce the registration form spacing to half of the login-matched rhythm. */
+@media (min-width: 721px) {
+  .register-panel .login-form-heading {
+    margin-bottom: 16px;
+  }
+
+  .register-form {
+    gap: 10.5px;
+  }
+
+  .register-form .login-field label {
+    margin-bottom: 4.5px;
+  }
+
+  .register-form .login-submit {
+    margin-top: 2px;
+  }
+
+  .register-login-link {
+    margin-top: 12.5px;
+  }
+
+  .register-panel .login-security {
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 720px) {
+  .register-panel .login-form-heading {
+    margin-bottom: 13.5px;
+  }
+
+  .register-form {
+    gap: 9.5px;
+  }
+
+  .register-form .login-field label {
+    margin-bottom: 4.5px;
+  }
+
+  .register-form .login-submit {
+    margin-top: 2px;
+  }
+
+  .register-login-link {
+    margin-top: 12.5px;
+  }
+
+  .register-panel .login-security {
+    margin-top: 10px;
+  }
+}
