@@ -14,6 +14,8 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
 
@@ -132,7 +134,21 @@ const Register = () => {
               <label htmlFor="register-password">Mot de passe</label>
               <div className="login-input-wrap">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg>
-                <input id="register-password" name="password" type="password" value={formData.password} onChange={handleChange} placeholder="Au moins 6 caractères" autoComplete="new-password" minLength={6} required disabled={isLoading} />
+                <input id="register-password" name="password" type={showPassword ? 'text' : 'password'} value={formData.password} onChange={handleChange} placeholder="Au moins 6 caractères" autoComplete="new-password" minLength={6} required disabled={isLoading} />
+                <button
+                  className="password-toggle"
+                  type="button"
+                  onClick={() => setShowPassword((visible) => !visible)}
+                  aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+                  aria-controls="register-password"
+                  disabled={isLoading}
+                >
+                  {showPassword ? (
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8" /><path d="M9.9 5.2A10.8 10.8 0 0 1 12 5c5 0 8.5 4.4 9.5 7-.4 1.1-1.2 2.3-2.3 3.4M6.2 6.2C3.9 7.7 2.8 9.8 2.5 12c.5 1.3 1.4 2.7 2.8 3.9a9.9 9.9 0 0 0 6.7 2.6c.8 0 1.6-.1 2.3-.3" /></svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5 12 5s9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7Z" /><circle cx="12" cy="12" r="2.5" /></svg>
+                  )}
+                </button>
               </div>
             </div>
 
@@ -140,7 +156,21 @@ const Register = () => {
               <label htmlFor="register-confirm-password">Confirmer le mot de passe</label>
               <div className="login-input-wrap">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 19 6v5c0 4.5-2.8 7.8-7 9.5C7.8 18.8 5 15.5 5 11V6l7-3Z" /><path d="m9 12 2 2 4-4" /></svg>
-                <input id="register-confirm-password" name="confirmPassword" type="password" value={formData.confirmPassword} onChange={handleChange} placeholder="Saisissez-le une seconde fois" autoComplete="new-password" minLength={6} required disabled={isLoading} />
+                <input id="register-confirm-password" name="confirmPassword" type={showConfirmPassword ? 'text' : 'password'} value={formData.confirmPassword} onChange={handleChange} placeholder="Saisissez-le une seconde fois" autoComplete="new-password" minLength={6} required disabled={isLoading} />
+                <button
+                  className="password-toggle"
+                  type="button"
+                  onClick={() => setShowConfirmPassword((visible) => !visible)}
+                  aria-label={showConfirmPassword ? 'Masquer la confirmation du mot de passe' : 'Afficher la confirmation du mot de passe'}
+                  aria-controls="register-confirm-password"
+                  disabled={isLoading}
+                >
+                  {showConfirmPassword ? (
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8" /><path d="M9.9 5.2A10.8 10.8 0 0 1 12 5c5 0 8.5 4.4 9.5 7-.4 1.1-1.2 2.3-2.3 3.4M6.2 6.2C3.9 7.7 2.8 9.8 2.5 12c.5 1.3 1.4 2.7 2.8 3.9a9.9 9.9 0 0 0 6.7 2.6c.8 0 1.6-.1 2.3-.3" /></svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5 12 5s9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7Z" /><circle cx="12" cy="12" r="2.5" /></svg>
+                  )}
+                </button>
               </div>
             </div>
 
