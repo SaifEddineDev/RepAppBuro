@@ -359,3 +359,12 @@
     padding-top: 0;
   }
 }
+
+@media (min-width: 721px) {
+  .register-story > .login-brand,
+  .register-story > .story-copy,
+  .register-story > .dashboard-preview,
+  .register-story > .register-features {
+    transform: translateY(18px);
+  }
+}
