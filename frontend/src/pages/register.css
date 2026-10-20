@@ -1,367 +1,253 @@
-/* Conteneur principal d'inscription */
-.register-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-  padding: 20px;
-  position: relative;
-  overflow: hidden;
+.register-page .register-shell {
+  min-height: 720px;
 }
 
-.register-page::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,100 L100,0 L100,100 Z" fill="rgba(255,255,255,0.05)"/></svg>');
-  background-size: cover;
+.register-story-copy {
+  margin-top: 58px;
 }
 
-/* Carte d'inscription */
-.register-card {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  padding: 50px 40px;
-  border-radius: 24px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  width: 100%;
-  max-width: 480px;
+.register-story-copy h1 {
+  font-size: clamp(36px, 3.7vw, 47px);
+}
+
+.register-features {
   position: relative;
   z-index: 1;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  animation: slideUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Logo / Titre */
-.register-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.register-title {
-  font-size: 2.2rem;
-  color: #2d3748;
-  margin-bottom: 8px;
-  font-weight: 800;
-  background: linear-gradient(90deg, #4f46e5, #7e22ce);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.register-subtitle {
-  color: #718096;
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-/* Groupes de formulaire */
-.form-group {
-  margin-bottom: 24px;
-}
-
-.form-label {
-  display: block;
-  margin-bottom: 10px;
-  color: #4a5568;
-  font-weight: 600;
-  font-size: 0.95rem;
-  letter-spacing: 0.3px;
-}
-
-/* Champs de saisie */
-.input-field {
+  display: grid;
+  gap: 11px;
   width: 100%;
-  padding: 16px 20px 16px 50px;
-  border: 2px solid #e2e8f0;
+  max-width: 430px;
+  margin: 34px auto 0;
+}
+
+.register-feature {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 61px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, .13);
   border-radius: 12px;
-  font-size: 1rem;
-  background: white;
-  color: #2d3748;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-sizing: border-box;
-  font-family: inherit;
+  background: rgba(255, 255, 255, .055);
 }
 
-.input-field:focus {
-  outline: none;
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
-  transform: translateY(-2px);
+.feature-icon {
+  display: grid;
+  flex: 0 0 34px;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  color: #4cdfc2;
+  background: rgba(55, 214, 189, .12);
 }
 
-.input-field:hover:not(:focus) {
-  border-color: #cbd5e0;
+.feature-icon-blue {
+  color: #9bb4ff;
+  background: rgba(130, 157, 239, .14);
 }
 
-.input-field::placeholder {
-  color: #a0aec0;
+.feature-icon svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-/* Bouton d'inscription */
-.register-button {
-  width: 100%;
-  padding: 18px;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-  margin-top: 10px;
-  letter-spacing: 0.5px;
+.register-feature > span:nth-child(2) {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
 }
 
-.register-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.7s;
+.register-feature strong {
+  color: #f2f7fc;
+  font-size: 11px;
+  font-weight: 650;
 }
 
-.register-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+.register-feature small {
+  color: #a7b9cd;
+  font-size: 9px;
+  line-height: 1.4;
 }
 
-.register-button:hover::before {
-  left: 100%;
-}
-
-.register-button:active {
-  transform: translateY(-1px);
-}
-
-.register-button:disabled {
-  background: #cbd5e0;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-/* Éléments décoratifs */
-.register-decoration {
-  position: absolute;
+.feature-check {
+  display: grid;
+  flex: 0 0 19px;
+  place-items: center;
+  width: 19px;
+  height: 19px;
+  margin-left: auto;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  z-index: 0;
+  color: #153c47;
+  background: #52ddbf;
+  font-size: 11px;
+  font-weight: 800;
 }
 
-.decoration-1 {
-  width: 300px;
-  height: 300px;
-  top: -150px;
-  left: -150px;
+.register-panel {
+  padding-top: 38px;
+  padding-bottom: 28px;
 }
 
-.decoration-2 {
-  width: 200px;
-  height: 200px;
-  bottom: -100px;
-  right: -100px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+.register-panel .login-form-heading {
+  margin-bottom: 21px;
 }
 
-/* Animation de chargement */
-@keyframes buttonLoading {
-  0% {
-    background-position: 200% 0;
+.register-form {
+  gap: 13px;
+}
+
+.register-form .login-input-wrap,
+.register-form .login-input-wrap input {
+  min-height: 46px;
+  height: 46px;
+}
+
+.register-form .login-field label {
+  margin-bottom: 7px;
+}
+
+.register-form .login-submit {
+  min-height: 49px;
+  margin-top: 3px;
+}
+
+.register-login-link {
+  margin-top: 15px;
+}
+
+.register-panel .login-security {
+  margin-top: 17px;
+}
+
+.register-success {
+  padding: 11px 13px;
+  border: 1px solid #bce8d5;
+  border-radius: 9px;
+  color: #26755d;
+  background: #edfaf4;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+@media (max-width: 960px) and (min-width: 901px) {
+  .register-panel {
+    padding-right: 34px;
+    padding-left: 34px;
   }
-  100% {
-    background-position: -200% 0;
-  }
-}
 
-.register-button.loading {
-  background: linear-gradient(90deg, #10b981, #059669, #10b981);
-  background-size: 200% 100%;
-  animation: buttonLoading 1.5s infinite linear;
-}
-
-/* Message d'erreur */
-.error-message {
-  background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
-  color: #c53030;
-  padding: 15px;
-  border-radius: 12px;
-  margin-bottom: 25px;
-  text-align: center;
-  font-weight: 600;
-  border-left: 4px solid #f56565;
-  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
-}
-
-/* Message de succès */
-.success-message {
-  background: linear-gradient(135deg, #c6f6d5 0%, #9ae6b4 100%);
-  color: #22543d;
-  padding: 15px;
-  border-radius: 12px;
-  margin-bottom: 25px;
-  text-align: center;
-  font-weight: 600;
-  border-left: 4px solid #38a169;
-  animation: slideDown 0.5s ease-out;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  .register-form {
+    gap: 11px;
   }
 }
 
-@keyframes shake {
-  10%, 90% { transform: translateX(-1px); }
-  20%, 80% { transform: translateX(2px); }
-  30%, 50%, 70% { transform: translateX(-3px); }
-  40%, 60% { transform: translateX(3px); }
-}
-
-/* Lien vers connexion */
-.login-link {
-  text-align: center;
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid #e5e7eb;
-}
-
-.login-link p {
-  color: #6b7280;
-  margin-bottom: 1rem;
-}
-
-.login-mode-btn {
-  background: transparent;
-  border: 2px solid #4f46e5;
-  color: #4f46e5;
-  padding: 0.75rem 2rem;
-  border-radius: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: inherit;
-  font-size: 1rem;
-}
-
-.login-mode-btn:hover {
-  background: #4f46e5;
-  color: white;
-  transform: translateY(-2px);
-}
-
-.login-mode-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* Effet d'icône dans le champ */
-.form-group {
-  position: relative;
-}
-
-.form-group::before {
-  content: '';
-  position: absolute;
-  left: 18px;
-  top: 42px;
-  width: 20px;
-  height: 20px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  opacity: 0.5;
-  z-index: 2;
-}
-
-/* Icône pour nom d'utilisateur */
-.form-group:nth-of-type(1)::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234a5568'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' /%3E%3C/svg%3E");
-}
-
-/* Icône pour email */
-.form-group:nth-of-type(2)::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234a5568'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' /%3E%3C/svg%3E");
-}
-
-/* Icône pour mot de passe */
-.form-group:nth-of-type(3)::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234a5568'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z' /%3E%3C/svg%3E");
-}
-
-/* Icône pour confirmation mot de passe */
-.form-group:nth-of-type(4)::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234a5568'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z' /%3E%3C/svg%3E");
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .register-card {
-    padding: 40px 30px;
-    margin: 20px;
+@media (min-width: 721px) and (max-width: 900px) {
+  .register-page .register-shell {
+    min-height: 650px;
   }
-  
-  .register-title {
-    font-size: 1.8rem;
+
+  .register-story-copy {
+    margin-top: 24px;
   }
-  
-  .input-field {
-    padding: 14px 18px 14px 48px;
+
+  .register-story-copy h1 {
+    font-size: clamp(27px, 3.8vw, 34px);
   }
-  
-  .register-button {
-    padding: 16px;
+
+  .register-features {
+    gap: 8px;
+    margin-top: 17px;
+  }
+
+  .register-feature {
+    min-height: 52px;
+    padding: 8px;
+  }
+
+  .register-feature strong {
+    font-size: 9px;
+  }
+
+  .register-feature small {
+    font-size: 8px;
+  }
+
+  .register-panel {
+    padding-top: 20px;
+    padding-bottom: 18px;
+  }
+
+  .register-panel .login-form-heading {
+    margin-bottom: 14px;
+  }
+
+  .register-panel .login-form-heading h2 {
+    font-size: 25px;
+  }
+
+  .register-form {
+    gap: 9px;
+  }
+
+  .register-form .login-input-wrap,
+  .register-form .login-input-wrap input {
+    min-height: 42px;
+    height: 42px;
+  }
+
+  .register-form .login-field label {
+    margin-bottom: 5px;
+    font-size: 10px;
+  }
+
+  .register-form .login-submit {
+    min-height: 43px;
+  }
+
+  .register-login-link,
+  .register-panel .login-security {
+    margin-top: 11px;
   }
 }
 
-@media (max-width: 480px) {
-  .register-card {
-    padding: 35px 25px;
+@media (max-width: 720px) {
+  .register-page {
+    overflow: auto;
   }
-  
-  .register-title {
-    font-size: 1.6rem;
+
+  .register-page .register-shell {
+    min-height: 100svh;
   }
-  
-  .form-label {
-    font-size: 0.9rem;
+
+  .register-page .register-panel {
+    padding-top: 26px;
+    padding-bottom: 22px;
   }
-  
-  .form-group::before {
-    top: 40px;
+
+  .register-page .mobile-brand {
+    margin-bottom: 30px;
+  }
+
+  .register-story {
+    display: none;
+  }
+
+  .register-panel .login-security {
+    margin-top: 20px;
   }
 }
 
-/* Indicateur de champ obligatoire */
-.form-label::after {
-  content: ' *';
-  color: #ef4444;
+@media (prefers-reduced-motion: reduce) {
+  .register-page *,
+  .register-page *::before,
+  .register-page *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
 }
