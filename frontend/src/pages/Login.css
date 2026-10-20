@@ -576,3 +576,12 @@
     padding-left: 16px;
   }
 }
+
+@media (min-width: 721px) and (max-width: 900px) {
+  .login-story > .login-brand,
+  .login-story > .story-copy,
+  .login-story > .dashboard-preview,
+  .login-story > .story-footer {
+    transform: translateY(10px);
+  }
+}
