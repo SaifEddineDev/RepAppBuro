@@ -7,10 +7,10 @@ const auth = require('../middleware/auth');
 router.get('/', auth, async (req, res) => {
   try {
     let devices;
-    if (req.user.role === 'client') {
+    if (req.user.role === 'USER') {
       // Client ne voit que ses propres appareils
       devices = await Device.find({ userId: req.user.id }).sort({ createdAt: -1 });
-    } else if (req.user.role === 'technicien') {
+    } else if (req.user.role === 'TECHNICIEN') {
       // Technicien voit les appareils qui lui sont assignés
       devices = await Device.find({ 
         $or: [
@@ -31,7 +31,7 @@ router.get('/', auth, async (req, res) => {
 // Créer un nouvel appareil (client)
 router.post('/', auth, async (req, res) => {
   try {
-    if (req.user.role !== 'client') {
+    if (req.user.role !== 'USER') {
       return res.status(403).json({ error: 'Accès non autorisé' });
     }
 
@@ -60,13 +60,13 @@ router.put('/:id', auth, async (req, res) => {
     }
 
     // Permissions
-    const allowedRoles = ['admin', 'responsable', 'rsc', 'technicien'];
+    const allowedRoles = ['ADMIN', 'RESPONSABLE', 'RSC', 'TECHNICIEN'];
     if (!allowedRoles.includes(req.user.role)) {
       return res.status(403).json({ error: 'Accès non autorisé' });
     }
 
     // Si technicien assigne l'appareil à lui-même
-    if (req.user.role === 'technicien' && !device.technicianId) {
+    if (req.user.role === 'TECHNICIEN' && !device.technicianId) {
       req.body.technicianId = req.user.id;
     }
 

@@ -44,9 +44,12 @@ app.use('/api/auth', authRoutes);
 const userRoutes = require('./src/routes/users');
 app.use('/api/users', userRoutes);
 
+const deviceRoutes = require('./src/routes/devices');
+app.use('/api/devices', deviceRoutes);
+
 // Routes Dashboard (avec gestion d'erreur)
 try {
-  const dashboardRoutes = require('./routes/dashboardRoutes');
+  const dashboardRoutes = require('./src/routes/dashboardRoutes');
   app.use('/api/dashboards', dashboardRoutes);
   console.log('âœ… Routes Dashboard chargÃ©es');
 } catch (error) {
@@ -54,7 +57,7 @@ try {
 }
 
 try {
-  const analyticsRoutes = require('./routes/analyticsRoutes');
+  const analyticsRoutes = require('./src/routes/analyticsRoutes');
   app.use('/api/analytics', analyticsRoutes);
   console.log('âœ… Routes Analytics chargÃ©es');
 } catch (error) {
@@ -84,8 +87,9 @@ app.get('/api/health', (req, res) => {
     database: databaseConnected ? 'connected' : 'disconnected',
     services: {
       auth: 'active',
-      dashboards: 'checking...',
-      analytics: 'checking...'
+      dashboards: 'active',
+      analytics: 'active',
+      devices: 'active'
     }
   });
 });
@@ -94,7 +98,7 @@ app.get('/api/health', (req, res) => {
 app.use('*', (req, res) => {
   res.status(404).json({ 
     error: 'Route non trouvÃ©e',
-    availableRoutes: ['/api/auth', '/api/dashboards', '/api/analytics', '/api/health']
+    availableRoutes: ['/api/auth', '/api/users', '/api/devices', '/api/dashboards', '/api/analytics', '/api/health']
   });
 });
 
@@ -114,8 +118,4 @@ app.listen(PORT, () => {
   console.log(`ðŸ” Authentification: http://localhost:${PORT}/api/auth`);
   console.log(`ðŸ“ˆ Dashboards: http://localhost:${PORT}/api/dashboards`);
   console.log(`ðŸ“Š Analytics: http://localhost:${PORT}/api/analytics`);
-  console.log(`\nðŸ“‹ Pour crÃ©er les routes dashboard, exÃ©cutez:`);
-  console.log(`1. npm install mongoose express-validator`);
-  console.log(`2. CrÃ©ez les fichiers dans ./routes/`);
-  console.log(`3. RedÃ©marrez le serveur\n`);
 });

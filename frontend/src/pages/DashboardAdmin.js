@@ -12,7 +12,6 @@ const DashboardAdmin = () => {
   
   const [utilisateurs, setUtilisateurs] = useState([]);
   const [devices, setDevices] = useState([]); // Ajout des appareils
-  const [systemeLogs, setSystemeLogs] = useState([]);
   const [activeTab, setActiveTab] = useState('utilisateurs');
   const [selectedUser, setSelectedUser] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -53,16 +52,10 @@ const DashboardAdmin = () => {
       setUtilisateurs(usersResponse.data);
       
       // Charger tous les appareils
-      const devicesResponse = await axios.get(`${API_URL}/devices/all`, {
+      const devicesResponse = await axios.get(`${API_URL}/devices`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setDevices(devicesResponse.data);
-      
-      // Charger les logs
-      const logsResponse = await axios.get(`${API_URL}/logs`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setSystemeLogs(logsResponse.data);
       
     } catch (err) {
       console.error('Erreur lors du chargement des données:', err);
