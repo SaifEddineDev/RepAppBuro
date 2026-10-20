@@ -1,0 +1,16 @@
+{
+  "short_name": "RepAppBuro",
+  "name": "RepAppBuro",
+  "icons": [
+    {
+      "src": "repappburo-logo.png",
+      "sizes": "1254x1254",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#16273f",
+  "background_color": "#ffffff"
+}
