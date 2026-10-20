@@ -14,13 +14,19 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const authenticate = async (expectedRole) => {
+    if (!username.trim() || !password) {
+      setSelectedRole(expectedRole || '');
+      setError('Saisissez vos identifiants pour accéder à cet espace.');
+      document.getElementById('login-username')?.focus();
+      return;
+    }
+
     setError('');
     setIsLoading(true);
 
     try {
-      const authenticatedUser = await login(username, password, selectedRole || undefined);
+      const authenticatedUser = await login(username, password, expectedRole);
       if (authenticatedUser) {
         navigate('/dashboard');
       } else {
@@ -39,6 +45,21 @@ const Login = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    authenticate(selectedRole || undefined);
+  };
+
+  const handleRoleShortcut = (role) => {
+    setSelectedRole(role);
+    setError('');
+    if (username.trim() && password) {
+      authenticate(role);
+      return;
+    }
+    document.getElementById('login-username')?.focus();
   };
 
   return (
@@ -156,32 +177,36 @@ const Login = () => {
           </form>
 
           <div className="quick-access" aria-label="Accès rapide par rôle">
-            <p>Accès rapide à un espace</p>
+            <div className="quick-access-heading">
+              <span className="quick-access-heading-icon" aria-hidden="true">↗</span>
+              <div>
+                <p>Accès rapide à un espace</p>
+                <span>Choisissez votre rôle pour continuer</span>
+              </div>
+            </div>
             <div className="quick-access-options">
               {[
-                { role: 'USER', label: 'Client' },
-                { role: 'RSC', label: 'RSC' },
-                { role: 'TECHNICIEN', label: 'Technicien' },
-                { role: 'RESPONSABLE', label: 'Responsable' },
-                { role: 'ADMIN', label: 'Administrateur' }
-              ].map(({ role, label }) => (
+                { role: 'USER', label: 'Client', initial: 'C' },
+                { role: 'RSC', label: 'RSC', initial: 'S' },
+                { role: 'TECHNICIEN', label: 'Technicien', initial: 'T' },
+                { role: 'RESPONSABLE', label: 'Responsable', initial: 'R' },
+                { role: 'ADMIN', label: 'Administrateur', initial: 'A' }
+              ].map(({ role, label, initial }) => (
                 <button
                   key={role}
                   type="button"
                   className={`quick-access-button${selectedRole === role ? ' is-selected' : ''}`}
                   aria-pressed={selectedRole === role}
                   disabled={isLoading}
-                  onClick={() => {
-                    setSelectedRole(role);
-                    setError('');
-                    document.getElementById('login-username')?.focus();
-                  }}
+                  onClick={() => handleRoleShortcut(role)}
                 >
-                  {label}
+                  <span className="quick-access-initial" aria-hidden="true">{initial}</span>
+                  <span className="quick-access-label">{label}</span>
+                  <span className="quick-access-check" aria-hidden="true">{selectedRole === role ? '✓' : '→'}</span>
                 </button>
               ))}
             </div>
-            <span>Votre rôle sera vérifié après la connexion.</span>
+            <span className="quick-access-note">Après saisie des identifiants, recliquez sur votre rôle pour ouvrir directement son tableau de bord.</span>
           </div>
 
           <div className="login-register">
