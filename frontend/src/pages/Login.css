@@ -599,3 +599,9 @@
     transform: translateY(24px) rotate(-1deg);
   }
 }
+
+@media (min-width: 721px) {
+  .login-story > .story-footer {
+    transform: none;
+  }
+}
