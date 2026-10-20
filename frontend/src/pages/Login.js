@@ -18,7 +18,7 @@ const Login = () => {
     if (!username.trim() || !password) {
       setSelectedRole(expectedRole || '');
       setError('Saisissez vos identifiants pour accéder à cet espace.');
-      document.getElementById('login-username')?.focus();
+      document.getElementById(username.trim() ? 'login-password' : 'login-username')?.focus();
       return;
     }
 
@@ -59,7 +59,7 @@ const Login = () => {
       authenticate(role);
       return;
     }
-    document.getElementById('login-username')?.focus();
+    document.getElementById(username.trim() ? 'login-password' : 'login-username')?.focus();
   };
 
   return (
@@ -206,7 +206,7 @@ const Login = () => {
                 </button>
               ))}
             </div>
-            <span className="quick-access-note">Après saisie des identifiants, recliquez sur votre rôle pour ouvrir directement son tableau de bord.</span>
+            <span className="quick-access-note">Choisissez un rôle, saisissez les identifiants du compte correspondant, puis validez pour ouvrir son tableau de bord.</span>
           </div>
 
           <div className="login-register">
