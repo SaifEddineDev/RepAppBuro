@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import Login from './pages/Login';
@@ -12,7 +12,7 @@ import Register from './pages/register';
 function App() {
   return (
     <AuthProvider>
-      <Router>
+      <HashRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -38,7 +38,7 @@ function App() {
           } />
           <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>
-      </Router>
+      </HashRouter>
     </AuthProvider>
   );
 }
