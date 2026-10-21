@@ -16,7 +16,7 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: FRONTEND_URL
-        value: https://saifeddinedev.github.io,https://repappburo-web.onrender.com
+        value: https://saifeddinedev.github.io,https://repappburo-web.onrender.com,https://repappburo-demo-web.onrender.com
   - type: web
     name: repappburo-web
     runtime: static
@@ -56,4 +56,4 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: FRONTEND_URL
-        value: https://saifeddinedev.github.io,https://repappburo-web.onrender.com
+        value: https://saifeddinedev.github.io,https://repappburo-web.onrender.com,https://repappburo-demo-web.onrender.com

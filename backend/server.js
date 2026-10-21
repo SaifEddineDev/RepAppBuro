@@ -6,22 +6,38 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
-const allowedOrigins = [
+const allowedOriginValues = [
   'http://localhost:3000',
   'http://localhost:3001',
+  // GitHub Pages serves the production and isolated demo app from this origin.
   'https://saifeddinedev.github.io',
+  'https://repappburo-web.onrender.com',
+  'https://repappburo-demo-web.onrender.com',
   ...(process.env.FRONTEND_URL || '').split(',')
-].map(origin => origin.trim()).filter(Boolean);
+];
+const allowedOrigins = new Set(
+  allowedOriginValues.flatMap(value => {
+    try {
+      return [new URL(value.trim()).origin];
+    } catch {
+      return [];
+    }
+  })
+);
 
-app.use(cors({
+const corsOptions = {
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || allowedOrigins.has(origin)) {
       return callback(null, true);
     }
     return callback(new Error('Origin not allowed by CORS'));
   },
   credentials: true
-}));
+};
+
+// Answer browser preflight requests before any API route is evaluated.
+app.options(/.*/, cors(corsOptions));
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
