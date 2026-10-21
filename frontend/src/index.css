@@ -7,6 +7,31 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Barre de défilement fine, assortie au vert menthe de RepAppBuro. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #45cdb3 #e8f1f3;
+}
+
+*::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #e8f1f3;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #45cdb3;
+  border: 2px solid #e8f1f3;
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #1cae9a;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
