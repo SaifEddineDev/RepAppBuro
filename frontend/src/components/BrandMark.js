@@ -2,7 +2,7 @@
 
 const BrandMark = () => (
   <span className="brand-mark" aria-hidden="true">
-      <img src={`${process.env.PUBLIC_URL}/repappburo-logo.png`} alt="RepAppBuro" />
+      <img src={`${process.env.PUBLIC_URL}/Repappburo_logo.png`} alt="RepAppBuro" />
   </span>
 );
 
