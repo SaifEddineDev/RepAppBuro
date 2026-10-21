@@ -1,10 +1,12 @@
+import { appStorage } from '../utils/appStorage';
+
 const configuredApiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 const normalizedApiUrl = configuredApiUrl.replace(/\/+$/, '');
 const API_URL = normalizedApiUrl.endsWith('/api') ? normalizedApiUrl : `${normalizedApiUrl}/api`;
 
 // Fonction gÃ©nÃ©rique pour les requÃªtes API
 export const apiRequest = async (endpoint, method = 'GET', body = null) => {
-  const token = localStorage.getItem('token');
+  const token = appStorage.getItem('token');
   
   const headers = {
     'Content-Type': 'application/json',
@@ -70,8 +72,8 @@ export const authService = {
   
   // DÃ©connexion
   logout: () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    appStorage.removeItem('token');
+    appStorage.removeItem('user');
     return apiRequest('/auth/logout', 'POST');
   },
   
@@ -80,7 +82,7 @@ export const authService = {
   
   // RÃ©cupÃ©rer l'utilisateur depuis le localStorage
   getCurrentUser: () => {
-    const userStr = localStorage.getItem('user');
+    const userStr = appStorage.getItem('user');
     if (userStr) {
       return JSON.parse(userStr);
     }
@@ -90,16 +92,16 @@ export const authService = {
   // Sauvegarder l'utilisateur dans le localStorage
   saveUserData: (userData, token) => {
     if (token) {
-      localStorage.setItem('token', token);
+      appStorage.setItem('token', token);
     }
     if (userData) {
-      localStorage.setItem('user', JSON.stringify(userData));
+      appStorage.setItem('user', JSON.stringify(userData));
     }
   },
   
   // VÃ©rifier si l'utilisateur est connectÃ©
   isAuthenticated: () => {
-    return !!localStorage.getItem('token');
+    return !!appStorage.getItem('token');
   }
 };
 
@@ -150,7 +152,7 @@ let authInterceptor = null;
 
 export const setupAuthInterceptor = () => {
   authInterceptor = async (endpoint, method, body) => {
-    const token = localStorage.getItem('token');
+    const token = appStorage.getItem('token');
     
     if (!token) {
       return apiRequest(endpoint, method, body);
@@ -168,8 +170,8 @@ export const setupAuthInterceptor = () => {
       
       if (!response.ok) {
         // Token invalide ou expirÃ©
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
+        appStorage.removeItem('token');
+        appStorage.removeItem('user');
         window.location.href = '/login';
         throw new Error('Session expirÃ©e');
       }

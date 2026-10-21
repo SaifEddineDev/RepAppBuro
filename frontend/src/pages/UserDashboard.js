@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { appStorage } from '../utils/appStorage';
 import './UserDashboard.css';
 
 // URL de l'API - à adapter selon votre configuration
@@ -61,7 +62,7 @@ const UserDashboard = () => {
       setError('Impossible de charger vos appareils. Veuillez réessayer.');
       
       // Option: charger depuis localStorage en fallback
-      const savedDevices = localStorage.getItem('bureau_devices');
+      const savedDevices = appStorage.getItem('bureau_devices');
       if (savedDevices) {
         const parsedDevices = JSON.parse(savedDevices);
         // Filtrer pour ne garder que les appareils de l'utilisateur actuel
@@ -138,7 +139,7 @@ const UserDashboard = () => {
       
       // Mettre à jour localStorage comme backup
       const updatedDevices = [response.data, ...devices];
-      localStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
+      appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
       
       alert('Votre appareil bureautique a été déposé avec succès ! Un technicien vous contactera pour le diagnostic.');
     } catch (err) {
@@ -179,9 +180,9 @@ const UserDashboard = () => {
       setDevices([newDeviceObj, ...devices]);
       
       // Sauvegarder dans localStorage pour partage avec autres rôles
-      const currentDevices = JSON.parse(localStorage.getItem('bureau_devices') || '[]');
+      const currentDevices = JSON.parse(appStorage.getItem('bureau_devices') || '[]');
       const updatedDevices = [newDeviceObj, ...currentDevices];
-      localStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
+      appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
       
       setNewDevice({ 
         name: '', 
@@ -221,7 +222,7 @@ const UserDashboard = () => {
           ? { ...device, status: 'recupere' }
           : device
       );
-      localStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
+      appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
       
       alert('Appareil marqué comme récupéré !');
     } catch (err) {
@@ -285,7 +286,7 @@ const UserDashboard = () => {
             }
           : device
       );
-      localStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
+      appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
       
       alert('Paiement effectué avec succès !');
     } catch (err) {

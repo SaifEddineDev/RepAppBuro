@@ -65,10 +65,12 @@
 }
 
 .login-brand { display: flex; align-items: center; gap: 11px; position: relative; z-index: 1; }
-.brand-mark { display: block; flex: 0 0 auto; width: 56px; height: 56px; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+.brand-mark { display: block; flex: 0 0 auto; width: 48px; height: 48px; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
 .brand-mark img { display: block; width: 100%; height: 100%; object-fit: contain; }
-.brand-name { color: #fff; font-size: 19px; font-weight: 750; letter-spacing: -.6px; }
+.brand-copy { display: flex; flex-direction: column; gap: 2px; }
+.brand-name { display: block; color: #fff; font-size: 19px; font-weight: 750; letter-spacing: -.6px; }
 .brand-name span { color: var(--teal); }
+.brand-tagline { color: #afbed0; font-size: 9px; font-weight: 500; line-height: 1.35; }
 
 .story-copy { position: relative; z-index: 1; margin-top: 55px; }
 .story-kicker { display: inline-flex; align-items: center; gap: 9px; color: #a6b8cc; font-size: 11px; font-weight: 700; letter-spacing: 1.35px; text-transform: uppercase; }
@@ -197,6 +199,7 @@
   .login-panel { flex: 1; justify-content: flex-start; width: min(100%, 520px); margin: 0 auto; padding: 30px 26px 24px; background: transparent; }
   .mobile-brand { display: flex; margin-bottom: 50px; }
   .mobile-brand .brand-name { color: #1e3047; }
+  .mobile-brand .brand-tagline { color: #8190a4; }
   .login-form-heading { margin-bottom: 27px; }
   .login-form-heading h2 { font-size: 30px; }
   .login-form { gap: 19px; }

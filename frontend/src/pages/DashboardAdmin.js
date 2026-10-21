@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { appStorage } from '../utils/appStorage';
 import './DashboardAdmin.css';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
@@ -60,8 +61,8 @@ const DashboardAdmin = () => {
     } catch (err) {
       console.error('Erreur lors du chargement des données:', err);
       // Fallback localStorage
-      const savedDevices = localStorage.getItem('bureau_devices');
-      const savedUsers = localStorage.getItem('bureau_users');
+      const savedDevices = appStorage.getItem('bureau_devices');
+      const savedUsers = appStorage.getItem('bureau_users');
       if (savedDevices) setDevices(JSON.parse(savedDevices));
       if (savedUsers) setUtilisateurs(JSON.parse(savedUsers));
     } finally {
@@ -85,7 +86,7 @@ const DashboardAdmin = () => {
       setUtilisateurs([...utilisateurs, response.data]);
       
       // Mettre à jour localStorage
-      localStorage.setItem('bureau_users', JSON.stringify([...utilisateurs, response.data]));
+      appStorage.setItem('bureau_users', JSON.stringify([...utilisateurs, response.data]));
       
       setNouvelUtilisateur({
         username: '',

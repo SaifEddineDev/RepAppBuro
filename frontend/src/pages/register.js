@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import BrandMark from '../components/BrandMark';
+import BrandLockup from '../components/BrandLockup';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Login.css';
@@ -72,10 +72,7 @@ const Register = () => {
 
       <div className="login-shell register-shell">
         <section className="login-story register-story" aria-label="Présentation de RepAppBuro">
-          <div className="login-brand">
-            <BrandMark />
-            <span className="brand-name">RepApp<span>Buro</span></span>
-          </div>
+          <BrandLockup className="login-brand" />
 
           <div className="story-copy register-story-copy">
             <span className="story-kicker"><span /> Votre atelier, mieux organisé</span>
@@ -116,10 +113,7 @@ const Register = () => {
         </section>
 
         <section className="login-panel register-panel" aria-labelledby="register-title">
-          <div className="mobile-brand login-brand">
-            <BrandMark />
-            <span className="brand-name">RepApp<span>Buro</span></span>
-          </div>
+          <BrandLockup className="mobile-brand login-brand" />
 
           <div className="login-form-heading">
             <span className="form-eyebrow">COMMENCEZ EN QUELQUES INSTANTS</span>

@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { authService, handleApiError } from '../services/api';
+import { appStorage } from '../utils/appStorage';
 
 const AuthContext = createContext();
 
@@ -7,7 +8,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(() => localStorage.getItem('token'));
+  const [token, setToken] = useState(() => appStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
 
   // Vérifier si l'utilisateur est déjà connecté au chargement
@@ -15,8 +16,8 @@ export const AuthProvider = ({ children }) => {
     const checkAuth = async () => {
       try {
         // Vérifier si un token existe
-        const token = localStorage.getItem('token');
-        const storedUser = localStorage.getItem('user');
+        const token = appStorage.getItem('token');
+        const storedUser = appStorage.getItem('user');
         
         if (token && storedUser) {
           try {
@@ -127,8 +128,8 @@ export const AuthProvider = ({ children }) => {
       // Continuer même en cas d'erreur
     } finally {
       // Nettoyer le local storage et l'état
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
+      appStorage.removeItem('token');
+      appStorage.removeItem('user');
       setUser(null);
       setToken(null);
       setLoading(false);

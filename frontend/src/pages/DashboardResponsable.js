@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { appStorage } from '../utils/appStorage';
 import './DashboardResponsable.css';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
@@ -63,8 +64,8 @@ const DashboardResponsable = () => {
       setError('Impossible de charger les données. Vérifiez votre connexion.');
       
       // Fallback localStorage
-      const savedDevices = localStorage.getItem('bureau_devices');
-      const savedUsers = localStorage.getItem('bureau_users');
+      const savedDevices = appStorage.getItem('bureau_devices');
+      const savedUsers = appStorage.getItem('bureau_users');
       
       if (savedDevices) {
         const parsedDevices = JSON.parse(savedDevices);
@@ -165,7 +166,7 @@ const DashboardResponsable = () => {
       const updatedDevices = devices.map(d => 
         (d.id === device.id || d._id === device._id) ? updatedDevice : d
       );
-      localStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
+      appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
       
       // Ajouter la facture à la liste
       const nouvelleFacture = {
@@ -223,7 +224,7 @@ const DashboardResponsable = () => {
       const updatedDevices = devices.map(d => 
         (d.id === device.id || d._id === device._id) ? updatedDevice : d
       );
-      localStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
+      appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
       
       alert(`Facture ${factureId} générée localement. Montant: ${total.toFixed(2)}€`);
     }
@@ -263,7 +264,7 @@ const DashboardResponsable = () => {
         setDevices(updatedDevices);
         
         // Mettre à jour localStorage
-        localStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
+        appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
       }
       
       alert(`Paiement de la facture ${factureId} validé !`);
@@ -294,7 +295,7 @@ const DashboardResponsable = () => {
           });
           
           setDevices(updatedDevices);
-          localStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
+          appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
         }
         
         alert(`Paiement validé localement pour ${factureId}`);

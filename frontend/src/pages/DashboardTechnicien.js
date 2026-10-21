@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { appStorage } from '../utils/appStorage';
 import './DashboardTechnicien.css';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
@@ -52,7 +53,7 @@ const TechnicienDashboard = () => {
       
       // Fallback localStorage si API échoue
       if (response.data.length === 0) {
-        const savedDevices = localStorage.getItem('bureau_devices');
+        const savedDevices = appStorage.getItem('bureau_devices');
         if (savedDevices) {
           const parsedDevices = JSON.parse(savedDevices);
           setDevices(parsedDevices);
@@ -61,7 +62,7 @@ const TechnicienDashboard = () => {
     } catch (err) {
       console.error('Erreur lors du chargement des appareils:', err);
       // Fallback: charger depuis localStorage
-      const savedDevices = localStorage.getItem('bureau_devices');
+      const savedDevices = appStorage.getItem('bureau_devices');
       if (savedDevices) {
         const parsedDevices = JSON.parse(savedDevices);
         setDevices(parsedDevices);
@@ -114,7 +115,7 @@ const TechnicienDashboard = () => {
           ? { ...d, technicianId: user.id, assignedTo: `${user.prenom} ${user.nom}` }
           : d
       );
-      localStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
+      appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
       
       alert('Appareil assigné avec succès !');
     } catch (err) {
@@ -193,7 +194,7 @@ const TechnicienDashboard = () => {
       const updatedDevices = devices.map(d => 
         (d.id === selectedDevice.id || d._id === selectedDevice._id) ? updatedDevice : d
       );
-      localStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
+      appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
       
       setSelectedDevice(updatedDevice);
       

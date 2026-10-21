@@ -31,8 +31,21 @@ jobs:
       - name: Build React app
         env:
           REACT_APP_API_URL: https://repappburo-api.onrender.com/api
-          REACT_APP_DEMO_WEB_URL: https://repappburo-demo-web.onrender.com
+          REACT_APP_DEMO_WEB_URL: https://saifeddinedev.github.io/RepAppBuro/demo
         run: npm run build --prefix frontend
+      - name: Save production build
+        run: mv frontend/build frontend/build-production
+      - name: Build isolated demo app
+        env:
+          REACT_APP_API_URL: https://repappburo-demo-api.onrender.com/api
+          REACT_APP_DEMO_MODE: 'true'
+          PUBLIC_URL: /RepAppBuro/demo
+        run: npm run build --prefix frontend
+      - name: Assemble GitHub Pages site
+        run: |
+          mkdir -p frontend/build-production/demo
+          cp -R frontend/build/. frontend/build-production/demo/
+          mv frontend/build-production frontend/build
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

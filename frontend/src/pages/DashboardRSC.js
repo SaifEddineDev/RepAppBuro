@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { appStorage } from '../utils/appStorage';
 import './DashboardRSC.css';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
@@ -98,8 +99,8 @@ const DashboardRSC = () => {
       setError('Impossible de charger les données. Vérifiez votre connexion.');
       
       // Fallback localStorage pour les données de démo
-      const savedDevices = localStorage.getItem('bureau_devices');
-      const savedUsers = localStorage.getItem('bureau_users');
+      const savedDevices = appStorage.getItem('bureau_devices');
+      const savedUsers = appStorage.getItem('bureau_users');
       
       if (savedDevices) {
         setDevices(JSON.parse(savedDevices));
@@ -145,8 +146,8 @@ const DashboardRSC = () => {
       setClients([response.data, ...clients]);
       
       // Mettre à jour localStorage comme backup
-      const currentUsers = JSON.parse(localStorage.getItem('bureau_users') || '[]');
-      localStorage.setItem('bureau_users', JSON.stringify([response.data, ...currentUsers]));
+      const currentUsers = JSON.parse(appStorage.getItem('bureau_users') || '[]');
+      appStorage.setItem('bureau_users', JSON.stringify([response.data, ...currentUsers]));
       
       // Réinitialiser le formulaire
       setNewClient({
@@ -186,8 +187,8 @@ const DashboardRSC = () => {
       setClients([newClientObj, ...clients]);
       
       // Mettre à jour localStorage
-      const currentUsers = JSON.parse(localStorage.getItem('bureau_users') || '[]');
-      localStorage.setItem('bureau_users', JSON.stringify([newClientObj, ...currentUsers]));
+      const currentUsers = JSON.parse(appStorage.getItem('bureau_users') || '[]');
+      appStorage.setItem('bureau_users', JSON.stringify([newClientObj, ...currentUsers]));
       
       setNewClient({
         username: '',
@@ -285,8 +286,8 @@ const DashboardRSC = () => {
       setLabelsToPrint([deviceWithEtiquette, ...labelsToPrint]);
       
       // Mettre à jour localStorage
-      const currentDevices = JSON.parse(localStorage.getItem('bureau_devices') || '[]');
-      localStorage.setItem('bureau_devices', JSON.stringify([deviceWithEtiquette, ...currentDevices]));
+      const currentDevices = JSON.parse(appStorage.getItem('bureau_devices') || '[]');
+      appStorage.setItem('bureau_devices', JSON.stringify([deviceWithEtiquette, ...currentDevices]));
       
       // Réinitialiser le formulaire
       setNewDevice({
@@ -362,8 +363,8 @@ const DashboardRSC = () => {
       setLabelsToPrint([newDeviceObj, ...labelsToPrint]);
       
       // Mettre à jour localStorage
-      const currentDevices = JSON.parse(localStorage.getItem('bureau_devices') || '[]');
-      localStorage.setItem('bureau_devices', JSON.stringify([newDeviceObj, ...currentDevices]));
+      const currentDevices = JSON.parse(appStorage.getItem('bureau_devices') || '[]');
+      appStorage.setItem('bureau_devices', JSON.stringify([newDeviceObj, ...currentDevices]));
       
       setNewDevice({
         name: '',

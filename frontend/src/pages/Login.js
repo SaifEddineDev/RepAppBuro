@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import BrandMark from '../components/BrandMark';
+import BrandLockup from '../components/BrandLockup';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Login.css';
@@ -24,7 +24,11 @@ const Login = () => {
       await loginDemo(role);
       navigate('/dashboard', { replace: true });
     } catch (err) {
-      setError(err.message || 'La démonstration est momentanément indisponible.');
+      if (err.message.includes('NetworkError') || err.message.includes('Failed to fetch')) {
+        setError('Le serveur de démonstration est indisponible. Vérifiez le déploiement de l’API démo.');
+      } else {
+        setError(err.message || 'La démonstration est momentanément indisponible.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -102,10 +106,7 @@ const Login = () => {
 
       <div className="login-shell">
         <section className="login-story" aria-label="Présentation de RepAppBuro">
-          <div className="login-brand">
-            <BrandMark />
-            <span className="brand-name">RepApp<span>Buro</span></span>
-          </div>
+          <BrandLockup className="login-brand" />
 
           <div className="story-copy">
             <span className="story-kicker"><span /> Gestion d’atelier, simplement</span>
@@ -138,10 +139,7 @@ const Login = () => {
         </section>
 
         <section className="login-panel" aria-labelledby="login-title">
-          <div className="mobile-brand login-brand">
-            <BrandMark />
-            <span className="brand-name">RepApp<span>Buro</span></span>
-          </div>
+          <BrandLockup className="mobile-brand login-brand" />
 
           <div className="login-form-heading">
             <span className="form-eyebrow">VOTRE ESPACE DE TRAVAIL</span>
