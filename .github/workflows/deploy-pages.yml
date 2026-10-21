@@ -43,9 +43,13 @@ jobs:
         run: npm run build --prefix frontend
       - name: Assemble GitHub Pages site
         run: |
+          mv frontend/build frontend/build-demo
           mkdir -p frontend/build-production/demo
-          cp -R frontend/build/. frontend/build-production/demo/
+          cp -R frontend/build-demo/. frontend/build-production/demo/
+          rm -rf frontend/build-demo
           mv frontend/build-production frontend/build
+          test -f frontend/build/index.html
+          test -f frontend/build/demo/index.html
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
