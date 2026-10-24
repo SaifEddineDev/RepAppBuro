@@ -404,7 +404,7 @@ body .dashboard-rsc .rsc-content,
 body .dashboard-technicien .technicien-content,
 body .dashboard-responsable .responsable-content,
 body .user-dashboard .dashboard-content {
-  width: min(100%, 1360px) !important;
+  width: min(100%, 1488px) !important;
 }
 
 body .dashboard-admin .dashboard-header,
