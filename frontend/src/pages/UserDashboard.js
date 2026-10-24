@@ -680,6 +680,7 @@ const UserDashboard = () => {
             <div className="info-icon">🏢</div>
             <div className="info-content">
               <h3>Notre atelier spécialisé</h3>
+              <p className="info-card-intro">Un atelier dédié à l’entretien et à la réparation de vos équipements professionnels.</p>
               <p>📌 456 Avenue du Parc Industriel<br />69000 Lyon</p>
               <p>📞 04 78 12 34 56</p>
               <p>🕒 Lun-Ven: 8h-19h, Sam: 9h-15h</p>
@@ -692,6 +693,7 @@ const UserDashboard = () => {
             <div className="info-icon">⚙️</div>
             <div className="info-content">
               <h3>Nos spécialités</h3>
+              <p className="info-card-intro">Des solutions expertes pour prolonger la durée de vie de votre matériel.</p>
               <ul>
                 <li>🖨️ Réparation d'imprimantes laser & jet d'encre</li>
                 <li>📠 Maintenance de photocopieurs</li>
@@ -708,6 +710,7 @@ const UserDashboard = () => {
             <div className="info-icon">📞</div>
             <div className="info-content">
               <h3>Support & Maintenance</h3>
+              <p className="info-card-intro">Notre équipe vous accompagne pour garder votre activité sans interruption.</p>
               <p>📧 support@repappburo.fr</p>
               <p>💬 Assistance technique en ligne</p>
               <p>📱 Hotline urgente: 04 78 12 34 57</p>

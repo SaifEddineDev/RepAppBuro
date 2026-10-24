@@ -1646,6 +1646,19 @@ body .user-dashboard .info-section .info-content p {
   line-height: 1.65;
 }
 
+body .user-dashboard .info-section .info-content .info-card-intro {
+  min-height: 38px;
+  margin: -5px 0 13px !important;
+  padding: 0 0 11px !important;
+  border: 0 !important;
+  border-bottom: 1px solid #edf1f5 !important;
+  border-radius: 0 !important;
+  color: #78879c !important;
+  background: transparent !important;
+  font-size: 11px !important;
+  line-height: 1.55;
+}
+
 body .user-dashboard .info-section .info-content ul {
   display: grid;
   gap: 4px;
