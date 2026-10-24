@@ -1,5 +1,6 @@
 // DashboardResponsable.jsx
 import React, { useState, useEffect } from 'react';
+import DashboardHeader from '../components/DashboardHeader';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -432,22 +433,7 @@ const DashboardResponsable = () => {
   return (
     <div className="dashboard-responsable">
       {/* Header */}
-      <header className="responsable-header">
-        <div className="header-left">
-          <h1>👔 Tableau de Bord Responsable</h1>
-          <p className="responsable-subtitle">Supervision et gestion financière</p>
-        </div>
-        <div className="header-right">
-          <div className="user-info">
-            <span className="welcome">Bonjour, {user?.prenom} {user?.nom}</span>
-            <span className="role-badge">RESPONSABLE</span>
-          </div>
-          <button onClick={handleLogout} className="logout-btn">Déconnexion</button>
-          <button onClick={fetchData} className="refresh-btn">
-            🔄 Rafraîchir
-          </button>
-        </div>
-      </header>
+      <DashboardHeader role="RESPONSABLE" roleLabel="Pilotage atelier" title="Tableau de bord responsable" subtitle={'Supervision et gestion financi\u00e8re'} user={user} onLogout={handleLogout} onRefresh={fetchData} />
 
       {error && (
         <div className="error-message">

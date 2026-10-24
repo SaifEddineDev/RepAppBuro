@@ -1,5 +1,6 @@
 // TechnicienDashboard.jsx
 import React, { useState, useEffect } from 'react';
+import DashboardHeader from '../components/DashboardHeader';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -253,22 +254,7 @@ const TechnicienDashboard = () => {
   return (
     <div className="dashboard-technicien">
       {/* Header */}
-      <header className="technicien-header">
-        <div className="header-left">
-          <h1>🔧 Tableau de Bord Technicien</h1>
-          <p className="technicien-subtitle">Gestion des réparations - {counts.total} appareils</p>
-        </div>
-        <div className="header-right">
-          <div className="user-info">
-            <span className="welcome">Bonjour, {user?.prenom} {user?.nom}</span>
-            <span className="role-badge">TECHNICIEN</span>
-          </div>
-          <button onClick={handleLogout} className="logout-btn">Déconnexion</button>
-          <button onClick={fetchDevices} className="refresh-btn">
-            🔄 Rafraîchir
-          </button>
-        </div>
-      </header>
+      <DashboardHeader role="TECHNICIEN" roleLabel={'\u00c9quipe technique'} title="Tableau de bord technicien" subtitle={`Suivi des r\u00e9parations \u00b7 ${counts.total} appareils`} user={user} onLogout={handleLogout} onRefresh={fetchDevices} />
 
       {/* Navigation */}
       <div className="technicien-tabs">

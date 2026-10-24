@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import DashboardHeader from '../components/DashboardHeader';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -223,22 +224,7 @@ const DashboardAdmin = () => {
   return (
     <div className="dashboard-admin">
       {/* Header */}
-      <header className="admin-header">
-        <div className="header-left">
-          <h1>⚙️ Tableau de Bord Administrateur</h1>
-          <p className="admin-subtitle">Gestion complète du système</p>
-        </div>
-        <div className="header-right">
-          <div className="user-info">
-            <span className="welcome">Bonjour, {user?.prenom} {user?.nom}</span>
-            <span className="role-badge admin">ADMIN</span>
-          </div>
-          <button onClick={handleLogout} className="logout-btn">Déconnexion</button>
-          <button onClick={fetchAllData} className="refresh-btn">
-            🔄 Rafraîchir
-          </button>
-        </div>
-      </header>
+      <DashboardHeader role="ADMIN" roleLabel="Administrateur" title="Tableau de bord administrateur" subtitle={'Gestion compl\u00e8te du syst\u00e8me'} user={user} onLogout={handleLogout} onRefresh={fetchAllData} />
 
       {/* Statistiques système */}
       <div className="system-stats">

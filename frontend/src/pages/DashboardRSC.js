@@ -1,5 +1,6 @@
 // DashboardRSC.jsx
 import React, { useState, useEffect } from 'react';
+import DashboardHeader from '../components/DashboardHeader';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -561,22 +562,7 @@ const DashboardRSC = () => {
   return (
     <div className="dashboard-rsc">
       {/* Header */}
-      <header className="rsc-header">
-        <div className="header-left">
-          <h1>🖨️ Réception Service Client</h1>
-          <p className="rsc-subtitle">Société de réparation de périphériques bureautiques</p>
-        </div>
-        <div className="header-right">
-          <div className="user-info">
-            <span className="welcome">Bonjour, {user?.prenom} {user?.nom}</span>
-            <span className="role-badge">RSC</span>
-          </div>
-          <button onClick={handleLogout} className="logout-btn">Déconnexion</button>
-          <button onClick={fetchData} className="refresh-btn">
-            🔄 Rafraîchir
-          </button>
-        </div>
-      </header>
+      <DashboardHeader role="RSC" roleLabel={'Accueil et r\u00e9ception'} title={'R\u00e9ception service client'} subtitle={'Gestion des clients et des d\u00e9p\u00f4ts d\u2019appareils'} user={user} onLogout={handleLogout} onRefresh={fetchData} />
 
       {/* Afficher les erreurs */}
       {error && (

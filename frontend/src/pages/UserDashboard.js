@@ -1,5 +1,6 @@
 // UserDashboard.jsx
 import React, { useState, useEffect } from 'react';
+import DashboardHeader from '../components/DashboardHeader';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -316,20 +317,7 @@ const UserDashboard = () => {
   return (
     <div className="user-dashboard">
       {/* Header */}
-      <header className="user-header">
-        <div className="header-left">
-          <h1>RepAppBuro <span className="client-text">- Espace Client</span></h1>
-          <p className="welcome-text">Bonjour, {user?.prenom || user?.username} ! Votre partenaire en réparation bureautique</p>
-        </div>
-        <div className="header-right">
-          <div className="user-avatar">
-            {user?.prenom?.[0]}{user?.nom?.[0] || user?.username?.[0]}
-          </div>
-          <button onClick={handleLogout} className="logout-btn">
-            Déconnexion
-          </button>
-        </div>
-      </header>
+      <DashboardHeader role="USER" roleLabel="Espace client" title="Votre espace client" subtitle={`Bonjour, ${user?.prenom || user?.username} ! Suivez vos r\u00e9parations et vos appareils.`} user={user} onLogout={handleLogout} onRefresh={fetchDevices} />
 
       <div className="dashboard-content">
         {/* Section de dépôt d'appareil */}
