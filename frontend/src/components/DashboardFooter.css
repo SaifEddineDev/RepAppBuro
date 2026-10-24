@@ -1,7 +1,8 @@
 .workspace-footer {
   box-sizing: border-box;
-  width: 100vw;
-  margin: 46px 0 0 calc(50% - 50vw);
+  width: 100%;
+  max-width: 100%;
+  margin: 46px 0 0;
   padding: 22px clamp(20px, 7vw, 110px);
   color: #d8e3ee;
   background: #17263e;
