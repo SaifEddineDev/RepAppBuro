@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const User = require('../models/User');
+const PUBLIC_REGISTRATION_ROLE = 'USER';
 
 // ⭐⭐ IMPORTANT : Ajouter ce middleware pour vérifier que JWT_SECRET existe ⭐⭐
 router.use((req, res, next) => {
@@ -83,7 +84,8 @@ router.post('/register', async (req, res) => {
       prenom: typeof prenom === 'string' ? prenom.trim() : '',
       nom: typeof nom === 'string' ? nom.trim() : '',
       telephone: typeof telephone === 'string' ? telephone.trim() : '',
-      role: 'USER',
+      // Les inscriptions publiques créent toujours un compte utilisateur/client.
+      role: PUBLIC_REGISTRATION_ROLE,
       actif: true
     });
 
