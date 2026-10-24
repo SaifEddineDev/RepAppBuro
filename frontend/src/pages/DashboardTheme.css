@@ -1,0 +1,380 @@
+/* RepAppBuro dashboard design system, aligned with the login screen. */
+body .dashboard-admin,
+body .dashboard-rsc,
+body .dashboard-technicien,
+body .dashboard-responsable,
+body .user-dashboard {
+  --dash-ink: #17263e;
+  --dash-muted: #78879c;
+  --dash-border: #e2e9f0;
+  --dash-surface: #ffffff;
+  --dash-mint: #47d7b8;
+  --dash-mint-dark: #087d76;
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding: clamp(14px, 2.4vw, 30px);
+  color: var(--dash-ink);
+  background: #f3f6fa !important;
+  background-image: none !important;
+  animation: none !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+body .user-dashboard::before { display: none; }
+
+body .dashboard-admin > :not(.dashboard-header),
+body .dashboard-rsc > :not(.dashboard-header),
+body .dashboard-technicien > :not(.dashboard-header),
+body .dashboard-responsable > :not(.dashboard-header),
+body .user-dashboard > :not(.dashboard-header) {
+  width: min(100%, 1480px);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+body .dashboard-admin .dashboard-header,
+body .dashboard-rsc .dashboard-header,
+body .dashboard-technicien .dashboard-header,
+body .dashboard-responsable .dashboard-header,
+body .user-dashboard .dashboard-header {
+  width: min(100%, 1480px);
+  margin: 0 auto 22px;
+}
+
+body .dashboard-admin .system-stats,
+body .dashboard-rsc .stats-grid,
+body .dashboard-technicien .stats-grid,
+body .dashboard-responsable .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0 auto 18px;
+}
+
+body .dashboard-admin .system-stat,
+body .dashboard-rsc .stat-card,
+body .dashboard-technicien .stat-card,
+body .dashboard-responsable .stat-card {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--dash-border) !important;
+  border-left: 1px solid var(--dash-border) !important;
+  border-radius: 14px !important;
+  color: var(--dash-ink);
+  background: var(--dash-surface) !important;
+  box-shadow: 0 5px 16px rgba(23, 38, 62, .045) !important;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+body .dashboard-admin .system-stat:hover,
+body .dashboard-rsc .stat-card:hover,
+body .dashboard-technicien .stat-card:hover,
+body .dashboard-responsable .stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 22px rgba(23, 38, 62, .075) !important;
+}
+
+body .dashboard-admin .stat-icon,
+body .dashboard-rsc .stat-icon,
+body .dashboard-technicien .stat-icon,
+body .dashboard-responsable .stat-icon {
+  display: grid;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 12px;
+  color: #168c80;
+  background: #e8f8f3;
+  font-size: 20px;
+}
+
+body .dashboard-admin .stat-info h3,
+body .dashboard-rsc .stat-info h3,
+body .dashboard-technicien .stat-info h3,
+body .dashboard-responsable .stat-info h3 {
+  color: var(--dash-ink) !important;
+  font-size: 23px;
+  font-weight: 760;
+  letter-spacing: -.04em;
+}
+
+body .dashboard-admin .stat-info p,
+body .dashboard-rsc .stat-info p,
+body .dashboard-technicien .stat-info p,
+body .dashboard-responsable .stat-info p {
+  color: var(--dash-muted) !important;
+  font-size: 11px;
+}
+
+body .dashboard-admin .admin-tabs,
+body .dashboard-rsc .rsc-tabs,
+body .dashboard-technicien .technicien-tabs,
+body .dashboard-responsable .responsable-tabs {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 auto 14px;
+  padding: 7px;
+  overflow-x: auto;
+  border: 1px solid var(--dash-border);
+  border-radius: 13px;
+  background: #fff;
+  box-shadow: 0 4px 13px rgba(23, 38, 62, .035);
+  scrollbar-width: thin;
+}
+
+body .dashboard-admin .admin-tabs .tab-btn,
+body .dashboard-rsc .rsc-tabs .tab-btn,
+body .dashboard-technicien .technicien-tabs .tab-btn,
+body .dashboard-responsable .responsable-tabs .tab-btn {
+  flex: 0 0 auto;
+  min-height: 38px;
+  padding: 0 13px;
+  border: 1px solid transparent !important;
+  border-radius: 9px !important;
+  color: #617087 !important;
+  background: transparent !important;
+  font-size: 11px;
+  font-weight: 680;
+  white-space: nowrap;
+  box-shadow: none !important;
+}
+
+body .dashboard-admin .admin-tabs .tab-btn:hover,
+body .dashboard-rsc .rsc-tabs .tab-btn:hover,
+body .dashboard-technicien .technicien-tabs .tab-btn:hover,
+body .dashboard-responsable .responsable-tabs .tab-btn:hover {
+  color: #087d76 !important;
+  background: #f0faf7 !important;
+}
+
+body .dashboard-admin .admin-tabs .tab-btn.active,
+body .dashboard-rsc .rsc-tabs .tab-btn.active,
+body .dashboard-technicien .technicien-tabs .tab-btn.active,
+body .dashboard-responsable .responsable-tabs .tab-btn.active {
+  border-color: #c9eee4 !important;
+  color: #087d76 !important;
+  background: #eaf8f3 !important;
+}
+
+body .dashboard-admin .search-section,
+body .dashboard-rsc .search-section,
+body .dashboard-technicien .search-section,
+body .dashboard-responsable .search-section {
+  margin: 0 auto 14px;
+}
+
+body .dashboard-admin .search-input,
+body .dashboard-rsc .search-input,
+body .dashboard-technicien .search-input,
+body .dashboard-responsable .search-input,
+body .dashboard-admin .filter-select,
+body .dashboard-rsc input,
+body .dashboard-rsc select,
+body .dashboard-technicien input,
+body .dashboard-technicien select,
+body .dashboard-responsable input,
+body .dashboard-responsable select,
+body .user-dashboard input,
+body .user-dashboard select,
+body .user-dashboard textarea {
+  border: 1px solid #dce5ee !important;
+  border-radius: 10px !important;
+  color: #263951;
+  background: #fbfcfe !important;
+  box-shadow: none !important;
+}
+
+body .dashboard-admin .search-input:focus,
+body .dashboard-rsc .search-input:focus,
+body .dashboard-technicien .search-input:focus,
+body .dashboard-responsable .search-input:focus,
+body .dashboard-admin input:focus,
+body .dashboard-admin select:focus,
+body .dashboard-rsc input:focus,
+body .dashboard-rsc select:focus,
+body .dashboard-technicien input:focus,
+body .dashboard-technicien select:focus,
+body .dashboard-responsable input:focus,
+body .dashboard-responsable select:focus,
+body .user-dashboard input:focus,
+body .user-dashboard select:focus,
+body .user-dashboard textarea:focus {
+  border-color: #63d8bf !important;
+  outline: 3px solid rgba(71, 215, 184, .14);
+}
+
+body .dashboard-admin .admin-content,
+body .dashboard-rsc .rsc-content,
+body .dashboard-technicien .technicien-content,
+body .dashboard-responsable .responsable-content,
+body .user-dashboard .dashboard-content {
+  width: min(100%, 1480px);
+  margin: 0 auto;
+  padding: 0;
+}
+
+body .dashboard-admin .tab-content,
+body .dashboard-rsc .tab-content,
+body .dashboard-technicien .tab-content,
+body .dashboard-responsable .tab-content,
+body .user-dashboard .depot-section,
+body .user-dashboard .devices-section {
+  padding: clamp(17px, 2vw, 25px);
+  border: 1px solid var(--dash-border) !important;
+  border-radius: 15px !important;
+  background: #fff !important;
+  box-shadow: 0 5px 16px rgba(23, 38, 62, .04) !important;
+}
+
+body .dashboard-admin .tab-title,
+body .dashboard-rsc .tab-title,
+body .dashboard-technicien .tab-title,
+body .dashboard-responsable .tab-title,
+body .user-dashboard .section-title {
+  margin-top: 0;
+  color: var(--dash-ink) !important;
+  font-size: clamp(17px, 2vw, 21px);
+  font-weight: 760;
+  letter-spacing: -.025em;
+}
+
+body .dashboard-admin .users-section,
+body .dashboard-admin .devices-section,
+body .dashboard-admin .create-user-form,
+body .dashboard-rsc .clients-section,
+body .dashboard-rsc .reparations-section,
+body .dashboard-technicien .reparations-section,
+body .dashboard-responsable .supervision-section,
+body .dashboard-responsable .factures-section,
+body .dashboard-responsable .rapports-section,
+body .user-dashboard .info-card {
+  border-color: var(--dash-border) !important;
+  border-radius: 13px !important;
+  background: #fff !important;
+  box-shadow: 0 3px 12px rgba(23, 38, 62, .035) !important;
+}
+
+body .dashboard-admin .submit-btn,
+body .dashboard-admin .action-btn:not(.delete):not(.deactivate),
+body .dashboard-rsc .submit-btn,
+body .dashboard-rsc .action-btn,
+body .dashboard-technicien .submit-btn,
+body .dashboard-technicien .action-btn,
+body .dashboard-responsable .submit-btn,
+body .dashboard-responsable .action-btn,
+body .user-dashboard .submit-btn,
+body .user-dashboard .contact-btn {
+  border: 0 !important;
+  border-radius: 10px !important;
+  color: #083a42 !important;
+  background: linear-gradient(105deg, #49d9b9, #72e4c7) !important;
+  box-shadow: 0 6px 15px rgba(48, 189, 158, .16) !important;
+  font-weight: 750;
+}
+
+body .dashboard-admin .submit-btn:hover,
+body .dashboard-rsc .submit-btn:hover,
+body .dashboard-technicien .submit-btn:hover,
+body .dashboard-responsable .submit-btn:hover,
+body .user-dashboard .submit-btn:hover,
+body .user-dashboard .contact-btn:hover {
+  filter: brightness(.98);
+  transform: translateY(-1px);
+}
+
+body .dashboard-admin .users-table,
+body .dashboard-admin .devices-table,
+body .dashboard-rsc table,
+body .dashboard-technicien table,
+body .dashboard-responsable table {
+  border-collapse: separate;
+  border-spacing: 0;
+  color: #3c4d63;
+  background: #fff;
+}
+
+body .dashboard-admin th,
+body .dashboard-rsc th,
+body .dashboard-technicien th,
+body .dashboard-responsable th {
+  color: #53647b !important;
+  background: #f5f8fb !important;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+body .dashboard-admin td,
+body .dashboard-rsc td,
+body .dashboard-technicien td,
+body .dashboard-responsable td {
+  border-color: #edf1f5 !important;
+  font-size: 12px;
+}
+
+body .user-dashboard .depot-form,
+body .dashboard-admin .form-grid,
+body .dashboard-rsc .form-grid,
+body .dashboard-technicien .form-grid,
+body .dashboard-responsable .form-grid {
+  gap: 14px;
+}
+
+body .user-dashboard label,
+body .dashboard-admin label,
+body .dashboard-rsc label,
+body .dashboard-technicien label,
+body .dashboard-responsable label {
+  color: #34475f;
+  font-size: 12px;
+  font-weight: 680;
+}
+
+body .user-dashboard .error-message,
+body .dashboard-admin .error-message,
+body .dashboard-rsc .error-message,
+body .dashboard-technicien .error-message,
+body .dashboard-responsable .error-message {
+  border: 1px solid #ffd0cc;
+  border-radius: 10px;
+  color: #b4423b;
+  background: #fff5f4;
+}
+
+@media (max-width: 900px) {
+  body .dashboard-admin .system-stats,
+  body .dashboard-rsc .stats-grid,
+  body .dashboard-technicien .stats-grid,
+  body .dashboard-responsable .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 560px) {
+  body .dashboard-admin,
+  body .dashboard-rsc,
+  body .dashboard-technicien,
+  body .dashboard-responsable,
+  body .user-dashboard { padding: 10px; }
+
+  body .dashboard-admin .system-stats,
+  body .dashboard-rsc .stats-grid,
+  body .dashboard-technicien .stats-grid,
+  body .dashboard-responsable .stats-grid { gap: 8px; }
+
+  body .dashboard-admin .system-stat,
+  body .dashboard-rsc .stat-card,
+  body .dashboard-technicien .stat-card,
+  body .dashboard-responsable .stat-card { padding: 12px; }
+
+  body .dashboard-admin .admin-tabs,
+  body .dashboard-rsc .rsc-tabs,
+  body .dashboard-technicien .technicien-tabs,
+  body .dashboard-responsable .responsable-tabs { margin-bottom: 10px; }
+
+  body .dashboard-admin .tab-content,
+  body .dashboard-rsc .tab-content,
+  body .dashboard-technicien .tab-content,
+  body .dashboard-responsable .tab-content,
+  body .user-dashboard .depot-section,
+  body .user-dashboard .devices-section { padding: 14px; }
+}

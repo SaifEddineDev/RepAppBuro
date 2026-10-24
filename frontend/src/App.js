@@ -8,6 +8,7 @@ import ClientManagement from './pages/ClientManagement';
 import ReparationManagement from './pages/ReparationManagement';
 import PieceManagement from './pages/PieceManagement';
 import Register from './pages/register';
+import './pages/DashboardTheme.css';
 
 function App() {
   return (
