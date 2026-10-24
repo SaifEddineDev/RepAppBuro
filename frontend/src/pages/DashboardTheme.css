@@ -993,8 +993,8 @@ body .user-dashboard .depot-section .section-title::before {
   width: 5px;
   height: 36px;
   transform: none;
-  background: linear-gradient(180deg, #7188f5, #f05d9b);
-  box-shadow: 0 4px 12px rgba(113, 136, 245, .25);
+  background: linear-gradient(180deg, #17263e, #2b4566);
+  box-shadow: 0 4px 12px rgba(23, 38, 62, .22);
 }
 
 body .user-dashboard .depot-section .section-title .icon {
