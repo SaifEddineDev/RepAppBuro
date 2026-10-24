@@ -35,9 +35,9 @@
   height: 44px;
 }
 
-.dashboard-header-lockup .brand-copy { min-width: 0; }
+.dashboard-header-lockup .brand-copy { flex: 0 0 auto; width: max-content; min-width: max-content; }
 .dashboard-header-lockup .brand-name { color: #17263e; font-size: 18px; }
-.dashboard-header-lockup .brand-tagline { color: #8290a2; font-size: 9px; }
+.dashboard-header-lockup .brand-tagline { color: #8290a2; font-size: 9px; line-height: 1.35; white-space: nowrap; }
 
 .dashboard-header-heading {
   grid-column: 2;
@@ -185,7 +185,7 @@
   .dashboard-header-lockup { grid-column: 1; grid-row: 1; }
   .dashboard-header-lockup .brand-mark { width: 37px; height: 37px; }
   .dashboard-header-lockup .brand-name { font-size: 16px; }
-  .dashboard-header-lockup .brand-tagline { font-size: 8px; }
+  .dashboard-header-lockup .brand-tagline { font-size: 7.5px; }
   .dashboard-header-heading { grid-column: 1; grid-row: 2; }
   .dashboard-header-actions { grid-column: 1; grid-row: 3; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
   .dashboard-header-refresh { grid-column: 1; grid-row: 1; }
