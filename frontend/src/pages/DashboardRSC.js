@@ -77,6 +77,17 @@ const DashboardRSC = () => {
   }, []);
 
   const fetchData = async () => {
+    if (user?.demo) {
+      const savedDevices = appStorage.getItem('bureau_devices');
+      const savedUsers = appStorage.getItem('bureau_users');
+      setDevices(savedDevices ? JSON.parse(savedDevices) : []);
+      const localUsers = savedUsers ? JSON.parse(savedUsers) : [];
+      setClients(localUsers.filter((localUser) => localUser.role === 'USER'));
+      setError('');
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       

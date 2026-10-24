@@ -42,6 +42,13 @@ const TechnicienDashboard = () => {
   }, []);
 
   const fetchDevices = async () => {
+    if (user?.demo) {
+      const savedDevices = appStorage.getItem('bureau_devices');
+      setDevices(savedDevices ? JSON.parse(savedDevices) : []);
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       const response = await axios.get(`${API_URL}/devices`, {

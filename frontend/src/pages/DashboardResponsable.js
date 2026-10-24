@@ -31,6 +31,19 @@ const DashboardResponsable = () => {
   }, []);
 
   const fetchData = async () => {
+    if (user?.demo) {
+      const savedDevices = appStorage.getItem('bureau_devices');
+      const savedUsers = appStorage.getItem('bureau_users');
+      const localDevices = savedDevices ? JSON.parse(savedDevices) : [];
+      const localUsers = savedUsers ? JSON.parse(savedUsers) : [];
+      setDevices(localDevices);
+      setClients(localUsers.filter((localUser) => localUser.role === 'USER'));
+      generateFacturesFromDevices(localDevices);
+      setError('');
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       

@@ -48,6 +48,17 @@ const UserDashboard = () => {
   }, []);
 
   const fetchDevices = async () => {
+    if (user?.demo) {
+      const savedDevices = appStorage.getItem('bureau_devices');
+      const localDevices = savedDevices ? JSON.parse(savedDevices) : [];
+      setDevices(localDevices.filter(
+        (device) => device.userId === user?.id || device.clientId === user?.id
+      ));
+      setError('');
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       const response = await axios.get(`${API_URL}/devices`, {

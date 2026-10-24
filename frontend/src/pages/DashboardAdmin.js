@@ -44,6 +44,15 @@ const DashboardAdmin = () => {
   }, []);
 
   const fetchAllData = async () => {
+    if (user?.demo) {
+      const savedDevices = appStorage.getItem('bureau_devices');
+      const savedUsers = appStorage.getItem('bureau_users');
+      setDevices(savedDevices ? JSON.parse(savedDevices) : []);
+      setUtilisateurs(savedUsers ? JSON.parse(savedUsers) : []);
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       
