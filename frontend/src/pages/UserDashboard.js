@@ -1,5 +1,5 @@
 // UserDashboard.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import DashboardHeader from '../components/DashboardHeader';
 import DashboardFooter from '../components/DashboardFooter';
 import { useAuth } from '../context/AuthContext';
@@ -10,6 +10,128 @@ import './UserDashboard.css';
 
 // URL de l'API - à adapter selon votre configuration
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+
+const DeviceTypeSelect = ({ value, options, onChange, disabled }) => {
+  const [open, setOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(Math.max(0, options.indexOf(value)));
+  const rootRef = useRef(null);
+  const triggerRef = useRef(null);
+  const listId = 'device-type-options';
+  const selectedIndex = Math.max(0, options.indexOf(value));
+
+  useEffect(() => {
+    if (open) {
+      document.getElementById(`device-type-option-${activeIndex}`)?.scrollIntoView?.({ block: 'nearest' });
+    }
+  }, [activeIndex, open]);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const closeOnOutsideClick = (event) => {
+      if (!rootRef.current?.contains(event.target)) setOpen(false);
+    };
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') {
+        setOpen(false);
+        triggerRef.current?.focus();
+      }
+    };
+    document.addEventListener('mousedown', closeOnOutsideClick);
+    document.addEventListener('touchstart', closeOnOutsideClick);
+    document.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.removeEventListener('mousedown', closeOnOutsideClick);
+      document.removeEventListener('touchstart', closeOnOutsideClick);
+      document.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [open]);
+
+  const choose = (option) => {
+    onChange(option);
+    setOpen(false);
+    triggerRef.current?.focus();
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      if (!open) {
+        setActiveIndex(selectedIndex);
+        setOpen(true);
+      } else {
+        setActiveIndex((index) => (index + 1) % options.length);
+      }
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      if (!open) {
+        setActiveIndex(selectedIndex);
+        setOpen(true);
+      } else {
+        setActiveIndex((index) => (index - 1 + options.length) % options.length);
+      }
+    } else if (event.key === 'Home' && open) {
+      event.preventDefault();
+      setActiveIndex(0);
+    } else if (event.key === 'End' && open) {
+      event.preventDefault();
+      setActiveIndex(options.length - 1);
+    } else if ((event.key === 'Enter' || event.key === ' ') && open) {
+      event.preventDefault();
+      choose(options[activeIndex]);
+    } else if ((event.key === 'Enter' || event.key === ' ') && !open) {
+      event.preventDefault();
+      setActiveIndex(selectedIndex);
+      setOpen(true);
+    } else if (event.key === 'Tab') {
+      setOpen(false);
+    }
+  };
+
+  return (
+    <div className={`device-type-select${open ? ' is-open' : ''}`} ref={rootRef}>
+      <button
+        ref={triggerRef}
+        id="device-type-select"
+        className="device-type-select-trigger"
+        type="button"
+        role="combobox"
+        aria-label="Type d'appareil"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-controls={listId}
+        aria-activedescendant={open ? `device-type-option-${activeIndex}` : undefined}
+        disabled={disabled}
+        onClick={() => {
+          setActiveIndex(selectedIndex);
+          setOpen((isOpen) => !isOpen);
+        }}
+        onKeyDown={handleKeyDown}
+      >
+        <span>{value}</span>
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5" /></svg>
+      </button>
+      {open && (
+        <ul className="device-type-select-list" id={listId} role="listbox" aria-label="Choisir un type d'appareil">
+          {options.map((option, index) => (
+            <li
+              className={`device-type-select-option${value === option ? ' is-selected' : ''}${activeIndex === index ? ' is-active' : ''}`}
+              id={`device-type-option-${index}`}
+              key={option}
+              role="option"
+              aria-selected={value === option}
+              onMouseEnter={() => setActiveIndex(index)}
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => choose(option)}
+            >
+              <span>{option}</span>
+              {value === option && <span className="device-type-select-check" aria-hidden="true">✓</span>}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
 
 const UserDashboard = () => {
   const { user, logout, token } = useAuth();
@@ -384,16 +506,13 @@ const UserDashboard = () => {
               </div>
               
               <div className="form-group">
-                <label>Type d'appareil *</label>
-                <select
+                <label htmlFor="device-type-select">Type d'appareil *</label>
+                <DeviceTypeSelect
                   value={newDevice.type}
-                  onChange={(e) => setNewDevice({...newDevice, type: e.target.value})}
+                  options={deviceTypes}
+                  onChange={(type) => setNewDevice((current) => ({ ...current, type }))}
                   disabled={loading}
-                >
-                  {deviceTypes.map(type => (
-                    <option key={type} value={type}>{type}</option>
-                  ))}
-                </select>
+                />
               </div>
               
               <div className="form-group full-width">
