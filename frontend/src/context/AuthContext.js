@@ -3,6 +3,8 @@ import { authService, handleApiError } from '../services/api';
 import { appStorage } from '../utils/appStorage';
 
 const AuthContext = createContext();
+const DEMO_MODE = process.env.REACT_APP_DEMO_MODE === 'true';
+const DEMO_ROLES = ['USER', 'RSC', 'TECHNICIEN', 'RESPONSABLE', 'ADMIN'];
 
 export const useAuth = () => useContext(AuthContext);
 
@@ -18,6 +20,18 @@ export const AuthProvider = ({ children }) => {
         // Vérifier si un token existe
         const token = appStorage.getItem('token');
         const storedUser = appStorage.getItem('user');
+
+        if (DEMO_MODE) {
+          const demoUser = storedUser ? JSON.parse(storedUser) : null;
+          if (token?.startsWith('demo:') && demoUser?.demo && DEMO_ROLES.includes(demoUser.role)) {
+            setUser(demoUser);
+            setToken(token);
+          } else {
+            appStorage.removeItem('token');
+            appStorage.removeItem('user');
+          }
+          return;
+        }
         
         if (token && storedUser) {
           try {
@@ -77,6 +91,36 @@ export const AuthProvider = ({ children }) => {
   };
 
   const loginDemo = async (role) => {
+    if (DEMO_MODE) {
+      if (!DEMO_ROLES.includes(role)) {
+        throw new Error('Rôle de démonstration inconnu.');
+      }
+
+      const roleNames = {
+        USER: ['Client', 'Démo'],
+        RSC: ['Accueil', 'Démo'],
+        TECHNICIEN: ['Technicien', 'Démo'],
+        RESPONSABLE: ['Responsable', 'Démo'],
+        ADMIN: ['Administrateur', 'Démo']
+      };
+      const [prenom, nom] = roleNames[role];
+      const demoUser = {
+        id: `demo-${role.toLowerCase()}`,
+        username: `demo_${role.toLowerCase()}`,
+        email: `demo.${role.toLowerCase()}@repappburo.test`,
+        prenom,
+        nom,
+        role,
+        actif: true,
+        demo: true
+      };
+      const demoToken = `demo:${role}`;
+      authService.saveUserData(demoUser, demoToken);
+      setUser(demoUser);
+      setToken(demoToken);
+      return demoUser;
+    }
+
     try {
       setLoading(true);
       const response = await authService.demoLogin(role);
@@ -121,8 +165,9 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       setLoading(true);
-      // Appeler le backend pour déconnexion propre
-      await authService.logout();
+      if (!DEMO_MODE || !user?.demo) {
+        await authService.logout();
+      }
     } catch (error) {
       console.error('Erreur lors de la déconnexion:', error);
       // Continuer même en cas d'erreur
@@ -135,8 +180,8 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
       
       // Rediriger vers la page de connexion
-      if (window.location.pathname !== '/login' && window.location.pathname !== '/register') {
-        window.location.href = '/login';
+      if (!window.location.hash.startsWith('#/login') && !window.location.hash.startsWith('#/register')) {
+        window.location.hash = '/login';
       }
     }
   };

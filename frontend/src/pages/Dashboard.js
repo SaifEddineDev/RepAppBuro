@@ -6,11 +6,16 @@ import DashboardRSC from './DashboardRSC';
 import DashboardTech from './DashboardTechnicien';
 import DashboardRes from './DashboardResponsable';
 import DashboardAdm from './DashboardAdmin';
+import DemoRoleDashboard from './DemoRoleDashboard';
 import './Dashboard.css';
 
 const Dashboard = () => {
   const { user, logout, switchRole, isTestMode } = useAuth();
   const navigate = useNavigate();
+
+  if (user?.demo) {
+    return <DemoRoleDashboard user={user} onLogout={logout} />;
+  }
 
   if (user?.role === 'USER') {
     return <UserDashboard />;
