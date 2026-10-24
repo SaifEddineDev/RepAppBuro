@@ -717,8 +717,31 @@ body .dashboard-rsc,
 body .dashboard-technicien,
 body .dashboard-responsable,
 body .user-dashboard {
-  padding: clamp(22px, 3.4vw, 42px) clamp(20px, 5.2vw, 86px) 54px;
+  padding: clamp(22px, 3.4vw, 42px) clamp(20px, 3vw, 56px) 54px;
   background: radial-gradient(ellipse at 50% 0%, #ffffff 0%, #f4f7fb 48%, #edf2f7 100%) !important;
+}
+
+/* Keep all dashboard columns centered on the same wide desktop grid. */
+body .dashboard-admin > :not(.dashboard-header):not(.workspace-footer),
+body .dashboard-rsc > :not(.dashboard-header):not(.workspace-footer),
+body .dashboard-technicien > :not(.dashboard-header):not(.workspace-footer),
+body .dashboard-responsable > :not(.dashboard-header):not(.workspace-footer),
+body .user-dashboard > :not(.dashboard-header):not(.workspace-footer),
+body .dashboard-admin .dashboard-header,
+body .dashboard-rsc .dashboard-header,
+body .dashboard-technicien .dashboard-header,
+body .dashboard-responsable .dashboard-header,
+body .user-dashboard .dashboard-header,
+body .dashboard-admin .admin-content,
+body .dashboard-rsc .rsc-content,
+body .dashboard-technicien .technicien-content,
+body .dashboard-responsable .responsable-content,
+body .user-dashboard .dashboard-content {
+  box-sizing: border-box;
+  width: min(88vw, 1680px) !important;
+  max-width: 1680px;
+  margin-right: auto !important;
+  margin-left: auto !important;
 }
 
 body .dashboard-admin .dashboard-header,
