@@ -1575,3 +1575,43 @@ body .dashboard-responsable .filter-select {
   min-height: 44px;
   padding: 9px 40px 9px 13px !important;
 }
+
+/* Full-bleed footer that exactly offsets each dashboard's side padding. */
+body .dashboard-admin,
+body .dashboard-rsc,
+body .dashboard-technicien,
+body .dashboard-responsable,
+body .user-dashboard {
+  --dashboard-horizontal-gutter: clamp(20px, 3vw, 56px);
+}
+
+body .dashboard-admin .workspace-footer,
+body .dashboard-rsc .workspace-footer,
+body .dashboard-technicien .workspace-footer,
+body .dashboard-responsable .workspace-footer,
+body .user-dashboard .workspace-footer {
+  width: calc(100% + var(--dashboard-horizontal-gutter) + var(--dashboard-horizontal-gutter));
+  max-width: none;
+  margin-right: 0;
+  margin-left: calc(0px - var(--dashboard-horizontal-gutter));
+}
+
+@media (max-width: 1000px) {
+  body .dashboard-admin,
+  body .dashboard-rsc,
+  body .dashboard-technicien,
+  body .dashboard-responsable,
+  body .user-dashboard {
+    --dashboard-horizontal-gutter: clamp(18px, 4vw, 40px);
+  }
+}
+
+@media (max-width: 560px) {
+  body .dashboard-admin,
+  body .dashboard-rsc,
+  body .dashboard-technicien,
+  body .dashboard-responsable,
+  body .user-dashboard {
+    --dashboard-horizontal-gutter: 10px;
+  }
+}
