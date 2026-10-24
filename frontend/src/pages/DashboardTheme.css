@@ -1583,6 +1583,7 @@ body .dashboard-technicien,
 body .dashboard-responsable,
 body .user-dashboard {
   --dashboard-horizontal-gutter: clamp(20px, 3vw, 56px);
+  overflow-x: clip;
 }
 
 body .dashboard-admin .workspace-footer,
@@ -1590,10 +1591,10 @@ body .dashboard-rsc .workspace-footer,
 body .dashboard-technicien .workspace-footer,
 body .dashboard-responsable .workspace-footer,
 body .user-dashboard .workspace-footer {
-  width: calc(100% + var(--dashboard-horizontal-gutter) + var(--dashboard-horizontal-gutter));
-  max-width: none;
+  width: 100vw;
+  max-width: 100vw;
   margin-right: 0;
-  margin-left: calc(0px - var(--dashboard-horizontal-gutter));
+  margin-left: calc(50% - 50vw);
 }
 
 @media (max-width: 1000px) {
