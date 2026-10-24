@@ -738,8 +738,8 @@ body .dashboard-technicien .technicien-content,
 body .dashboard-responsable .responsable-content,
 body .user-dashboard .dashboard-content {
   box-sizing: border-box;
-  width: min(84vw, 1620px) !important;
-  max-width: 1620px;
+  width: min(82vw, 1580px) !important;
+  max-width: 1580px;
   margin-right: auto !important;
   margin-left: auto !important;
 }
