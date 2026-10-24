@@ -1437,3 +1437,53 @@ body .user-dashboard .info-section .contact-btn:hover {
   body .user-dashboard .devices-section .section-title { gap: 10px; margin-bottom: 16px; font-size: 20px; }
   body .user-dashboard .info-section { grid-template-columns: minmax(0, 1fr); gap: 12px; }
 }
+
+/* Keep the three client information cards and their actions on one baseline. */
+body .user-dashboard .info-section {
+  align-items: stretch;
+  grid-auto-rows: 1fr;
+}
+
+body .user-dashboard .info-section .info-card {
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 380px;
+  padding: 22px;
+  gap: 15px;
+}
+
+body .user-dashboard .info-section .info-icon {
+  flex-basis: 42px;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #e1eaf2;
+  border-radius: 12px;
+}
+
+body .user-dashboard .info-section .info-content {
+  display: flex;
+  align-self: stretch;
+  flex-direction: column;
+}
+
+body .user-dashboard .info-section .info-content h3 {
+  display: flex;
+  align-items: flex-start;
+  min-height: 40px;
+  margin: 1px 0 9px;
+}
+
+body .user-dashboard .info-section .contact-btn {
+  align-self: flex-start;
+  flex: 0 0 auto;
+  min-height: 44px;
+  margin: auto 0 0 !important;
+  padding: 0 16px;
+}
+
+@media (max-width: 620px) {
+  body .user-dashboard .info-section { grid-auto-rows: auto; }
+  body .user-dashboard .info-section .info-card { height: auto; min-height: 0; }
+  body .user-dashboard .info-section .info-content h3 { min-height: 0; }
+  body .user-dashboard .info-section .contact-btn { margin-top: 12px !important; }
+}
