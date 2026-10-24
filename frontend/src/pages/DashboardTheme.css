@@ -378,3 +378,229 @@ body .dashboard-responsable .error-message {
   body .user-dashboard .depot-section,
   body .user-dashboard .devices-section { padding: 14px; }
 }
+
+/* Wider gutters and a calmer content rhythm on large workspaces. */
+body .dashboard-admin,
+body .dashboard-rsc,
+body .dashboard-technicien,
+body .dashboard-responsable,
+body .user-dashboard {
+  padding: clamp(22px, 3.4vw, 42px) clamp(20px, 5.2vw, 86px) 54px;
+  background: radial-gradient(ellipse at 50% 0%, #ffffff 0%, #f4f7fb 48%, #edf2f7 100%) !important;
+}
+
+body .dashboard-admin .dashboard-header,
+body .dashboard-rsc .dashboard-header,
+body .dashboard-technicien .dashboard-header,
+body .dashboard-responsable .dashboard-header,
+body .user-dashboard .dashboard-header {
+  margin-bottom: 24px;
+  padding: 18px 24px;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(23, 38, 62, .075);
+}
+
+body .dashboard-admin .system-stat,
+body .dashboard-rsc .stat-card,
+body .dashboard-technicien .stat-card,
+body .dashboard-responsable .stat-card {
+  min-height: 102px;
+  padding: 20px;
+  border-radius: 16px !important;
+}
+
+body .dashboard-admin .system-stat:nth-child(2) .stat-icon,
+body .dashboard-rsc .stat-card:nth-child(2) .stat-icon,
+body .dashboard-technicien .stat-card:nth-child(2) .stat-icon,
+body .dashboard-responsable .stat-card:nth-child(2) .stat-icon {
+  color: #5573c8;
+  background: #edf1ff;
+}
+
+body .dashboard-admin .system-stat:nth-child(3) .stat-icon,
+body .dashboard-rsc .stat-card:nth-child(3) .stat-icon,
+body .dashboard-technicien .stat-card:nth-child(3) .stat-icon,
+body .dashboard-responsable .stat-card:nth-child(3) .stat-icon {
+  color: #c17a34;
+  background: #fff4e7;
+}
+
+body .dashboard-admin .system-stat:nth-child(4) .stat-icon,
+body .dashboard-rsc .stat-card:nth-child(4) .stat-icon,
+body .dashboard-technicien .stat-card:nth-child(4) .stat-icon,
+body .dashboard-responsable .stat-card:nth-child(4) .stat-icon {
+  color: #8861be;
+  background: #f4edfc;
+}
+
+body .dashboard-admin .users-list,
+body .dashboard-admin .devices-section,
+body .dashboard-rsc .clients-grid,
+body .dashboard-rsc .appareils-grid,
+body .dashboard-rsc .reparations-grid,
+body .dashboard-rsc .labels-grid,
+body .dashboard-technicien .reparations-grid,
+body .dashboard-responsable .factures-grid,
+body .dashboard-responsable .rapports-grid,
+body .user-dashboard .devices-grid,
+body .user-dashboard .info-section {
+  gap: 16px;
+}
+
+body .dashboard-admin .user-card,
+body .dashboard-admin .finance-card,
+body .dashboard-admin .monitoring-card,
+body .dashboard-admin .role-card,
+body .dashboard-rsc .client-card,
+body .dashboard-rsc .reparation-card,
+body .dashboard-rsc .label-card,
+body .dashboard-technicien .reparation-card,
+body .dashboard-technicien .fiche-container,
+body .dashboard-responsable .facture-card,
+body .dashboard-responsable .rapport-card,
+body .dashboard-responsable .supervision-header,
+body .user-dashboard .device-card,
+body .user-dashboard .info-card {
+  overflow: hidden;
+  border: 1px solid var(--dash-border) !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+  box-shadow: 0 7px 20px rgba(23, 38, 62, .055) !important;
+}
+
+body .dashboard-admin .user-card:hover,
+body .dashboard-admin .finance-card:hover,
+body .dashboard-rsc .client-card:hover,
+body .dashboard-rsc .reparation-card:hover,
+body .dashboard-technicien .reparation-card:hover,
+body .dashboard-responsable .facture-card:hover,
+body .dashboard-responsable .rapport-card:hover,
+body .user-dashboard .device-card:hover,
+body .user-dashboard .info-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(23, 38, 62, .09) !important;
+}
+
+body .dashboard-admin .tab-content,
+body .dashboard-rsc .tab-content,
+body .dashboard-technicien .tab-content,
+body .dashboard-responsable .tab-content,
+body .user-dashboard .depot-section,
+body .user-dashboard .devices-section {
+  margin-bottom: 18px;
+  padding: clamp(20px, 2.6vw, 32px);
+  border-radius: 18px !important;
+  box-shadow: 0 8px 24px rgba(23, 38, 62, .05) !important;
+}
+
+body .dashboard-admin .search-input,
+body .dashboard-rsc .search-input,
+body .dashboard-technicien .search-input,
+body .dashboard-responsable .search-input {
+  min-height: 48px;
+  padding: 0 17px;
+  border-radius: 12px !important;
+  background: #fff !important;
+}
+
+body .dashboard-admin .users-table-container,
+body .dashboard-admin .devices-table-container,
+body .dashboard-technicien .devices-table-container,
+body .dashboard-responsable .devices-table-container,
+body .dashboard-responsable .clients-table-container {
+  overflow-x: auto;
+  border: 1px solid var(--dash-border);
+  border-radius: 13px;
+  background: #fff;
+}
+
+body .dashboard-admin .users-table th,
+body .dashboard-admin .devices-table th,
+body .dashboard-rsc th,
+body .dashboard-technicien th,
+body .dashboard-responsable th {
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--dash-border) !important;
+}
+
+body .dashboard-admin .users-table td,
+body .dashboard-admin .devices-table td,
+body .dashboard-rsc td,
+body .dashboard-technicien td,
+body .dashboard-responsable td {
+  padding: 13px 14px;
+}
+
+body .dashboard-admin .form-group,
+body .dashboard-rsc .form-group,
+body .dashboard-technicien .form-group,
+body .dashboard-responsable .form-group,
+body .user-dashboard .form-group {
+  min-width: 0;
+}
+
+body .dashboard-admin .form-group input,
+body .dashboard-admin .form-group select,
+body .dashboard-rsc .form-group input,
+body .dashboard-rsc .form-group select,
+body .dashboard-technicien .form-group input,
+body .dashboard-technicien .form-group select,
+body .dashboard-responsable .form-group input,
+body .dashboard-responsable .form-group select,
+body .user-dashboard .form-group input,
+body .user-dashboard .form-group select,
+body .user-dashboard .form-group textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 13px;
+}
+
+body .user-dashboard .depot-section,
+body .user-dashboard .devices-section { margin-bottom: 18px; }
+body .user-dashboard .device-card { transition: transform .18s ease, box-shadow .18s ease; }
+body .dashboard-admin .no-data,
+body .dashboard-rsc .no-data,
+body .dashboard-rsc .no-labels,
+body .dashboard-technicien .no-devices,
+body .dashboard-technicien .no-pieces,
+body .dashboard-responsable .paiement-none,
+body .user-dashboard .no-devices {
+  border: 1px dashed #d8e3eb;
+  border-radius: 14px;
+  color: var(--dash-muted);
+  background: #f8fafc;
+}
+
+@media (max-width: 1000px) {
+  body .dashboard-admin,
+  body .dashboard-rsc,
+  body .dashboard-technicien,
+  body .dashboard-responsable,
+  body .user-dashboard { padding-right: clamp(18px, 4vw, 40px); padding-left: clamp(18px, 4vw, 40px); }
+}
+
+@media (max-width: 560px) {
+  body .dashboard-admin,
+  body .dashboard-rsc,
+  body .dashboard-technicien,
+  body .dashboard-responsable,
+  body .user-dashboard { padding: 12px 10px 28px; }
+
+  body .dashboard-admin .dashboard-header,
+  body .dashboard-rsc .dashboard-header,
+  body .dashboard-technicien .dashboard-header,
+  body .dashboard-responsable .dashboard-header,
+  body .user-dashboard .dashboard-header { margin-bottom: 14px; padding: 13px; }
+
+  body .dashboard-admin .system-stat,
+  body .dashboard-rsc .stat-card,
+  body .dashboard-technicien .stat-card,
+  body .dashboard-responsable .stat-card { min-height: 88px; padding: 11px; }
+
+  body .dashboard-admin .tab-content,
+  body .dashboard-rsc .tab-content,
+  body .dashboard-technicien .tab-content,
+  body .dashboard-responsable .tab-content,
+  body .user-dashboard .depot-section,
+  body .user-dashboard .devices-section { padding: 15px 13px; }
+}

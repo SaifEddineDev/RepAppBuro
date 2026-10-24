@@ -14,10 +14,10 @@
   box-shadow: 0 8px 24px rgba(23, 38, 62, .07);
 }
 
-.dashboard-header-admin { --dashboard-accent: #d94f62; }
-.dashboard-header-rsc { --dashboard-accent: #617bd4; }
-.dashboard-header-technicien { --dashboard-accent: #e69a45; }
-.dashboard-header-responsable { --dashboard-accent: #27ad91; }
+.dashboard-header-admin,
+.dashboard-header-rsc,
+.dashboard-header-technicien,
+.dashboard-header-responsable,
 .dashboard-header-user { --dashboard-accent: #2bbca4; }
 
 .dashboard-header-lockup {
