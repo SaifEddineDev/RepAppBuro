@@ -22,11 +22,11 @@ body .user-dashboard {
 
 body .user-dashboard::before { display: none; }
 
-body .dashboard-admin > :not(.dashboard-header),
-body .dashboard-rsc > :not(.dashboard-header),
-body .dashboard-technicien > :not(.dashboard-header),
-body .dashboard-responsable > :not(.dashboard-header),
-body .user-dashboard > :not(.dashboard-header) {
+body .dashboard-admin > :not(.dashboard-header):not(.workspace-footer),
+body .dashboard-rsc > :not(.dashboard-header):not(.workspace-footer),
+body .dashboard-technicien > :not(.dashboard-header):not(.workspace-footer),
+body .dashboard-responsable > :not(.dashboard-header):not(.workspace-footer),
+body .user-dashboard > :not(.dashboard-header):not(.workspace-footer) {
   width: min(100%, 1480px);
   margin-right: auto;
   margin-left: auto;
@@ -377,6 +377,338 @@ body .dashboard-responsable .error-message {
   body .dashboard-responsable .tab-content,
   body .user-dashboard .depot-section,
   body .user-dashboard .devices-section { padding: 14px; }
+}
+
+/* Login-page spacing, typography and form controls applied consistently. */
+body .dashboard-admin,
+body .dashboard-rsc,
+body .dashboard-technicien,
+body .dashboard-responsable,
+body .user-dashboard {
+  padding: 36px clamp(28px, 7.2vw, 132px) 0 !important;
+  background: #f3f6fa !important;
+}
+
+body .dashboard-admin > :not(.dashboard-header):not(.workspace-footer),
+body .dashboard-rsc > :not(.dashboard-header):not(.workspace-footer),
+body .dashboard-technicien > :not(.dashboard-header):not(.workspace-footer),
+body .dashboard-responsable > :not(.dashboard-header):not(.workspace-footer),
+body .user-dashboard > :not(.dashboard-header):not(.workspace-footer),
+body .dashboard-admin .dashboard-header,
+body .dashboard-rsc .dashboard-header,
+body .dashboard-technicien .dashboard-header,
+body .dashboard-responsable .dashboard-header,
+body .user-dashboard .dashboard-header,
+body .dashboard-admin .admin-content,
+body .dashboard-rsc .rsc-content,
+body .dashboard-technicien .technicien-content,
+body .dashboard-responsable .responsable-content,
+body .user-dashboard .dashboard-content {
+  width: min(100%, 1360px) !important;
+}
+
+body .dashboard-admin .dashboard-header,
+body .dashboard-rsc .dashboard-header,
+body .dashboard-technicien .dashboard-header,
+body .dashboard-responsable .dashboard-header,
+body .user-dashboard .dashboard-header {
+  margin-bottom: 28px;
+  padding: 20px 26px;
+  border: 1px solid #dce5ee;
+  border-top: 3px solid #4bd9b9;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(23, 38, 62, .055);
+}
+
+body .dashboard-admin .dashboard-header-heading h1,
+body .dashboard-rsc .dashboard-header-heading h1,
+body .dashboard-technicien .dashboard-header-heading h1,
+body .dashboard-responsable .dashboard-header-heading h1,
+body .user-dashboard .dashboard-header-heading h1 {
+  font-size: clamp(22px, 2.2vw, 30px);
+  letter-spacing: -1px;
+}
+
+body .dashboard-admin .dashboard-header-heading p,
+body .dashboard-rsc .dashboard-header-heading p,
+body .dashboard-technicien .dashboard-header-heading p,
+body .dashboard-responsable .dashboard-header-heading p,
+body .user-dashboard .dashboard-header-heading p { font-size: 12px; }
+
+body .dashboard-admin .tab-title,
+body .dashboard-rsc .tab-title,
+body .dashboard-technicien .tab-title,
+body .dashboard-responsable .tab-title,
+body .user-dashboard .section-title {
+  margin: 0 0 20px;
+  color: #1b2940 !important;
+  font-size: clamp(21px, 2.3vw, 28px);
+  line-height: 1.2;
+  letter-spacing: -.8px;
+}
+
+body .dashboard-admin .tab-content h3,
+body .dashboard-rsc .tab-content h3,
+body .dashboard-technicien .tab-content h3,
+body .dashboard-responsable .tab-content h3,
+body .user-dashboard .depot-section h3,
+body .user-dashboard .devices-section h3 {
+  color: #26364b;
+  font-size: 15px;
+  font-weight: 720;
+  letter-spacing: -.2px;
+}
+
+body .dashboard-admin .form-group,
+body .dashboard-rsc .form-group,
+body .dashboard-technicien .form-group,
+body .dashboard-responsable .form-group,
+body .user-dashboard .form-group { display: grid; gap: 8px; }
+
+body .dashboard-admin .form-group label,
+body .dashboard-rsc .form-group label,
+body .dashboard-technicien .form-group label,
+body .dashboard-responsable .form-group label,
+body .user-dashboard .form-group label {
+  margin: 0;
+  color: #39475b;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+body .dashboard-admin input,
+body .dashboard-admin select,
+body .dashboard-admin textarea,
+body .dashboard-rsc input,
+body .dashboard-rsc select,
+body .dashboard-rsc textarea,
+body .dashboard-technicien input,
+body .dashboard-technicien select,
+body .dashboard-technicien textarea,
+body .dashboard-responsable input,
+body .dashboard-responsable select,
+body .dashboard-responsable textarea,
+body .user-dashboard input,
+body .user-dashboard select,
+body .user-dashboard textarea {
+  box-sizing: border-box;
+  min-height: 52px;
+  padding: 0 14px;
+  border: 1px solid #dce3ec !important;
+  border-radius: 10px !important;
+  color: #25344a;
+  background: #fbfcfe !important;
+  font: inherit;
+  font-size: 12px;
+  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+body .dashboard-admin textarea,
+body .dashboard-rsc textarea,
+body .dashboard-technicien textarea,
+body .dashboard-responsable textarea,
+body .user-dashboard textarea { min-height: 110px; padding: 13px 14px; }
+
+body .dashboard-admin input::placeholder,
+body .dashboard-rsc input::placeholder,
+body .dashboard-technicien input::placeholder,
+body .dashboard-responsable input::placeholder,
+body .user-dashboard input::placeholder,
+body .dashboard-admin textarea::placeholder,
+body .dashboard-rsc textarea::placeholder,
+body .dashboard-technicien textarea::placeholder,
+body .dashboard-responsable textarea::placeholder,
+body .user-dashboard textarea::placeholder { color: #a5afbc; }
+
+body .dashboard-admin input:focus,
+body .dashboard-admin select:focus,
+body .dashboard-admin textarea:focus,
+body .dashboard-rsc input:focus,
+body .dashboard-rsc select:focus,
+body .dashboard-rsc textarea:focus,
+body .dashboard-technicien input:focus,
+body .dashboard-technicien select:focus,
+body .dashboard-technicien textarea:focus,
+body .dashboard-responsable input:focus,
+body .dashboard-responsable select:focus,
+body .dashboard-responsable textarea:focus,
+body .user-dashboard input:focus,
+body .user-dashboard select:focus,
+body .user-dashboard textarea:focus {
+  border-color: #3b9c96 !important;
+  outline: 0;
+  background: #fff !important;
+  box-shadow: 0 0 0 3px rgba(59, 156, 150, .12) !important;
+}
+
+body .dashboard-admin .submit-btn,
+body .dashboard-rsc .submit-btn,
+body .dashboard-technicien .submit-btn,
+body .dashboard-responsable .submit-btn,
+body .user-dashboard .submit-btn {
+  min-height: 52px;
+  padding: 0 22px;
+  border-radius: 10px !important;
+  color: #102d37 !important;
+  background: linear-gradient(105deg, #53dfc0, #72e4c4) !important;
+  box-shadow: 0 7px 16px rgba(47, 193, 163, .19) !important;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+body .dashboard-admin .submit-btn:hover,
+body .dashboard-rsc .submit-btn:hover,
+body .dashboard-technicien .submit-btn:hover,
+body .dashboard-responsable .submit-btn:hover,
+body .user-dashboard .submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 23px rgba(47, 193, 163, .28) !important;
+}
+
+body .dashboard-admin .tab-content,
+body .dashboard-rsc .tab-content,
+body .dashboard-technicien .tab-content,
+body .dashboard-responsable .tab-content,
+body .user-dashboard .depot-section,
+body .user-dashboard .devices-section {
+  margin-bottom: 22px;
+  padding: clamp(22px, 3vw, 38px);
+  border: 1px solid #e1e8ef !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+  box-shadow: 0 7px 22px rgba(23, 38, 62, .045) !important;
+}
+
+body .dashboard-admin .system-stats,
+body .dashboard-rsc .stats-grid,
+body .dashboard-technicien .stats-grid,
+body .dashboard-responsable .stats-grid { gap: 16px; margin-bottom: 20px; }
+
+body .dashboard-admin .admin-tabs,
+body .dashboard-rsc .rsc-tabs,
+body .dashboard-technicien .technicien-tabs,
+body .dashboard-responsable .responsable-tabs {
+  gap: 8px;
+  margin-bottom: 18px;
+  padding: 8px;
+  border-radius: 12px;
+}
+
+body .dashboard-admin .admin-tabs .tab-btn,
+body .dashboard-rsc .rsc-tabs .tab-btn,
+body .dashboard-technicien .technicien-tabs .tab-btn,
+body .dashboard-responsable .responsable-tabs .tab-btn {
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 9px !important;
+  font-size: 12px;
+}
+
+body .dashboard-admin .search-section,
+body .dashboard-rsc .search-section,
+body .dashboard-technicien .search-section,
+body .dashboard-responsable .search-section { margin-bottom: 18px; }
+
+body .dashboard-admin .search-input,
+body .dashboard-rsc .search-input,
+body .dashboard-technicien .search-input,
+body .dashboard-responsable .search-input { min-height: 52px; border-radius: 10px !important; }
+
+body .dashboard-admin .system-stat,
+body .dashboard-rsc .stat-card,
+body .dashboard-technicien .stat-card,
+body .dashboard-responsable .stat-card {
+  min-height: 112px;
+  padding: 21px;
+  border: 1px solid #e1e8ef !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  box-shadow: 0 5px 16px rgba(23, 38, 62, .045) !important;
+}
+
+body .dashboard-admin .user-card,
+body .dashboard-admin .finance-card,
+body .dashboard-admin .monitoring-card,
+body .dashboard-admin .role-card,
+body .dashboard-rsc .client-card,
+body .dashboard-rsc .reparation-card,
+body .dashboard-rsc .label-card,
+body .dashboard-technicien .reparation-card,
+body .dashboard-technicien .fiche-container,
+body .dashboard-responsable .facture-card,
+body .dashboard-responsable .rapport-card,
+body .user-dashboard .device-card,
+body .user-dashboard .info-card {
+  border: 1px solid #e1e8ef !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  box-shadow: 0 5px 16px rgba(23, 38, 62, .045) !important;
+}
+
+body .dashboard-admin .users-table-container,
+body .dashboard-admin .devices-table-container,
+body .dashboard-technicien .devices-table-container,
+body .dashboard-responsable .devices-table-container,
+body .dashboard-responsable .clients-table-container {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid #e1e8ef;
+  border-radius: 12px;
+  background: #fff;
+}
+
+body .dashboard-admin .users-table th,
+body .dashboard-admin .devices-table th,
+body .dashboard-rsc th,
+body .dashboard-technicien th,
+body .dashboard-responsable th { padding: 14px 16px; color: #53647b; background: #f7f9fc; }
+
+body .dashboard-admin .users-table td,
+body .dashboard-admin .devices-table td,
+body .dashboard-rsc td,
+body .dashboard-technicien td,
+body .dashboard-responsable td { padding: 14px 16px; }
+
+body .dashboard-admin .workspace-footer,
+body .dashboard-rsc .workspace-footer,
+body .dashboard-technicien .workspace-footer,
+body .dashboard-responsable .workspace-footer,
+body .user-dashboard .workspace-footer { margin-top: 52px; }
+
+@media (max-width: 1000px) {
+  body .dashboard-admin,
+  body .dashboard-rsc,
+  body .dashboard-technicien,
+  body .dashboard-responsable,
+  body .user-dashboard { padding-right: clamp(24px, 5vw, 56px) !important; padding-left: clamp(24px, 5vw, 56px) !important; }
+}
+
+@media (max-width: 620px) {
+  body .dashboard-admin,
+  body .dashboard-rsc,
+  body .dashboard-technicien,
+  body .dashboard-responsable,
+  body .user-dashboard { padding: 18px 12px 0 !important; }
+
+  body .dashboard-admin .dashboard-header,
+  body .dashboard-rsc .dashboard-header,
+  body .dashboard-technicien .dashboard-header,
+  body .dashboard-responsable .dashboard-header,
+  body .user-dashboard .dashboard-header { margin-bottom: 18px; padding: 16px; }
+
+  body .dashboard-admin .tab-title,
+  body .dashboard-rsc .tab-title,
+  body .dashboard-technicien .tab-title,
+  body .dashboard-responsable .tab-title,
+  body .user-dashboard .section-title { margin-bottom: 16px; font-size: 21px; }
+
+  body .dashboard-admin .tab-content,
+  body .dashboard-rsc .tab-content,
+  body .dashboard-technicien .tab-content,
+  body .dashboard-responsable .tab-content,
+  body .user-dashboard .depot-section,
+  body .user-dashboard .devices-section { padding: 18px 14px; }
 }
 
 /* Wider gutters and a calmer content rhythm on large workspaces. */

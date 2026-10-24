@@ -1,6 +1,7 @@
 // UserDashboard.jsx
 import React, { useState, useEffect } from 'react';
 import DashboardHeader from '../components/DashboardHeader';
+import DashboardFooter from '../components/DashboardFooter';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -598,24 +599,7 @@ const UserDashboard = () => {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="user-footer">
-        <div className="footer-content">
-          <p>© 2024 RepAppBuro - Réparation & Maintenance Bureautique</p>
-          <div className="footer-links">
-            <a href="/maintenance">Contrats de maintenance</a>
-            <a href="/pieces">Pièces détachées</a>
-            <a href="/urgence">Service d'urgence</a>
-            <a href="/contact">Devis gratuit</a>
-          </div>
-          <div className="sync-status">
-            {loading ? '🔄 Synchronisation...' : '✅ Synchronisé'}
-            <button onClick={fetchDevices} className="refresh-btn">
-              🔄 Rafraîchir
-            </button>
-          </div>
-        </div>
-      </footer>
+      <DashboardFooter />
     </div>
   );
 };

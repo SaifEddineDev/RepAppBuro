@@ -1,0 +1,30 @@
+.workspace-footer {
+  box-sizing: border-box;
+  width: 100vw;
+  margin: 46px 0 0 calc(50% - 50vw);
+  padding: 22px clamp(20px, 7vw, 110px);
+  color: #d8e3ee;
+  background: #17263e;
+}
+
+.workspace-footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: min(100%, 1480px);
+  margin: 0 auto;
+}
+
+.workspace-footer-brand { display: flex; align-items: center; gap: 9px; }
+.workspace-footer-brand .brand-mark { width: 34px; height: 34px; }
+.workspace-footer-brand .brand-copy { display: flex; flex-direction: column; gap: 2px; }
+.workspace-footer-brand .brand-name { color: #fff; font-size: 15px; font-weight: 750; }
+.workspace-footer-brand .brand-name span { color: #58ddbd; }
+.workspace-footer-brand .brand-tagline { color: #aab8c8; font-size: 9px; }
+.workspace-footer-copy { color: #aab8c8; font-size: 10px; }
+
+@media (max-width: 560px) {
+  .workspace-footer { margin-top: 30px; padding: 18px 16px; }
+  .workspace-footer-inner { align-items: flex-start; flex-direction: column; gap: 12px; }
+}

@@ -1,7 +1,7 @@
 .dashboard-header {
   --dashboard-accent: #2bbca4;
   display: grid;
-  grid-template-columns: minmax(190px, 245px) minmax(220px, 1fr) auto;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: center;
   gap: 24px;
   min-width: 0;
@@ -36,7 +36,7 @@
 .dashboard-header-lockup .brand-name { color: #17263e; font-size: 18px; }
 .dashboard-header-lockup .brand-tagline { color: #8290a2; font-size: 9px; }
 
-.dashboard-header-heading { min-width: 0; }
+.dashboard-header-heading { min-width: 0; text-align: center; }
 .dashboard-header-role {
   display: inline-flex;
   align-items: center;
@@ -148,19 +148,21 @@
 .dashboard-header-refresh:focus-visible,
 .dashboard-header-logout:focus-visible { outline: 3px solid rgba(43, 188, 164, .25); outline-offset: 2px; }
 
-@media (max-width: 1000px) {
-  .dashboard-header { grid-template-columns: minmax(175px, 220px) minmax(180px, 1fr); gap: 15px; }
-  .dashboard-header-actions { grid-column: 1 / -1; justify-content: flex-end; }
+@media (max-width: 1100px) {
+  .dashboard-header { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+  .dashboard-header-lockup { grid-column: 1; grid-row: 1; }
+  .dashboard-header-actions { grid-column: 2; grid-row: 1; justify-content: flex-end; }
+  .dashboard-header-heading { grid-column: 1 / -1; grid-row: 2; }
 }
 
 @media (max-width: 620px) {
-  .dashboard-header { grid-template-columns: minmax(0, 1fr) auto; gap: 12px; margin-bottom: 16px; padding: 13px; }
-  .dashboard-header-lockup { grid-column: 1 / 2; }
+  .dashboard-header { grid-template-columns: 1fr; gap: 12px; margin-bottom: 16px; padding: 16px; }
+  .dashboard-header-lockup { grid-column: 1; grid-row: 1; }
   .dashboard-header-lockup .brand-mark { width: 37px; height: 37px; }
   .dashboard-header-lockup .brand-name { font-size: 16px; }
   .dashboard-header-lockup .brand-tagline { font-size: 8px; }
-  .dashboard-header-heading { grid-column: 1 / -1; grid-row: 2; }
-  .dashboard-header-actions { grid-column: 1 / -1; justify-content: space-between; flex-wrap: wrap; gap: 7px; }
+  .dashboard-header-heading { grid-column: 1; grid-row: 2; }
+  .dashboard-header-actions { grid-column: 1; grid-row: 3; justify-content: space-between; flex-wrap: wrap; gap: 7px; }
   .dashboard-header-profile { flex: 1; }
   .dashboard-header-identity strong { max-width: 150px; }
   .dashboard-header-refresh,

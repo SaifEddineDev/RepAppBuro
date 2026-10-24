@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DashboardHeader from '../components/DashboardHeader';
+import DashboardFooter from '../components/DashboardFooter';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -739,6 +740,7 @@ const DashboardAdmin = () => {
           </div>
         )}
       </div>
+      <DashboardFooter />
     </div>
   );
 };
