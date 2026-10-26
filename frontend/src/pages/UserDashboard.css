@@ -307,13 +307,6 @@
   letter-spacing: 0.5px;
 }
 
-.form-group label::before {
-  content: '✨';
-  font-size: 1.1rem;
-  color: #667eea;
-  filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.3));
-}
-
 .form-group input,
 .form-group select,
 .form-group textarea {
