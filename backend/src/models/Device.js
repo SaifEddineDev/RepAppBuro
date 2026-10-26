@@ -27,6 +27,15 @@ const DeviceSchema = new mongoose.Schema({
     required: true
   },
   serialNumber: String,
+  diagnostic: { type: String, default: '', maxlength: 4000 },
+  piecesUtilisees: [{
+    nom: { type: String, required: true, maxlength: 120 },
+    quantite: { type: Number, min: 1, default: 1 },
+    prix: { type: Number, min: 0, default: 0 }
+  }],
+  tempsTravail: { type: Number, min: 0, default: 0 },
+  accessoires: { type: String, default: '', maxlength: 1000 },
+  urgence: { type: String, enum: ['standard', 'urgent', 'prioritaire', 'express'], default: 'standard' },
   status: {
     type: String,
     enum: ['nouveau', 'en_diagnostic', 'en_reparation', 'en_attente_piece', 'pret_a_recuperer', 'termine', 'recupere'],
@@ -49,6 +58,7 @@ const DeviceSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
+  assignedTo: { type: String, default: '', maxlength: 120 },
   notes: [{
     user: String,
     message: String,
@@ -57,10 +67,17 @@ const DeviceSchema = new mongoose.Schema({
       default: Date.now
     }
   }],
+  historique: [{
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    role: String,
+    action: String,
+    message: String,
+    date: { type: Date, default: Date.now }
+  }],
   createdAt: {
     type: Date,
     default: Date.now
   }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Device', DeviceSchema);

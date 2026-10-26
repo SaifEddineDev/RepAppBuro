@@ -2,10 +2,7 @@ import React from 'react';
 import BrandLockup from './BrandLockup';
 import './DashboardHeader.css';
 
-const DashboardHeader = ({ role, roleLabel, title, subtitle, user, onLogout, onRefresh }) => {
-  const initials = `${user?.prenom?.[0] || ''}${user?.nom?.[0] || user?.username?.[0] || ''}`.toUpperCase();
-  const displayName = [user?.prenom, user?.nom].filter(Boolean).join(' ') || user?.username || 'Utilisateur';
-
+const DashboardHeader = ({ role, roleLabel, title, subtitle, onLogout, onRefresh }) => {
   return (
     <header className={`dashboard-header dashboard-header-${role.toLowerCase()}`}>
       <BrandLockup className="dashboard-header-lockup" />
@@ -23,13 +20,6 @@ const DashboardHeader = ({ role, roleLabel, title, subtitle, user, onLogout, onR
             <span>Rafraîchir</span>
           </button>
         )}
-        <div className="dashboard-header-profile">
-          <span className="dashboard-header-avatar" aria-hidden="true">{initials || 'U'}</span>
-          <span className="dashboard-header-identity">
-            <strong>{displayName}</strong>
-            <span>{roleLabel}</span>
-          </span>
-        </div>
         <button className="dashboard-header-logout" type="button" onClick={onLogout}>
           Déconnexion
         </button>

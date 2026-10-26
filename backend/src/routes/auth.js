@@ -273,10 +273,10 @@ router.post('/verify-token', async (req, res) => {
     // Récupérer l'utilisateur depuis la base de données
     const user = await User.findById(decoded.userId).select('-password');
     
-    if (!user) {
+    if (!user || !user.actif) {
       return res.status(404).json({ 
         success: false,
-        message: 'Utilisateur non trouvé' 
+        message: 'Compte introuvable ou désactivé'
       });
     }
 
@@ -330,10 +330,10 @@ router.get('/verify', async (req, res) => {
     // Récupérer l'utilisateur depuis la base de données
     const user = await User.findById(decoded.userId).select('-password');
     
-    if (!user) {
+    if (!user || !user.actif) {
       return res.status(404).json({ 
         success: false,
-        message: 'Utilisateur non trouvé' 
+        message: 'Compte introuvable ou désactivé'
       });
     }
 

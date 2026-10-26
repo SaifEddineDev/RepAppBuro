@@ -1,19 +1,39 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { apiRequest } from '../services/api';
 import './ReparationManagement.css';
 
 const ReparationManagement = () => {
-  const [reparations] = useState([]);
-  const [statusFilter, setStatusFilter] = useState('tous');
-  const navigate = useNavigate();
-  
-  const safeNavigate = (path) => {
-    if (navigate && typeof navigate === 'function') {
-      navigate(path);
-    } else {
-      window.location.href = path;
-    }
+  const [reparations, setReparations] = useState([]);
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const loadRepairs = useCallback(async () => {
+    setLoading(true);
+    try {
+      const rows = await apiRequest('/devices');
+      setReparations(Array.isArray(rows) ? rows : []);
+      setError('');
+    } catch (loadError) {
+      setError(loadError.message || 'Impossible de charger les réparations.');
+    } finally { setLoading(false); }
+  }, []);
+  useEffect(() => { loadRepairs(); }, [loadRepairs]);
+  const statusLabels = {
+    nouveau: 'Nouveau', en_diagnostic: 'En diagnostic', en_reparation: 'En réparation',
+    en_attente_piece: 'En attente de pièce', termine: 'Terminé · à valider',
+    pret_a_recuperer: 'Prêt à récupérer', recupere: 'Restitué'
   };
+  const visibleRepairs = useMemo(() => {
+    const needle = searchTerm.trim().toLocaleLowerCase('fr');
+    return reparations.filter((item) => {
+      const client = item.userId && typeof item.userId === 'object'
+        ? [item.userId.prenom, item.userId.nom, item.userId.username].filter(Boolean).join(' ') : '';
+      const matchesSearch = !needle || [item._id, item.name, item.type, item.marque, item.modele, client]
+        .some((value) => String(value || '').toLocaleLowerCase('fr').includes(needle));
+      return matchesSearch && (statusFilter === 'all' || item.status === statusFilter);
+    });
+  }, [reparations, searchTerm, statusFilter]);
 
   return (
     <div className="reparations-management-container">
@@ -21,57 +41,23 @@ const ReparationManagement = () => {
         <h1 className="reparations-title">Gestion des Réparations</h1>
       </div>
       
-      <div className="development-banner">
-        Fonctionnalité en développement - Bientôt disponible
-      </div>
-      
-      <div className="quick-actions">
-        <button className="action-btn primary-action" onClick={() => safeNavigate('/reparations/nouveau')}>
-          <span>+</span> Nouvelle Réparation
-        </button>
-        <button className="action-btn secondary-action" onClick={() => safeNavigate('/planning')}>
-          📋 Voir le planning
-        </button>
-        <button className="action-btn secondary-action" onClick={() => safeNavigate('/statistiques')}>
-          📊 Statistiques
-        </button>
-      </div>
+      {error && <div className="development-banner" role="alert">{error}</div>}
       
       {/* Filtres */}
       <div className="filters-container">
-        <div className="filters-title">Filtrer les réparations</div>
         <div className="filters-grid">
           <div className="filter-group">
-            <label className="filter-label">Statut</label>
-            <select 
-              className="filter-select"
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-            >
-              <option value="tous">Tous les statuts</option>
-              <option value="en-attente">En attente</option>
-              <option value="en-cours">En cours</option>
-              <option value="termine">Terminé</option>
-              <option value="annule">Annulé</option>
-            </select>
+            <label className="filter-label" htmlFor="repairs-search">Recherche</label>
+            <input id="repairs-search" className="filter-select" value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="Dossier, client, appareil…" />
           </div>
           <div className="filter-group">
-            <label className="filter-label">Période</label>
-            <select className="filter-select">
-              <option value="aujourdhui">Aujourd'hui</option>
-              <option value="semaine">Cette semaine</option>
-              <option value="mois">Ce mois</option>
-              <option value="tous">Toutes</option>
+            <label className="filter-label" htmlFor="repairs-status">Statut</label>
+            <select id="repairs-status" className="filter-select" value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)}>
+              <option value="all">Tous les statuts</option>
+              {Object.entries(statusLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
             </select>
           </div>
-          <div className="filter-group">
-            <label className="filter-label">Technicien</label>
-            <select className="filter-select">
-              <option value="tous">Tous les techniciens</option>
-              <option value="1">Technicien 1</option>
-              <option value="2">Technicien 2</option>
-            </select>
-          </div>
+          <button className="action-btn secondary-action" type="button" onClick={loadRepairs} disabled={loading}>{loading ? 'Actualisation…' : 'Actualiser'}</button>
         </div>
       </div>
       
@@ -85,28 +71,23 @@ const ReparationManagement = () => {
               <th>Appareil</th>
               <th>Statut</th>
               <th>Date dépôt</th>
-              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr className="empty-table-row">
-              <td colSpan="6">Aucune réparation enregistrée</td>
-            </tr>
-            {/* Exemple de ligne avec statut (pour démonstration) */}
-            {/* <tr>
-              <td>REP-2024-001</td>
-              <td>John Doe</td>
-              <td>iPhone 13 Pro</td>
-              <td><span className="status-badge status-en-cours">En cours</span></td>
-              <td>15/12/2024</td>
-              <td>
-                <div className="table-actions">
-                  <div className="action-icon">👁️</div>
-                  <div className="action-icon">✏️</div>
-                  <div className="action-icon">📋</div>
-                </div>
-              </td>
-            </tr> */}
+            {loading ? <tr className="empty-table-row"><td colSpan="5">Chargement des réparations…</td></tr> : visibleRepairs.length === 0 ? (
+              <tr className="empty-table-row"><td colSpan="5">{reparations.length ? 'Aucun résultat pour ces filtres.' : 'Aucune réparation enregistrée.'}</td></tr>
+            ) : visibleRepairs.map((item) => {
+              const client = item.userId && typeof item.userId === 'object'
+                ? [item.userId.prenom, item.userId.nom].filter(Boolean).join(' ') || item.userId.username
+                : 'Client';
+              return <tr key={item._id}>
+                <td><strong>{String(item._id).slice(-8).toUpperCase()}</strong></td>
+                <td>{client}</td>
+                <td>{[item.name, item.marque, item.modele].filter(Boolean).join(' · ')}</td>
+                <td>{statusLabels[item.status] || item.status}</td>
+                <td>{item.dateDepot ? new Date(item.dateDepot).toLocaleDateString('fr-FR') : '—'}</td>
+              </tr>;
+            })}
           </tbody>
         </table>
       </div>

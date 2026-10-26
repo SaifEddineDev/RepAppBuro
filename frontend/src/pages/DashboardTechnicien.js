@@ -155,24 +155,14 @@ const TechnicienDashboard = () => {
   const sauvegarderFiche = async () => {
     if (!selectedDevice) return;
 
-    const totalPieces = calculerTotalPieces();
     const totalTemps = calculerTempsTotal();
     
-    // Calculer le nouveau montant de la facture
-    const nouvelleFacture = {
-      ...selectedDevice.facture,
-      montant: totalPieces + (totalTemps * 0.5), // Exemple: 0.5€ par minute de main d'œuvre
-      pieces: piecesUtilisees,
-      mainOeuvre: totalTemps * 0.5
-    };
-
     const updatedDevice = {
       ...selectedDevice,
       diagnostic: diagnostic,
       piecesUtilisees: piecesUtilisees,
       tempsTravail: totalTemps,
       status: statut,
-      facture: nouvelleFacture,
       notes: [
         ...(selectedDevice.notes || []),
         {
@@ -187,7 +177,14 @@ const TechnicienDashboard = () => {
 
     try {
       // Sauvegarder via API
-      await axios.put(`${API_URL}/devices/${selectedDevice.id || selectedDevice._id}`, updatedDevice, {
+      await axios.put(`${API_URL}/devices/${selectedDevice.id || selectedDevice._id}`, {
+        technicianId: user.id,
+        diagnostic,
+        piecesUtilisees,
+        tempsTravail: totalTemps,
+        status: statut,
+        note: noteTechnicien || 'Fiche mise à jour'
+      }, {
         headers: { 
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'

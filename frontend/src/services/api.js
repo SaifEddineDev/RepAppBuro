@@ -109,6 +109,7 @@ export const authService = {
 export const userService = {
   // RÃ©cupÃ©rer tous les utilisateurs (admin seulement)
   getAllUsers: () => apiRequest('/users', 'GET'),
+  createUser: (userData) => apiRequest('/users', 'POST', userData),
   
   // RÃ©cupÃ©rer un utilisateur par ID
   getUserById: (id) => apiRequest(`/users/${id}`, 'GET'),

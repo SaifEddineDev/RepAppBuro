@@ -11,6 +11,9 @@ import Register from './pages/register';
 import './pages/DashboardTheme.css';
 
 function App() {
+  const dashboardRoles = ['USER', 'RSC', 'TECHNICIEN', 'RESPONSABLE', 'ADMIN'];
+  const clientManagementRoles = ['RSC', 'ADMIN'];
+  const inventoryRoles = ['TECHNICIEN', 'RESPONSABLE', 'ADMIN'];
   return (
     <AuthProvider>
       <HashRouter>
@@ -18,22 +21,22 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={
-            <PrivateRoute>
+            <PrivateRoute allowedRoles={dashboardRoles}>
               <Dashboard />
             </PrivateRoute>
           } />
           <Route path="/clients" element={
-            <PrivateRoute>
+            <PrivateRoute allowedRoles={clientManagementRoles}>
               <ClientManagement />
             </PrivateRoute>
           } />
           <Route path="/reparations" element={
-            <PrivateRoute>
+            <PrivateRoute allowedRoles={dashboardRoles}>
               <ReparationManagement />
             </PrivateRoute>
           } />
           <Route path="/pieces" element={
-            <PrivateRoute>
+            <PrivateRoute allowedRoles={inventoryRoles}>
               <PieceManagement />
             </PrivateRoute>
           } />

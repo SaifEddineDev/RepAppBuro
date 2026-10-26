@@ -70,6 +70,9 @@ app.use('/api/users', userRoutes);
 const deviceRoutes = require('./src/routes/devices');
 app.use('/api/devices', deviceRoutes);
 
+const pieceRoutes = require('./src/routes/pieces');
+app.use('/api/pieces', pieceRoutes);
+
 // Routes Dashboard (avec gestion d'erreur)
 try {
   const dashboardRoutes = require('./src/routes/dashboardRoutes');
@@ -112,7 +115,8 @@ app.get('/api/health', (req, res) => {
       auth: 'active',
       dashboards: 'active',
       analytics: 'active',
-      devices: 'active'
+      devices: 'active',
+      pieces: 'active'
     }
   });
 });
@@ -121,7 +125,7 @@ app.get('/api/health', (req, res) => {
 app.use('*', (req, res) => {
   res.status(404).json({ 
     error: 'Route non trouvÃ©e',
-    availableRoutes: ['/api/auth', '/api/users', '/api/devices', '/api/dashboards', '/api/analytics', '/api/health']
+    availableRoutes: ['/api/auth', '/api/users', '/api/devices', '/api/pieces', '/api/dashboards', '/api/analytics', '/api/health']
   });
 });
 

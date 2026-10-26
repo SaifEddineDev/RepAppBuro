@@ -47,6 +47,9 @@ const userSchema = new mongoose.Schema({
     default: '',
     trim: true
   },
+  adresse: { type: String, default: '', trim: true, maxlength: 240 },
+  societe: { type: String, default: '', trim: true, maxlength: 120 },
+  typeClient: { type: String, enum: ['particulier', 'entreprise'], default: 'particulier' },
   actif: {
     type: Boolean,
     default: true

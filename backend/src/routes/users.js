@@ -16,6 +16,13 @@ const requireAdmin = (req, res, next) => {
   return next();
 };
 
+const requireAdminOrRsc = (req, res, next) => {
+  if (!['ADMIN', 'RSC'].includes(req.user.role)) {
+    return res.status(403).json({ success: false, message: 'Accès réservé à l’administration et à l’accueil' });
+  }
+  return next();
+};
+
 const toPublicUser = (user) => ({
   id: String(user._id),
   username: user.username,
@@ -24,16 +31,23 @@ const toPublicUser = (user) => ({
   nom: user.nom,
   role: user.role,
   telephone: user.telephone,
+  adresse: user.adresse || '',
+  societe: user.societe || '',
+  typeClient: user.typeClient || 'particulier',
   actif: user.actif,
   createdAt: user.createdAt,
   lastLogin: user.lastLogin
 });
 
-router.use(authenticate, requireAdmin);
+router.use(authenticate);
 
 router.get('/', async (req, res) => {
   try {
-    const users = await User.find().select('-password').sort({ createdAt: -1 });
+    if (!['ADMIN', 'RSC'].includes(req.user.role)) {
+      return res.status(403).json({ success: false, message: 'Accès non autorisé' });
+    }
+    const filter = req.user.role === 'RSC' ? { role: 'USER' } : {};
+    const users = await User.find(filter).select('-password').sort({ createdAt: -1 });
     return res.json(users.map(toPublicUser));
   } catch (error) {
     console.error('Unable to list users:', error.message);
@@ -49,6 +63,12 @@ router.post('/', async (req, res) => {
     }
     if (!allowedRoles.includes(role.trim().toUpperCase())) {
       return res.status(400).json({ success: false, message: 'Rôle invalide' });
+    }
+    if (!['ADMIN', 'RSC'].includes(req.user.role)) {
+      return res.status(403).json({ success: false, message: 'Accès non autorisé' });
+    }
+    if (req.user.role === 'RSC' && role.trim().toUpperCase() !== 'USER') {
+      return res.status(403).json({ success: false, message: 'L’accueil peut uniquement créer un compte client' });
     }
     if (password.length < 6) {
       return res.status(400).json({ success: false, message: 'Le mot de passe doit contenir au moins 6 caractères' });
@@ -69,6 +89,9 @@ router.post('/', async (req, res) => {
       prenom: typeof prenom === 'string' ? prenom.trim() : '',
       nom: typeof nom === 'string' ? nom.trim() : '',
       telephone: normalizePhone(telephone),
+      adresse: typeof req.body.adresse === 'string' ? req.body.adresse.trim() : '',
+      societe: typeof req.body.societe === 'string' ? req.body.societe.trim() : '',
+      typeClient: req.body.typeClient === 'entreprise' ? 'entreprise' : 'particulier',
       actif: true
     });
     return res.status(201).json(toPublicUser(user));
@@ -85,6 +108,9 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
+  if (req.user.role !== 'ADMIN') {
+    return res.status(403).json({ success: false, message: 'Modification réservée à l’administration' });
+  }
   try {
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ success: false, message: 'Compte introuvable' });
@@ -133,6 +159,9 @@ router.put('/:id', async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
+  if (req.user.role !== 'ADMIN') {
+    return res.status(403).json({ success: false, message: 'Suppression réservée à l’administration' });
+  }
   try {
     if (String(req.user.id) === req.params.id) {
       return res.status(400).json({ success: false, message: 'Vous ne pouvez pas supprimer votre propre compte' });
