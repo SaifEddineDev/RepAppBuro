@@ -60,22 +60,10 @@ const TechnicienDashboard = () => {
       });
       setDevices(response.data);
       
-      // Fallback localStorage si API échoue
-      if (response.data.length === 0) {
-        const savedDevices = appStorage.getItem('bureau_devices');
-        if (savedDevices) {
-          const parsedDevices = JSON.parse(savedDevices);
-          setDevices(parsedDevices);
-        }
-      }
+      setDevices(Array.isArray(response.data) ? response.data : []);
     } catch (err) {
       console.error('Erreur lors du chargement des appareils:', err);
-      // Fallback: charger depuis localStorage
-      const savedDevices = appStorage.getItem('bureau_devices');
-      if (savedDevices) {
-        const parsedDevices = JSON.parse(savedDevices);
-        setDevices(parsedDevices);
-      }
+      setDevices([]);
     } finally {
       setLoading(false);
     }
@@ -112,19 +100,19 @@ const TechnicienDashboard = () => {
       });
       
       // Mettre à jour localement
-      setDevices(devices.map(d => 
-        d.id === deviceId 
+      setDevices(devices.map(d =>
+        String(d.id || d._id) === String(deviceId)
           ? { ...d, technicianId: user.id, assignedTo: `${user.prenom} ${user.nom}` }
           : d
       ));
       
       // Mettre à jour localStorage
-      const updatedDevices = devices.map(d => 
-        d.id === deviceId 
+      const updatedDevices = devices.map(d =>
+        String(d.id || d._id) === String(deviceId)
           ? { ...d, technicianId: user.id, assignedTo: `${user.prenom} ${user.nom}` }
           : d
       );
-      appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
+      if (user?.demo) appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
       
       alert('Appareil assigné avec succès !');
     } catch (err) {
@@ -200,7 +188,7 @@ const TechnicienDashboard = () => {
       const updatedDevices = devices.map(d => 
         (d.id === selectedDevice.id || d._id === selectedDevice._id) ? updatedDevice : d
       );
-      appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
+      if (user?.demo) appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
       
       setSelectedDevice(updatedDevice);
       

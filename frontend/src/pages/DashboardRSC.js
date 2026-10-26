@@ -110,20 +110,8 @@ const DashboardRSC = () => {
     } catch (err) {
       console.error('Erreur lors du chargement des données:', err);
       setError('Impossible de charger les données. Vérifiez votre connexion.');
-      
-      // Fallback localStorage pour les données de démo
-      const savedDevices = appStorage.getItem('bureau_devices');
-      const savedUsers = appStorage.getItem('bureau_users');
-      
-      if (savedDevices) {
-        setDevices(JSON.parse(savedDevices));
-      }
-      
-      if (savedUsers) {
-        const allUsers = JSON.parse(savedUsers);
-        const clientUsers = allUsers.filter(u => u.role === 'USER');
-        setClients(clientUsers);
-      }
+      setDevices([]);
+      setClients([]);
     } finally {
       setLoading(false);
     }
@@ -158,9 +146,11 @@ const DashboardRSC = () => {
       // Ajouter le client à la liste
       setClients([response.data, ...clients]);
       
-      // Mettre à jour localStorage comme backup
-      const currentUsers = JSON.parse(appStorage.getItem('bureau_users') || '[]');
-      appStorage.setItem('bureau_users', JSON.stringify([response.data, ...currentUsers]));
+      // Les comptes de démonstration restent isolés dans le navigateur.
+      if (user?.demo) {
+        const currentUsers = JSON.parse(appStorage.getItem('bureau_users') || '[]');
+        appStorage.setItem('bureau_users', JSON.stringify([response.data, ...currentUsers]));
+      }
       
       // Réinitialiser le formulaire
       setNewClient({
@@ -185,12 +175,18 @@ const DashboardRSC = () => {
       
     } catch (err) {
       console.error('Erreur création client:', err);
+      if (!user?.demo) {
+        setError(err.response?.data?.message || 'Le serveur ne peut pas enregistrer ce client. Aucune donnée n’a été sauvegardée.');
+        return;
+      }
       
       // Fallback: créer localement si l'API échoue
       const clientId = `client_${Date.now()}`;
+      const demoClientData = { ...newClient };
+      delete demoClientData.password;
       const newClientObj = {
         id: clientId,
-        ...newClient,
+        ...demoClientData,
         username: `${newClient.prenom.toLowerCase()}.${newClient.nom.toLowerCase()}`,
         role: 'USER',
         actif: true,
@@ -298,9 +294,10 @@ const DashboardRSC = () => {
       setDevices([deviceWithEtiquette, ...devices]);
       setLabelsToPrint([deviceWithEtiquette, ...labelsToPrint]);
       
-      // Mettre à jour localStorage
-      const currentDevices = JSON.parse(appStorage.getItem('bureau_devices') || '[]');
-      appStorage.setItem('bureau_devices', JSON.stringify([deviceWithEtiquette, ...currentDevices]));
+      if (user?.demo) {
+        const currentDevices = JSON.parse(appStorage.getItem('bureau_devices') || '[]');
+        appStorage.setItem('bureau_devices', JSON.stringify([deviceWithEtiquette, ...currentDevices]));
+      }
       
       // Réinitialiser le formulaire
       setNewDevice({
@@ -319,6 +316,10 @@ const DashboardRSC = () => {
       
     } catch (err) {
       console.error('Erreur création appareil:', err);
+      if (!user?.demo) {
+        setError(err.response?.data?.message || 'Le serveur ne peut pas enregistrer ce dépôt. Aucune donnée n’a été sauvegardée.');
+        return;
+      }
       
       // Fallback: créer localement
       const selectedClient = clients.find(c => c.id === newDevice.clientId);

@@ -71,11 +71,8 @@ const DashboardAdmin = () => {
       
     } catch (err) {
       console.error('Erreur lors du chargement des données:', err);
-      // Fallback localStorage
-      const savedDevices = appStorage.getItem('bureau_devices');
-      const savedUsers = appStorage.getItem('bureau_users');
-      if (savedDevices) setDevices(JSON.parse(savedDevices));
-      if (savedUsers) setUtilisateurs(JSON.parse(savedUsers));
+      setDevices([]);
+      setUtilisateurs([]);
     } finally {
       setLoading(false);
     }
@@ -96,8 +93,9 @@ const DashboardAdmin = () => {
       
       setUtilisateurs([...utilisateurs, response.data]);
       
-      // Mettre à jour localStorage
-      appStorage.setItem('bureau_users', JSON.stringify([...utilisateurs, response.data]));
+      if (user?.demo) {
+        appStorage.setItem('bureau_users', JSON.stringify([...utilisateurs, response.data]));
+      }
       
       setNouvelUtilisateur({
         username: '',

@@ -195,17 +195,7 @@ const UserDashboard = () => {
     } catch (err) {
       console.error('Erreur lors du chargement des appareils:', err);
       setError('Impossible de charger vos appareils. Veuillez réessayer.');
-      
-      // Option: charger depuis localStorage en fallback
-      const savedDevices = appStorage.getItem('bureau_devices');
-      if (savedDevices) {
-        const parsedDevices = JSON.parse(savedDevices);
-        // Filtrer pour ne garder que les appareils de l'utilisateur actuel
-        const userDevices = parsedDevices.filter(
-          device => device.userId === user?.id || device.clientId === user?.id
-        );
-        setDevices(userDevices);
-      }
+      setDevices([]);
     } finally {
       setLoading(false);
     }
@@ -272,14 +262,19 @@ const UserDashboard = () => {
         modele: ''
       });
       
-      // Mettre à jour localStorage comme backup
-      const updatedDevices = [response.data, ...devices];
-      appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
+      if (user?.demo) {
+        const updatedDevices = [response.data, ...devices];
+        appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
+      }
       
       alert('Votre appareil bureautique a été déposé avec succès ! Un technicien vous contactera pour le diagnostic.');
     } catch (err) {
       console.error('Erreur lors du dépôt:', err);
-      
+      if (!user?.demo) {
+        setError(err.response?.data?.message || 'Le serveur ne peut pas enregistrer votre dépôt. Aucune donnée n’a été sauvegardée.');
+        return;
+      }
+
       // Fallback: sauvegarder localement si l'API échoue
       const estimatedCost = {
         'Imprimante': 149.99,
@@ -351,13 +346,14 @@ const UserDashboard = () => {
           : device
       ));
       
-      // Mettre à jour localStorage
-      const updatedDevices = devices.map(device => 
-        device.id === deviceId 
-          ? { ...device, status: 'recupere' }
-          : device
-      );
-      appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
+      if (user?.demo) {
+        const updatedDevices = devices.map(device =>
+          device.id === deviceId
+            ? { ...device, status: 'recupere' }
+            : device
+        );
+        appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
+      }
       
       alert('Appareil marqué comme récupéré !');
     } catch (err) {

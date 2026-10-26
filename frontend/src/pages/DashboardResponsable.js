@@ -77,22 +77,9 @@ const DashboardResponsable = () => {
     } catch (err) {
       console.error('Erreur lors du chargement des données:', err);
       setError('Impossible de charger les données. Vérifiez votre connexion.');
-      
-      // Fallback localStorage
-      const savedDevices = appStorage.getItem('bureau_devices');
-      const savedUsers = appStorage.getItem('bureau_users');
-      
-      if (savedDevices) {
-        const parsedDevices = JSON.parse(savedDevices);
-        setDevices(parsedDevices);
-        generateFacturesFromDevices(parsedDevices);
-      }
-      
-      if (savedUsers) {
-        const allUsers = JSON.parse(savedUsers);
-        const clientUsers = allUsers.filter(u => u.role === 'USER');
-        setClients(clientUsers);
-      }
+      setDevices([]);
+      setClients([]);
+      setFactures([]);
     } finally {
       setLoading(false);
     }
@@ -181,7 +168,7 @@ const DashboardResponsable = () => {
       const updatedDevices = devices.map(d => 
         (d.id === device.id || d._id === device._id) ? updatedDevice : d
       );
-      appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
+      if (user?.demo) appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
       
       // Ajouter la facture à la liste
       const nouvelleFacture = {
@@ -198,6 +185,10 @@ const DashboardResponsable = () => {
       
     } catch (err) {
       console.error('Erreur génération facture:', err);
+      if (!user?.demo) {
+        setError(err.response?.data?.message || 'La facture n’a pas pu être enregistrée sur le serveur. Aucune facture fictive n’a été créée.');
+        return;
+      }
       
       // Fallback local
       const coutMainOeuvre = device.tempsTravail ? (device.tempsTravail / 60) * 60 : 75;
@@ -279,13 +270,17 @@ const DashboardResponsable = () => {
         setDevices(updatedDevices);
         
         // Mettre à jour localStorage
-        appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
+        if (user?.demo) appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
       }
       
       alert(`Paiement de la facture ${factureId} validé !`);
       
     } catch (err) {
       console.error('Erreur validation paiement:', err);
+      if (!user?.demo) {
+        setError(err.response?.data?.message || 'Le règlement n’a pas pu être confirmé par le serveur.');
+        return;
+      }
       
       // Fallback local
       const facture = factures.find(f => f.id === factureId);
