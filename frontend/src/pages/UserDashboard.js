@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import DashboardHeader from '../components/DashboardHeader';
 import DashboardFooter from '../components/DashboardFooter';
 import DashboardSidebar from '../components/DashboardSidebar';
+import DashboardOverview from '../components/DashboardOverview';
 import useDashboardNavigation from '../hooks/useDashboardNavigation';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -147,6 +148,8 @@ const UserDashboard = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const invoicedDevices = devices.filter((device) => Number(device.facture?.montant) > 0);
+  const activeRepairs = devices.filter((device) => !['termine', 'recupere'].includes(device.status));
 
   const [newDevice, setNewDevice] = useState({
     name: '',
@@ -399,12 +402,25 @@ const UserDashboard = () => {
   }
 
   return (
-    <div className={`user-dashboard${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}>
+    <div className={`user-dashboard${sidebarCollapsed ? ' sidebar-collapsed' : ''}`} data-active-section={activeSection}>
       {/* Header */}
       <DashboardHeader role="USER" roleLabel="Espace client" title="Votre espace client" subtitle={`Bonjour, ${user?.prenom || user?.username} ! Suivez vos r\u00e9parations et vos appareils.`} user={user} onLogout={handleLogout} onRefresh={fetchDevices} />
       <div className={`dashboard-workspace${sidebarCollapsed ? ' is-sidebar-collapsed' : ''}`}>
       <DashboardSidebar role="USER" user={user} activeItem={activeSection} onNavigate={setActiveSection} onLogout={handleLogout} onCollapseChange={setSidebarCollapsed} />
         <main className="dashboard-workspace-main">
+
+      {activeSection === 'overview' && <DashboardOverview
+        roleLabel="Espace client"
+        description={`Bonjour ${user?.prenom || user?.username || ''}, retrouvez vos demandes, vos appareils et vos factures.`}
+        metrics={[
+          { label: 'Mes appareils', value: devices.length },
+          { label: 'Réparations en cours', value: activeRepairs.length },
+          { label: 'Factures disponibles', value: invoicedDevices.length },
+          { label: 'Terminés ou récupérés', value: devices.length - activeRepairs.length }
+        ]}
+        links={[{ id: 'new-repair', label: 'Déposer un appareil' }, { id: 'repairs', label: 'Suivre mes réparations' }, { id: 'invoices', label: 'Consulter mes factures' }, { id: 'support', label: 'Contacter l’atelier' }]}
+        onNavigate={setActiveSection}
+      />}
 
       <div className="dashboard-content">
         {/* Section de dépôt d'appareil */}
@@ -663,6 +679,31 @@ const UserDashboard = () => {
           </div>
         </div>
       </div>
+
+      <section className="client-invoices-page" aria-labelledby="client-invoices-title">
+        <div className="client-invoices-heading">
+          <span>ESPACE CLIENT</span>
+          <h2 id="client-invoices-title">Mes factures</h2>
+          <p>Retrouvez et imprimez les factures associées à vos appareils.</p>
+        </div>
+        {invoicedDevices.length === 0 ? (
+          <div className="no-devices"><p>Aucune facture n’est disponible pour le moment.</p></div>
+        ) : (
+          <div className="client-invoices-list">
+            {invoicedDevices.map((device) => (
+              <article className="client-invoice-card" key={device.id || device._id}>
+                <div>
+                  <strong>{device.name || `${device.marque || ''} ${device.modele || ''}`.trim()}</strong>
+                  <span>{device.facture.numero || `FAC-${String(device._id || device.id).slice(-6).toUpperCase()}`}</span>
+                </div>
+                <span className="client-invoice-status">{device.facture.payee ? 'Réglée' : 'À régler'}</span>
+                <strong className="client-invoice-amount">{Number(device.facture.montant).toFixed(2)} €</strong>
+                <button type="button" className="invoice-btn download-btn" onClick={() => downloadInvoice(device)}>Imprimer / PDF</button>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
 
         </main>
       </div>

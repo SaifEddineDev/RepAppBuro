@@ -1,0 +1,16 @@
+.role-overview { display: grid; gap: 22px; min-width: 0; }
+.role-overview-heading { padding: 6px 2px 0; }
+.role-overview-heading > span { color: #168b7e; font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.role-overview-heading h2 { margin: 8px 0 6px; color: #17263e; font-size: clamp(22px, 2.5vw, 30px); letter-spacing: -.03em; }
+.role-overview-heading p { margin: 0; color: #718198; font-size: 13px; line-height: 1.6; }
+.role-overview-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr)); gap: 12px; }
+.role-overview-metric { display: grid; min-height: 112px; align-content: center; gap: 8px; padding: 18px; border: 1px solid #e1e9ef; border-radius: 14px; background: #fff; box-shadow: 0 6px 18px rgba(23, 38, 62, .035); }
+.role-overview-metric > span { color: #73839a; font-size: 11px; font-weight: 700; }
+.role-overview-metric strong { color: #087d76; font-size: clamp(22px, 2.5vw, 29px); line-height: 1; }
+.role-overview-metric small { color: #8a98aa; font-size: 10px; }
+.role-overview-links { padding: 20px; border: 1px solid #e1e9ef; border-radius: 14px; background: #fff; }
+.role-overview-links h3 { margin: 0 0 13px; color: #263951; font-size: 14px; }
+.role-overview-links > div { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); gap: 9px; }
+.role-overview-links button { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 10px 13px; border: 1px solid #e4edf1; border-radius: 10px; color: #4f637c; background: #fbfdfd; font: inherit; font-size: 12px; font-weight: 700; text-align: left; cursor: pointer; }
+.role-overview-links button:hover { border-color: #bfe9de; color: #087d76; background: #f0faf7; }
+.role-overview-links button span:last-child { color: #168b7e; font-size: 20px; line-height: 1; }

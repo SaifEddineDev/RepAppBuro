@@ -1525,3 +1525,31 @@
     opacity: 0.1;
   }
 }
+
+/* Show one customer page at a time; the sidebar changes the URL section. */
+.user-dashboard .client-invoices-page { display: none; }
+.user-dashboard[data-active-section="overview"] .dashboard-content,
+.user-dashboard[data-active-section="invoices"] .dashboard-content,
+.user-dashboard[data-active-section="invoices"] .role-overview { display: none !important; }
+.user-dashboard[data-active-section="new-repair"] .devices-section,
+.user-dashboard[data-active-section="new-repair"] .info-section,
+.user-dashboard[data-active-section="repairs"] .depot-section,
+.user-dashboard[data-active-section="repairs"] .info-section,
+.user-dashboard[data-active-section="support"] .depot-section,
+.user-dashboard[data-active-section="support"] .devices-section { display: none !important; }
+.user-dashboard[data-active-section="repairs"] .invoice-section { display: none !important; }
+.user-dashboard[data-active-section="invoices"] .client-invoices-page { display: grid; gap: 20px; }
+.client-invoices-heading > span { color: #168b7e; font-size: 10px; font-weight: 800; letter-spacing: .12em; }
+.client-invoices-heading h2 { margin: 8px 0 6px; color: #17263e; font-size: clamp(22px, 2.5vw, 30px); }
+.client-invoices-heading p { margin: 0; color: #718198; font-size: 13px; }
+.client-invoices-list { display: grid; gap: 10px; }
+.client-invoice-card { display: grid; grid-template-columns: minmax(0, 1.5fr) auto auto auto; align-items: center; gap: 16px; padding: 16px; border: 1px solid #e1e9ef; border-radius: 13px; background: #fff; }
+.client-invoice-card > div { display: grid; gap: 5px; min-width: 0; }
+.client-invoice-card > div strong { overflow: hidden; color: #263951; text-overflow: ellipsis; white-space: nowrap; }
+.client-invoice-card > div span { color: #8190a4; font-size: 11px; }
+.client-invoice-status { color: #087d76; font-size: 11px; font-weight: 700; }
+.client-invoice-amount { color: #17263e; white-space: nowrap; }
+@media (max-width: 700px) {
+  .client-invoice-card { grid-template-columns: minmax(0, 1fr) auto; }
+  .client-invoice-card > div { grid-column: 1 / -1; }
+}

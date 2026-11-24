@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import DashboardHeader from '../components/DashboardHeader';
 import DashboardFooter from '../components/DashboardFooter';
 import DashboardSidebar from '../components/DashboardSidebar';
+import DashboardOverview from '../components/DashboardOverview';
 import useDashboardNavigation from '../hooks/useDashboardNavigation';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -23,7 +24,7 @@ const DashboardResponsable = () => {
   const [factures, setFactures] = useState([]);
   const [clients, setClients] = useState([]);
   const [rapports, setRapports] = useState([]);
-  const [activeTab, setActiveTab] = useDashboardNavigation('supervision', ['supervision', 'facturation', 'rapports', 'clients']);
+  const [activeTab, setActiveTab] = useDashboardNavigation('overview', ['overview', 'supervision', 'facturation', 'rapports', 'clients']);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDevice, setSelectedDevice] = useState(null);
@@ -327,37 +328,18 @@ const DashboardResponsable = () => {
         </div>
       )}
 
-      {/* Statistiques */}
-      <div className="stats-grid">
-        <div className="stat-card">
-          <div className="stat-icon">🔧</div>
-          <div className="stat-info">
-            <h3>{devices.length}</h3>
-            <p>Appareils</p>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon">💰</div>
-          <div className="stat-info">
-            <h3>{calculerChiffreAffaires().toFixed(2)}€</h3>
-            <p>Chiffre d'affaires</p>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon">📈</div>
-          <div className="stat-info">
-            <h3>{calculerTauxReussite()}%</h3>
-            <p>Taux de réussite</p>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon">⏰</div>
-          <div className="stat-info">
-            <h3>{calculerRetards()}</h3>
-            <p>Factures à encaisser</p>
-          </div>
-        </div>
-      </div>
+      {activeTab === 'overview' && <DashboardOverview
+        roleLabel="Pilotage atelier"
+        description="Suivez l’activité de l’atelier, les résultats et les factures à encaisser."
+        metrics={[
+          { label: 'Appareils', value: devices.length },
+          { label: 'Chiffre d’affaires', value: `${calculerChiffreAffaires().toFixed(2)} €` },
+          { label: 'Taux de réussite', value: `${calculerTauxReussite()} %` },
+          { label: 'Factures à encaisser', value: calculerRetards() }
+        ]}
+        links={[{ id: 'supervision', label: 'Superviser les réparations' }, { id: 'facturation', label: 'Gérer la facturation' }, { id: 'rapports', label: 'Consulter les rapports' }]}
+        onNavigate={setActiveTab}
+      />}
 
       {/* Navigation */}
       <div className="responsable-tabs">
@@ -388,7 +370,7 @@ const DashboardResponsable = () => {
       </div>
 
       {/* Recherche */}
-      <div className="search-section">
+      {['supervision', 'facturation', 'clients'].includes(activeTab) && <div className="search-section">
         <input
           type="text"
           placeholder="🔍 Rechercher appareil, facture ou client..."
@@ -396,7 +378,7 @@ const DashboardResponsable = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-input"
         />
-      </div>
+      </div>}
 
       {/* Contenu */}
       <div className="responsable-content">

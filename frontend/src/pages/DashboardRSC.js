@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import DashboardHeader from '../components/DashboardHeader';
 import DashboardFooter from '../components/DashboardFooter';
 import DashboardSidebar from '../components/DashboardSidebar';
+import DashboardOverview from '../components/DashboardOverview';
 import useDashboardNavigation from '../hooks/useDashboardNavigation';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -43,7 +44,7 @@ const DashboardRSC = () => {
     urgence: 'standard'
   });
   
-  const [activeTab, setActiveTab] = useDashboardNavigation('nouveau-client', ['nouveau-client', 'nouvelle-reparation', 'clients', 'reparations', 'etiquettes']);
+  const [activeTab, setActiveTab] = useDashboardNavigation('overview', ['overview', 'nouveau-client', 'nouvelle-reparation', 'clients', 'reparations', 'etiquettes']);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [selectedClient, setSelectedClient] = useState(null);
   const [labelsToPrint, setLabelsToPrint] = useState([]);
@@ -590,37 +591,18 @@ const DashboardRSC = () => {
         </div>
       )}
 
-      {/* Statistiques */}
-      <div className="stats-grid">
-        <div className="stat-card">
-          <div className="stat-icon">🔧</div>
-          <div className="stat-info">
-            <h3>{stats.devicesEnCours}</h3>
-            <p>Appareils en cours</p>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon">🏢</div>
-          <div className="stat-info">
-            <h3>{stats.clientsEntreprises}</h3>
-            <p>Clients entreprises</p>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon">⚠️</div>
-          <div className="stat-info">
-            <h3>{stats.devicesEnUrgence}</h3>
-            <p>Urgences</p>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon">✅</div>
-          <div className="stat-info">
-            <h3>{stats.devicesTermines}</h3>
-            <p>Terminés</p>
-          </div>
-        </div>
-      </div>
+      {activeTab === 'overview' && <DashboardOverview
+        roleLabel="Accueil et réception"
+        description="Vue rapide des clients et des appareils pris en charge par le service client."
+        metrics={[
+          { label: 'Appareils en cours', value: stats.devicesEnCours },
+          { label: 'Clients entreprises', value: stats.clientsEntreprises },
+          { label: 'Urgences', value: stats.devicesEnUrgence },
+          { label: 'Terminés', value: stats.devicesTermines }
+        ]}
+        links={[{ id: 'nouveau-client', label: 'Enregistrer un client' }, { id: 'nouvelle-reparation', label: 'Créer un dépôt' }, { id: 'reparations', label: 'Suivre les appareils' }]}
+        onNavigate={setActiveTab}
+      />}
 
       {/* Navigation */}
       <div className="rsc-tabs">
@@ -657,7 +639,7 @@ const DashboardRSC = () => {
       </div>
 
       {/* Recherche */}
-      <div className="search-section">
+      {['clients', 'reparations'].includes(activeTab) && <div className="search-section">
         <input
           type="text"
           placeholder="🔍 Rechercher client, appareil ou numéro de série..."
@@ -665,7 +647,7 @@ const DashboardRSC = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-input"
         />
-      </div>
+      </div>}
 
       {/* Contenu selon l'onglet */}
       <div className="rsc-content">

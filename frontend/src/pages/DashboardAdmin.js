@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import DashboardHeader from '../components/DashboardHeader';
 import DashboardFooter from '../components/DashboardFooter';
 import DashboardSidebar from '../components/DashboardSidebar';
+import DashboardOverview from '../components/DashboardOverview';
 import useDashboardNavigation from '../hooks/useDashboardNavigation';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -17,10 +18,9 @@ const DashboardAdmin = () => {
   
   const [utilisateurs, setUtilisateurs] = useState([]);
   const [devices, setDevices] = useState([]); // Ajout des appareils
-  const [activeTab, setActiveTab] = useDashboardNavigation('utilisateurs', ['utilisateurs', 'appareils', 'droits', 'finances', 'systeme']);
+  const [activeTab, setActiveTab] = useDashboardNavigation('overview', ['overview', 'utilisateurs', 'appareils', 'droits', 'finances', 'systeme']);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   
   const [nouvelUtilisateur, setNouvelUtilisateur] = useState({
@@ -240,37 +240,18 @@ const DashboardAdmin = () => {
       <DashboardSidebar role="ADMIN" user={user} activeItem={activeTab} onNavigate={setActiveTab} onLogout={handleLogout} onCollapseChange={setSidebarCollapsed} />
         <main className="dashboard-workspace-main">
 
-      {/* Statistiques système */}
-      <div className="system-stats">
-        <div className="system-stat">
-          <div className="stat-icon">👥</div>
-          <div className="stat-info">
-            <h3>{statutSysteme.utilisateursActifs}/{statutSysteme.totalUtilisateurs}</h3>
-            <p>Utilisateurs actifs</p>
-          </div>
-        </div>
-        <div className="system-stat">
-          <div className="stat-icon">🖨️</div>
-          <div className="stat-info">
-            <h3>{statutSysteme.appareilsEnCours}</h3>
-            <p>Appareils en cours</p>
-          </div>
-        </div>
-        <div className="system-stat">
-          <div className="stat-icon">✅</div>
-          <div className="stat-info">
-            <h3>{statutSysteme.appareilsTermines}</h3>
-            <p>Réparations terminées</p>
-          </div>
-        </div>
-        <div className="system-stat">
-          <div className="stat-icon">💰</div>
-          <div className="stat-info">
-            <h3>{statsFinancieres.chiffreAffaires.toFixed(2)}€</h3>
-            <p>Chiffre d'affaires</p>
-          </div>
-        </div>
-      </div>
+      {activeTab === 'overview' && <DashboardOverview
+        roleLabel="Administration"
+        description="État général de la plateforme, des comptes et des réparations."
+        metrics={[
+          { label: 'Utilisateurs actifs', value: `${statutSysteme.utilisateursActifs}/${statutSysteme.totalUtilisateurs}` },
+          { label: 'Appareils en cours', value: statutSysteme.appareilsEnCours },
+          { label: 'Réparations terminées', value: statutSysteme.appareilsTermines },
+          { label: 'Chiffre d’affaires', value: `${statsFinancieres.chiffreAffaires.toFixed(2)} €` }
+        ]}
+        links={[{ id: 'utilisateurs', label: 'Gérer les utilisateurs' }, { id: 'appareils', label: 'Voir les appareils' }, { id: 'finances', label: 'Consulter les finances' }]}
+        onNavigate={setActiveTab}
+      />}
 
       {/* Navigation */}
       <div className="admin-tabs">
@@ -307,16 +288,6 @@ const DashboardAdmin = () => {
       </div>
 
       {/* Recherche */}
-      <div className="search-section">
-        <input
-          type="text"
-          placeholder="🔍 Rechercher..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="search-input"
-        />
-      </div>
-
       {/* Contenu */}
       <div className="admin-content">
         {/* Onglet: Utilisateurs */}

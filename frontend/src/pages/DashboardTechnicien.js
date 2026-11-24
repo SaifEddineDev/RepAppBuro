@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import DashboardHeader from '../components/DashboardHeader';
 import DashboardFooter from '../components/DashboardFooter';
 import DashboardSidebar from '../components/DashboardSidebar';
+import DashboardOverview from '../components/DashboardOverview';
 import useDashboardNavigation from '../hooks/useDashboardNavigation';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -24,7 +25,7 @@ const TechnicienDashboard = () => {
   const [nouvellePiece, setNouvellePiece] = useState({ nom: '', quantite: 1, prix: 0 });
   const [tempsTravail, setTempsTravail] = useState({ heures: 0, minutes: 0 });
   const [statut, setStatut] = useState('en_diagnostic');
-  const [activeTab, setActiveTab] = useDashboardNavigation('mes-taches', ['mes-taches', 'non-assignes', 'fiche-reparation', 'tous', 'statistiques']);
+  const [activeTab, setActiveTab] = useDashboardNavigation('overview', ['overview', 'mes-taches', 'non-assignes', 'fiche-reparation', 'tous', 'statistiques']);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [noteTechnicien, setNoteTechnicien] = useState('');
@@ -255,6 +256,19 @@ const TechnicienDashboard = () => {
       <DashboardSidebar role="TECHNICIEN" user={user} activeItem={activeTab} onNavigate={setActiveTab} onLogout={handleLogout} onCollapseChange={setSidebarCollapsed} disabledItems={selectedDevice ? [] : ['fiche-reparation']} />
         <main className="dashboard-workspace-main">
 
+      {activeTab === 'overview' && <DashboardOverview
+        roleLabel="Équipe technique"
+        description="Retrouvez vos réparations, les appareils à prendre en charge et les performances de l’atelier."
+        metrics={[
+          { label: 'Mes réparations', value: counts.assignes },
+          { label: 'En attente d’attribution', value: counts.nonAssignes },
+          { label: 'Terminées', value: counts.termines },
+          { label: 'Appareils dans l’atelier', value: counts.total }
+        ]}
+        links={[{ id: 'mes-taches', label: 'Ouvrir mes réparations' }, { id: 'non-assignes', label: 'Voir les appareils en attente' }, { id: 'statistiques', label: 'Voir les statistiques' }]}
+        onNavigate={setActiveTab}
+      />}
+
       {/* Navigation */}
       <div className="technicien-tabs">
         <button 
@@ -291,7 +305,7 @@ const TechnicienDashboard = () => {
       </div>
 
       {/* Recherche */}
-      <div className="search-section">
+      {['mes-taches', 'non-assignes', 'tous'].includes(activeTab) && <div className="search-section">
         <input
           type="text"
           placeholder="🔍 Rechercher un appareil..."
@@ -299,7 +313,7 @@ const TechnicienDashboard = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-input"
         />
-      </div>
+      </div>}
 
       {/* Contenu */}
       <div className="technicien-content">

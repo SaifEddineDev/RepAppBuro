@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import BrandLockup from './BrandLockup';
 import './DashboardSidebar.css';
 
 const ROLE_ITEMS = {
   ADMIN: [
+    { id: 'overview', label: 'Vue d’ensemble', icon: '⌂' },
     { id: 'utilisateurs', label: 'Utilisateurs', icon: '♙' },
     { id: 'appareils', label: 'Appareils', icon: '▣' },
     { id: 'droits', label: 'Droits d’accès', icon: '⌑' },
@@ -11,6 +12,7 @@ const ROLE_ITEMS = {
     { id: 'systeme', label: 'Système', icon: '⚙' }
   ],
   RSC: [
+    { id: 'overview', label: 'Vue d’ensemble', icon: '⌂' },
     { id: 'nouveau-client', label: 'Nouveau client', icon: '＋' },
     { id: 'nouvelle-reparation', label: 'Nouveau dépôt', icon: '▣' },
     { id: 'clients', label: 'Clients', icon: '♧' },
@@ -18,6 +20,7 @@ const ROLE_ITEMS = {
     { id: 'etiquettes', label: 'Étiquettes', icon: '⌗' }
   ],
   TECHNICIEN: [
+    { id: 'overview', label: 'Vue d’ensemble', icon: '⌂' },
     { id: 'mes-taches', label: 'Mes réparations', icon: '▤' },
     { id: 'non-assignes', label: 'En attente', icon: '＋' },
     { id: 'fiche-reparation', label: 'Fiche technique', icon: '▧' },
@@ -25,6 +28,7 @@ const ROLE_ITEMS = {
     { id: 'statistiques', label: 'Statistiques', icon: '▥' }
   ],
   RESPONSABLE: [
+    { id: 'overview', label: 'Vue d’ensemble', icon: '⌂' },
     { id: 'supervision', label: 'Supervision', icon: '⌂' },
     { id: 'facturation', label: 'Facturation', icon: '€' },
     { id: 'rapports', label: 'Rapports', icon: '▥' },
@@ -43,15 +47,6 @@ const DashboardSidebar = ({ role, user, activeItem, onNavigate, onLogout, onColl
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  useEffect(() => {
-    if (role !== 'USER' || activeItem === 'overview') return;
-    const target = activeItem === 'new-repair' ? document.getElementById('new-repair')
-      : activeItem === 'support' ? document.getElementById('support')
-        : activeItem === 'invoices' ? document.querySelector('.user-dashboard .invoice-section') || document.getElementById('repairs')
-          : document.getElementById('repairs');
-    target?.scrollIntoView({ block: 'start' });
-  }, [role, activeItem]);
-
   const toggleCollapsed = () => {
     const next = !collapsed;
     setCollapsed(next);
@@ -59,17 +54,7 @@ const DashboardSidebar = ({ role, user, activeItem, onNavigate, onLogout, onColl
   };
 
   const handleNavigate = (item) => {
-    if (role === 'USER') {
-      const target = item.id === 'overview' ? document.querySelector('.user-dashboard .dashboard-header')
-        : item.id === 'new-repair' ? document.getElementById('new-repair')
-          : item.id === 'support' ? document.getElementById('support')
-            : item.id === 'invoices' ? document.querySelector('.user-dashboard .invoice-section')
-              : document.getElementById('repairs');
-      target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      onNavigate?.(item.id);
-    } else {
-      onNavigate(item.id);
-    }
+    onNavigate?.(item.id);
     setMobileOpen(false);
   };
 
