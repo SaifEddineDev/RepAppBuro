@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import BrandLockup from './BrandLockup';
+import BrandMark from './BrandMark';
 import './DashboardSidebar.css';
 
 const ROLE_ITEMS = {
@@ -74,7 +74,7 @@ const DashboardSidebar = ({ role, user, activeItem, onNavigate, onLogout, onColl
       {mobileOpen && <button type="button" className="dashboard-sidebar-scrim" aria-label="Fermer le menu" onClick={() => setMobileOpen(false)} />}
       <aside className={`dashboard-sidebar${collapsed ? ' is-collapsed' : ''}${mobileOpen ? ' is-mobile-open' : ''}`} aria-label={`Navigation ${role}`}>
         <div className="dashboard-sidebar-brand">
-          <BrandLockup className="dashboard-sidebar-lockup" />
+          <span className="dashboard-sidebar-lockup"><BrandMark /></span>
           <div className="dashboard-sidebar-user-copy dashboard-sidebar-user-heading">
             <strong>{[user?.prenom, user?.nom].filter(Boolean).join(' ') || user?.username || 'Compte'}</strong>
             <span>{role}</span>
