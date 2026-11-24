@@ -2071,8 +2071,8 @@ body .dashboard-technicien > :not(.workspace-footer),
 body .dashboard-responsable > :not(.workspace-footer),
 body .user-dashboard > :not(.workspace-footer) {
   box-sizing: border-box;
-  width: min(88vw, 1700px) !important;
-  max-width: min(88vw, 1700px) !important;
+  width: min(84vw, 1640px) !important;
+  max-width: min(84vw, 1640px) !important;
   margin-right: auto !important;
   margin-left: auto !important;
 }
