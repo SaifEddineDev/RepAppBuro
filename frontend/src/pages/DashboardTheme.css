@@ -1823,7 +1823,7 @@ body .dashboard-technicien .dashboard-workspace,
 body .dashboard-responsable .dashboard-workspace,
 body .user-dashboard .dashboard-workspace {
   display: grid;
-  grid-template-columns: minmax(190px, 1fr) minmax(0, 4fr);
+  grid-template-columns: minmax(220px, 1fr) minmax(0, 3fr);
   align-items: start;
   gap: clamp(14px, 2vw, 24px);
   width: min(100%, 1580px) !important;
@@ -1911,7 +1911,7 @@ body .user-dashboard .workspace-footer {
   body .dashboard-rsc .dashboard-workspace,
   body .dashboard-technicien .dashboard-workspace,
   body .dashboard-responsable .dashboard-workspace,
-  body .user-dashboard .dashboard-workspace { grid-template-columns: minmax(170px, 1fr) minmax(0, 4fr); }
+  body .user-dashboard .dashboard-workspace { grid-template-columns: minmax(190px, 1fr) minmax(0, 3fr); }
   body .dashboard-admin .dashboard-header,
   body .dashboard-rsc .dashboard-header,
   body .dashboard-technicien .dashboard-header,
