@@ -10,6 +10,9 @@ import './UserDashboard.css';
 
 // URL de l'API - à adapter selon votre configuration
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const escapeInvoiceText = (value) => String(value || '').replace(/[&<>"']/g, (char) => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+}[char]));
 
 const DeviceTypeSelect = ({ value, options, onChange, disabled }) => {
   const [open, setOpen] = useState(false);
@@ -340,8 +343,8 @@ const UserDashboard = () => {
       });
       
       // Mettre à jour l'état local
-      setDevices(devices.map(device => 
-        device.id === deviceId 
+      setDevices(devices.map(device =>
+        String(device.id || device._id) === String(deviceId)
           ? { ...device, status: 'recupere' }
           : device
       ));
@@ -362,68 +365,15 @@ const UserDashboard = () => {
     }
   };
 
-  const downloadInvoice = async (device) => {
-    if (device.facture?.url) {
-      try {
-        // Télécharger depuis l'API
-        const response = await axios.get(`${API_URL}/invoices/${device.id}/download`, {
-          headers: { Authorization: `Bearer ${token}` },
-          responseType: 'blob'
-        });
-        
-        // Créer un lien pour télécharger le fichier
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `facture-${device.id}.pdf`);
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-      } catch (err) {
-        console.error('Erreur de téléchargement:', err);
-        alert('Impossible de télécharger la facture.');
-      }
-    } else {
-      alert('Facture non disponible pour le moment');
-    }
-  };
-
-  const payInvoice = async (deviceId) => {
-    try {
-      // Mettre à jour le paiement via API
-      await axios.put(`${API_URL}/devices/${deviceId}/pay`, {}, {
-        headers: { 
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      // Mettre à jour l'état local
-      setDevices(devices.map(device => 
-        device.id === deviceId 
-          ? { 
-              ...device, 
-              facture: { ...device.facture, payee: true } 
-            }
-          : device
-      ));
-      
-      // Mettre à jour localStorage
-      const updatedDevices = devices.map(device => 
-        device.id === deviceId 
-          ? { 
-              ...device, 
-              facture: { ...device.facture, payee: true } 
-            }
-          : device
-      );
-      appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
-      
-      alert('Paiement effectué avec succès !');
-    } catch (err) {
-      console.error('Erreur de paiement:', err);
-      alert('Erreur lors du paiement. Veuillez réessayer.');
-    }
+  const downloadInvoice = (device) => {
+    if (!device.facture?.montant) return;
+    const popup = window.open('', '_blank');
+    if (!popup) return;
+    const invoiceNumber = device.facture.numero || `FAC-${String(device._id || device.id).slice(-6).toUpperCase()}`;
+    popup.document.write(`<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Facture ${escapeInvoiceText(invoiceNumber)}</title><style>body{font:16px Arial,sans-serif;color:#17263e;max-width:760px;margin:48px auto;padding:24px}header{border-bottom:3px solid #35d6bc;padding-bottom:20px;margin-bottom:28px}h1{margin:0 0 8px}table{width:100%;border-collapse:collapse;margin:24px 0}th,td{text-align:left;padding:12px;border-bottom:1px solid #dfe7f1}.total{text-align:right;font-size:22px;font-weight:bold}@media print{body{margin:0;padding:0}}</style></head><body><header><h1>RepAppBuro</h1>Facture ${escapeInvoiceText(invoiceNumber)}</header><p><strong>Client :</strong> ${escapeInvoiceText(user?.prenom ? `${user.prenom} ${user.nom || ''}` : user?.username)}</p><p><strong>Appareil :</strong> ${escapeInvoiceText(device.name || `${device.marque} ${device.modele}`)}</p><p><strong>Date :</strong> ${escapeInvoiceText(new Date(device.facture.dateEmission || device.dateDepot).toLocaleDateString('fr-FR'))}</p><table><thead><tr><th>Réparation</th><th>Montant convenu</th></tr></thead><tbody><tr><td>${escapeInvoiceText(device.name || `${device.marque} ${device.modele}`)}</td><td>${Number(device.facture.montant).toFixed(2)} €</td></tr></tbody></table><p class="total">Total : ${Number(device.facture.montant).toFixed(2)} €</p></body></html>`);
+    popup.document.close();
+    popup.focus();
+    popup.print();
   };
 
   // Fonction pour rafraîchir périodiquement les données
@@ -629,23 +579,13 @@ const UserDashboard = () => {
                     </div>
                     
                     <div className="invoice-actions">
-                      {device.facture?.url && (
+                      {device.facture?.montant > 0 && (
                         <button 
                           onClick={() => downloadInvoice(device)}
                           className="invoice-btn download-btn"
                           disabled={loading}
                         >
-                          📄 Télécharger
-                        </button>
-                      )}
-                      
-                      {device.facture?.montant > 0 && !device.facture?.payee && (
-                        <button 
-                          onClick={() => payInvoice(device.id || device._id)}
-                          className="invoice-btn pay-btn"
-                          disabled={loading}
-                        >
-                          💳 Payer le devis
+                          Imprimer / PDF
                         </button>
                       )}
                       

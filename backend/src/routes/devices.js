@@ -4,17 +4,7 @@ const router = express.Router();
 const Device = require('../models/Device');
 const User = require('../models/User');
 const auth = require('../middleware/auth');
-
-const statuses = ['nouveau', 'en_diagnostic', 'en_reparation', 'en_attente_piece', 'termine', 'pret_a_recuperer', 'recupere'];
-const statusTransitions = {
-  nouveau: ['en_diagnostic'],
-  en_diagnostic: ['en_reparation', 'en_attente_piece'],
-  en_reparation: ['en_attente_piece', 'termine'],
-  en_attente_piece: ['en_reparation'],
-  termine: ['pret_a_recuperer'],
-  pret_a_recuperer: ['recupere'],
-  recupere: []
-};
+const { statuses, canTransition, toClientDevice } = require('../domain/devicePolicy');
 
 const cleanText = (value, maxLength) => typeof value === 'string' ? value.trim().slice(0, maxLength) : '';
 const isValidObjectId = (value) => mongoose.Types.ObjectId.isValid(value);
@@ -44,7 +34,8 @@ router.get('/', auth, async (req, res) => {
     } else if (role === 'TECHNICIEN') {
       query = query.populate('userId', 'username prenom nom');
     }
-    return res.json(await query);
+    const devices = await query;
+    return res.json(role === 'USER' ? devices.map(toClientDevice) : devices);
   } catch (error) {
     console.error('Unable to list devices:', error.message);
     return res.status(500).json({ success: false, message: 'Impossible de charger les appareils' });
@@ -118,7 +109,15 @@ router.put('/:id', auth, async (req, res) => {
     const previousStatus = device.status;
     let allowedFields;
 
-    if (role === 'TECHNICIEN') {
+    if (role === 'USER') {
+      if (String(device.userId) !== req.user.id) {
+        return res.status(403).json({ success: false, message: 'Cet appareil ne vous appartient pas' });
+      }
+      if (body.status !== 'recupere') {
+        return res.status(403).json({ success: false, message: 'Vous pouvez uniquement confirmer la récupération de votre appareil' });
+      }
+      allowedFields = ['status'];
+    } else if (role === 'TECHNICIEN') {
       const assignedToOther = device.technicianId && String(device.technicianId) !== req.user.id;
       const canClaim = !device.technicianId && ['nouveau', 'en_diagnostic'].includes(device.status);
       if (assignedToOther || (!canClaim && String(device.technicianId || '') !== req.user.id)) {
@@ -154,7 +153,7 @@ router.put('/:id', auth, async (req, res) => {
         device.notes.push({ type: 'technicien', user: req.user.username, message: cleanText(body.note, 2000) });
       }
     } else if (role === 'RESPONSABLE') {
-      allowedFields = ['status', 'facture', 'dateRecupEstimee'];
+      allowedFields = ['status', 'facture', 'dateRecupEstimee', 'note'];
       if (body.facture !== undefined) {
         if (!body.facture || typeof body.facture !== 'object' || Array.isArray(body.facture)) {
           return res.status(400).json({ success: false, message: 'Facture invalide' });
@@ -164,6 +163,8 @@ router.put('/:id', auth, async (req, res) => {
           return res.status(400).json({ success: false, message: 'Montant de facture invalide' });
         }
         device.facture = {
+          numero: typeof body.facture.numero === 'string' ? cleanText(body.facture.numero, 40) : device.facture?.numero,
+          dateEmission: body.facture.dateEmission ? new Date(body.facture.dateEmission) : device.facture?.dateEmission,
           montant: amount,
           payee: device.facture?.payee === true,
           url: typeof body.facture.url === 'string' ? cleanText(body.facture.url, 500) : device.facture?.url
@@ -173,6 +174,9 @@ router.put('/:id', auth, async (req, res) => {
         const date = new Date(body.dateRecupEstimee);
         if (Number.isNaN(date.getTime())) return res.status(400).json({ success: false, message: 'Date invalide' });
         device.dateRecupEstimee = date;
+      }
+      if (typeof body.note === 'string' && body.note.trim()) {
+        device.notes.push({ user: req.user.username, message: cleanText(body.note, 2000) });
       }
     } else if (role === 'ADMIN') {
       allowedFields = ['name', 'type', 'marque', 'modele', 'problem', 'serialNumber', 'status', 'facture', 'dateRecupEstimee', 'technicianId', 'urgence', 'accessoires'];
@@ -189,7 +193,14 @@ router.put('/:id', auth, async (req, res) => {
         if (!body.facture || typeof body.facture !== 'object' || Array.isArray(body.facture)) return res.status(400).json({ success: false, message: 'Facture invalide' });
         const amount = Number(body.facture.montant);
         if (!Number.isFinite(amount) || amount < 0 || amount > 10000000) return res.status(400).json({ success: false, message: 'Montant de facture invalide' });
-        device.facture = { montant: amount, payee: body.facture.payee === true, url: typeof body.facture.url === 'string' ? cleanText(body.facture.url, 500) : '' };
+        device.facture = {
+          numero: typeof body.facture.numero === 'string' ? cleanText(body.facture.numero, 40) : device.facture?.numero,
+          dateEmission: body.facture.dateEmission ? new Date(body.facture.dateEmission) : device.facture?.dateEmission,
+          montant: amount,
+          // Payment status needs a verified receipt or payment-provider event.
+          payee: device.facture?.payee === true,
+          url: typeof body.facture.url === 'string' ? cleanText(body.facture.url, 500) : ''
+        };
       }
       if (body.dateRecupEstimee !== undefined) {
         const date = new Date(body.dateRecupEstimee);
@@ -202,14 +213,17 @@ router.put('/:id', auth, async (req, res) => {
 
     if (body.status !== undefined) {
       if (!statuses.includes(body.status)) return res.status(400).json({ success: false, message: 'Statut invalide' });
-      if (body.status !== previousStatus && !statusTransitions[previousStatus]?.includes(body.status)) {
+      if (!canTransition(previousStatus, body.status)) {
         return res.status(400).json({ success: false, message: `Transition de statut impossible : ${previousStatus} → ${body.status}` });
       }
       if (role === 'TECHNICIEN' && !['en_diagnostic', 'en_reparation', 'en_attente_piece', 'termine'].includes(body.status)) {
         return res.status(403).json({ success: false, message: 'Le technicien ne peut pas valider la restitution' });
       }
-      if (role === 'RESPONSABLE' && !['pret_a_recuperer', 'recupere'].includes(body.status)) {
-        return res.status(403).json({ success: false, message: 'Le responsable peut uniquement valider ou enregistrer une restitution' });
+      if (role === 'USER' && body.status !== 'recupere') {
+        return res.status(403).json({ success: false, message: 'Le client peut uniquement confirmer la récupération' });
+      }
+      if (role === 'RESPONSABLE' && !['en_reparation', 'pret_a_recuperer', 'recupere'].includes(body.status)) {
+        return res.status(403).json({ success: false, message: 'Le responsable peut demander une correction ou valider la restitution' });
       }
       device.status = body.status;
     }

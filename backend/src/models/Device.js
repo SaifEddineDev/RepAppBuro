@@ -47,6 +47,8 @@ const DeviceSchema = new mongoose.Schema({
   },
   dateRecupEstimee: Date,
   facture: {
+    numero: { type: String, trim: true, maxlength: 40 },
+    dateEmission: Date,
     montant: Number,
     payee: {
       type: Boolean,

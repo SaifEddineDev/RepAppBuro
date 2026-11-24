@@ -9,6 +9,9 @@ import { appStorage } from '../utils/appStorage';
 import './DashboardResponsable.css';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const escapeHtml = (value) => String(value || '').replace(/[&<>"']/g, (char) => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+}[char]));
 
 const DashboardResponsable = () => {
   const { user, logout, token } = useAuth();
@@ -21,6 +24,7 @@ const DashboardResponsable = () => {
   const [activeTab, setActiveTab] = useState('supervision');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDevice, setSelectedDevice] = useState(null);
+  const [correctionReason, setCorrectionReason] = useState('');
   const [selectedFacture, setSelectedFacture] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -52,19 +56,10 @@ const DashboardResponsable = () => {
       const devicesResponse = await axios.get(`${API_URL}/devices`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setDevices(devicesResponse.data);
-      
-      // Charger les factures (si endpoint existe)
-      try {
-        const facturesResponse = await axios.get(`${API_URL}/invoices`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setFactures(facturesResponse.data);
-      } catch (invoiceError) {
-        console.log('Endpoint factures non disponible, création locale');
-        // Générer des factures à partir des appareils
-        generateFacturesFromDevices(devicesResponse.data);
-      }
+      const deviceRows = Array.isArray(devicesResponse.data) ? devicesResponse.data : [];
+      setDevices(deviceRows);
+      // The current schema stores invoice metadata on each repair record.
+      generateFacturesFromDevices(deviceRows);
       
       // Charger les clients
       const clientsResponse = await axios.get(`${API_URL}/users?role=USER`, {
@@ -86,21 +81,24 @@ const DashboardResponsable = () => {
   };
 
   const generateFacturesFromDevices = (devicesList) => {
-    // Créer des factures à partir des appareils qui ont un montant
     const generatedFactures = devicesList
       .filter(device => device.facture?.montant > 0)
-      .map(device => ({
-        id: `FAC-${new Date(device.dateDepot).getFullYear()}-${device.id || device._id}`,
-        deviceId: device.id || device._id,
-        client: device.clientName,
-        deviceName: device.name || `${device.marque} ${device.modele}`,
-        date: device.dateDepot,
-        montant: device.facture.montant,
-        statutPaiement: device.facture.payee ? 'paye' : 'en_attente',
-        dateEcheance: new Date(new Date(device.dateDepot).getTime() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-        pieces: device.piecesUtilisees || [],
-        mainOeuvre: device.tempsTravail ? (device.tempsTravail / 60) * 60 : 0
-      }));
+      .map(device => {
+        const id = String(device.id || device._id);
+        const owner = device.userId && typeof device.userId === 'object' ? device.userId : null;
+        return {
+          id: device.facture.numero || `FAC-${new Date(device.dateDepot).getFullYear()}-${id.slice(-6).toUpperCase()}`,
+          deviceId: id,
+          client: device.clientName || [owner?.prenom, owner?.nom].filter(Boolean).join(' ') || owner?.username || 'Client',
+          email: owner?.email || '',
+          deviceName: device.name || `${device.marque} ${device.modele}`,
+          date: device.facture.dateEmission || device.dateDepot,
+          montant: Number(device.facture.montant),
+          statutPaiement: device.facture.payee ? 'paye' : 'en_attente',
+          pieces: device.piecesUtilisees || [],
+          mainOeuvre: device.tempsTravail || 0
+        };
+      });
     
     setFactures(generatedFactures);
   };
@@ -110,207 +108,85 @@ const DashboardResponsable = () => {
     navigate('/login');
   };
 
-  const genererFacture = async (device) => {
+  const updateRepairStatus = async (status, note = '') => {
+    if (!selectedDevice) return;
+    const id = String(selectedDevice.id || selectedDevice._id);
     try {
-      // Calculer le coût si non défini
-      let coutPieces = 0;
-      let coutMainOeuvre = 0;
-      
-      if (device.piecesUtilisees && device.piecesUtilisees.length > 0) {
-        coutPieces = device.piecesUtilisees.reduce((total, piece) => 
-          total + (piece.prix * piece.quantite), 0);
-      }
-      
-      if (device.tempsTravail) {
-        coutMainOeuvre = (device.tempsTravail / 60) * 60; // 60€/heure
+      let updatedDevice;
+      if (user?.demo) {
+        updatedDevice = {
+          ...selectedDevice,
+          status,
+          notes: note ? [...(selectedDevice.notes || []), { user: user.username, message: note, date: new Date().toISOString() }] : selectedDevice.notes
+        };
       } else {
-        coutMainOeuvre = 75; // Coût par défaut
+        const response = await axios.put(`${API_URL}/devices/${id}`, { status, note }, {
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
+        });
+        updatedDevice = response.data;
       }
-      
-      const total = coutPieces + coutMainOeuvre;
-      
-      // Créer la facture dans l'API
-      const factureData = {
-        deviceId: device.id || device._id,
-        client: device.clientName,
-        montant: total,
-        statutPaiement: 'en_attente',
-        details: {
-          pieces: device.piecesUtilisees || [],
-          mainOeuvre: coutMainOeuvre,
-          description: `Facture pour réparation ${device.type} ${device.marque} ${device.modele}`
-        }
-      };
-      
-      const response = await axios.post(`${API_URL}/invoices`, factureData, {
-        headers: { 
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      // Mettre à jour l'appareil avec la facture
-      const updatedDevice = {
-        ...device,
-        facture: {
-          ...device.facture,
-          montant: total,
-          payee: false,
-          url: `/factures/${response.data.id}.pdf`
-        }
-      };
-      
-      setDevices(devices.map(d => 
-        (d.id === device.id || d._id === device._id) ? updatedDevice : d
-      ));
-      
-      // Mettre à jour localStorage
-      const updatedDevices = devices.map(d => 
-        (d.id === device.id || d._id === device._id) ? updatedDevice : d
-      );
+      const updatedDevices = devices.map(device => String(device.id || device._id) === id ? updatedDevice : device);
+      setDevices(updatedDevices);
       if (user?.demo) appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
-      
-      // Ajouter la facture à la liste
-      const nouvelleFacture = {
-        ...response.data,
-        id: response.data.id || `FAC-${Date.now()}`,
-        deviceName: `${device.marque} ${device.modele}`,
-        dateEcheance: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
-      };
-      
-      setFactures([nouvelleFacture, ...factures]);
       setSelectedDevice(updatedDevice);
-      
-      alert(`Facture ${nouvelleFacture.id} générée avec succès ! Montant: ${total.toFixed(2)}€`);
-      
+      setCorrectionReason('');
+      setError('');
+      generateFacturesFromDevices(updatedDevices);
+    } catch (updateError) {
+      setError(updateError.response?.data?.message || 'Le changement de statut n’a pas été enregistré.');
+    }
+  };
+
+  const genererFacture = async (device) => {
+    const answer = window.prompt('Saisissez le montant total convenu avec le client (€). Aucune taxe ni échéance ne sera ajoutée automatiquement.', device.facture?.montant || '');
+    if (answer === null) return;
+    const amount = Number(answer.replace(',', '.'));
+    if (!Number.isFinite(amount) || amount <= 0 || amount > 10000000) {
+      setError('Saisissez un montant supérieur à 0 et inférieur à 10 000 000 €.');
+      return;
+    }
+
+    const id = String(device.id || device._id);
+    const invoiceNumber = device.facture?.numero || `FAC-${new Date().getFullYear()}-${id.slice(-6).toUpperCase()}`;
+    const invoiceDate = new Date().toISOString();
+    const invoice = { montant: amount, numero: invoiceNumber, dateEmission: invoiceDate, payee: false, url: '' };
+    try {
+      let savedDevice;
+      if (user?.demo) {
+        savedDevice = { ...device, facture: invoice };
+      } else {
+        const response = await axios.put(`${API_URL}/devices/${id}`, { facture: invoice }, {
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
+        });
+        savedDevice = response.data;
+      }
+      const updatedDevices = devices.map(item => String(item.id || item._id) === id ? savedDevice : item);
+      setDevices(updatedDevices);
+      if (user?.demo) appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
+      generateFacturesFromDevices(updatedDevices);
+      setSelectedDevice(savedDevice);
+      setError('');
+      alert(`Facture ${invoiceNumber} enregistrée. Le document peut être imprimé en PDF depuis la liste des factures.`);
     } catch (err) {
       console.error('Erreur génération facture:', err);
-      if (!user?.demo) {
-        setError(err.response?.data?.message || 'La facture n’a pas pu être enregistrée sur le serveur. Aucune facture fictive n’a été créée.');
-        return;
-      }
-      
-      // Fallback local
-      const coutMainOeuvre = device.tempsTravail ? (device.tempsTravail / 60) * 60 : 75;
-      const coutPieces = device.piecesUtilisees ? 
-        device.piecesUtilisees.reduce((total, piece) => total + (piece.prix * piece.quantite), 0) : 0;
-      const total = coutPieces + coutMainOeuvre;
-      
-      const factureId = `FAC-${Date.now()}`;
-      const nouvelleFacture = {
-        id: factureId,
-        deviceId: device.id || device._id,
-        client: device.clientName,
-        deviceName: `${device.marque} ${device.modele}`,
-        date: new Date().toISOString().split('T')[0],
-        montant: total,
-        statutPaiement: 'en_attente',
-        dateEcheance: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-        pieces: device.piecesUtilisees || [],
-        mainOeuvre: coutMainOeuvre
-      };
-      
-      // Mettre à jour l'appareil
-      const updatedDevice = {
-        ...device,
-        facture: {
-          ...device.facture,
-          montant: total,
-          payee: false
-        }
-      };
-      
-      setDevices(devices.map(d => 
-        (d.id === device.id || d._id === device._id) ? updatedDevice : d
-      ));
-      
-      setFactures([nouvelleFacture, ...factures]);
-      
-      // Mettre à jour localStorage
-      const updatedDevices = devices.map(d => 
-        (d.id === device.id || d._id === device._id) ? updatedDevice : d
-      );
-      appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
-      
-      alert(`Facture ${factureId} générée localement. Montant: ${total.toFixed(2)}€`);
+      setError(err.response?.data?.message || 'La facture n’a pas pu être enregistrée.');
     }
   };
 
   const validerPaiement = async (factureId) => {
-    try {
-      // Mettre à jour via API
-      await axios.put(`${API_URL}/invoices/${factureId}/pay`, {}, {
-        headers: { 
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      // Mettre à jour localement
-      const updatedFactures = factures.map(f => 
-        f.id === factureId 
-          ? { ...f, statutPaiement: 'paye', datePaiement: new Date().toISOString().split('T')[0] }
-          : f
-      );
-      setFactures(updatedFactures);
-      
-      // Mettre à jour l'appareil associé
-      const facture = factures.find(f => f.id === factureId);
-      if (facture && facture.deviceId) {
-        const updatedDevices = devices.map(d => {
-          if ((d.id === facture.deviceId || d._id === facture.deviceId) && d.facture) {
-            return {
-              ...d,
-              facture: { ...d.facture, payee: true }
-            };
-          }
-          return d;
-        });
-        
-        setDevices(updatedDevices);
-        
-        // Mettre à jour localStorage
-        if (user?.demo) appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
-      }
-      
-      alert(`Paiement de la facture ${factureId} validé !`);
-      
-    } catch (err) {
-      console.error('Erreur validation paiement:', err);
-      if (!user?.demo) {
-        setError(err.response?.data?.message || 'Le règlement n’a pas pu être confirmé par le serveur.');
-        return;
-      }
-      
-      // Fallback local
-      const facture = factures.find(f => f.id === factureId);
-      if (facture) {
-        const updatedFactures = factures.map(f => 
-          f.id === factureId 
-            ? { ...f, statutPaiement: 'paye', datePaiement: new Date().toISOString().split('T')[0] }
-            : f
-        );
-        setFactures(updatedFactures);
-        
-        // Mettre à jour l'appareil
-        if (facture.deviceId) {
-          const updatedDevices = devices.map(d => {
-            if ((d.id === facture.deviceId || d._id === facture.deviceId) && d.facture) {
-              return {
-                ...d,
-                facture: { ...d.facture, payee: true }
-              };
-            }
-            return d;
-          });
-          
-          setDevices(updatedDevices);
-          appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
-        }
-        
-        alert(`Paiement validé localement pour ${factureId}`);
-      }
+    if (!user?.demo) {
+      setError('La confirmation de paiement en ligne n’est pas configurée. Ne marquez la facture payée qu’après vérification du règlement.');
+      return;
     }
+    const invoice = factures.find(item => item.id === factureId);
+    if (!invoice) return;
+    const updatedDevices = devices.map(device => String(device.id || device._id) === String(invoice.deviceId)
+      ? { ...device, facture: { ...device.facture, payee: true } }
+      : device);
+    setDevices(updatedDevices);
+    appStorage.setItem('bureau_devices', JSON.stringify(updatedDevices));
+    generateFacturesFromDevices(updatedDevices);
+    setError('Simulation de paiement enregistrée dans les données de démonstration.');
   };
 
   const genererRapport = () => {
@@ -395,39 +271,34 @@ const DashboardResponsable = () => {
     return Math.round((devices.filter(d => d.status === 'termine' || d.status === 'recupere').length / devices.length) * 100) || 0;
   };
 
-  const calculerRetards = () => {
-    const maintenant = new Date();
-    return factures.filter(f => {
-      if (f.statutPaiement === 'en_attente' && f.dateEcheance) {
-        const echeance = new Date(f.dateEcheance);
-        return echeance < maintenant;
-      }
-      return false;
-    }).length;
-  };
+  const calculerRetards = () => factures.filter(f => f.statutPaiement === 'en_attente').length;
 
   const envoyerRappel = (facture) => {
-    const client = clients.find(c => 
+    const client = clients.find(c =>
       c.prenom && c.nom && 
-      facture.client.includes(c.prenom) && facture.client.includes(c.nom)
+      String(facture.client || '').includes(c.prenom) && String(facture.client || '').includes(c.nom)
     );
-    
-    if (client) {
-      const message = `Bonjour ${client.prenom},\n\nVotre facture ${facture.id} d'un montant de ${facture.montant.toFixed(2)}€ est en attente de paiement.\nÉchéance: ${facture.dateEcheance}\n\nCordialement,\nRepAppBuro`;
-      
-      if (client.email) {
-        const subject = encodeURIComponent(`Rappel facture ${facture.id}`);
-        const body = encodeURIComponent(message);
-        window.open(`mailto:${client.email}?subject=${subject}&body=${body}`, '_blank');
-        alert(`Email de rappel envoyé à ${client.email}`);
-      } else if (client.telephone) {
-        alert(`Client: ${client.prenom} ${client.nom}\nTéléphone: ${client.telephone}\nMessage: ${message.substring(0, 100)}...`);
-      } else {
-        alert('Aucun moyen de contact disponible pour ce client.');
-      }
-    } else {
-      alert('Client non trouvé pour cette facture.');
+    const email = facture.email || client?.email;
+    if (!email) {
+      setError('Adresse e-mail du client indisponible.');
+      return;
     }
+    const message = `Bonjour ${client?.prenom || facture.client || 'Madame, Monsieur'},\n\nVotre facture ${facture.id} d'un montant de ${Number(facture.montant).toFixed(2)} € est en attente de paiement.\n\nCordialement,\nRepAppBuro`;
+    const subject = encodeURIComponent(`Facture ${facture.id}`);
+    window.location.href = `mailto:${email}?subject=${subject}&body=${encodeURIComponent(message)}`;
+    setError('Brouillon d’e-mail ouvert. Le rappel ne sera envoyé qu’après votre envoi depuis votre messagerie.');
+  };
+
+  const imprimerFacture = (facture) => {
+    const popup = window.open('', '_blank');
+    if (!popup) {
+      setError('Autorisez les fenêtres contextuelles pour imprimer la facture.');
+      return;
+    }
+    popup.document.write(`<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Facture ${escapeHtml(facture.id)}</title><style>body{font:16px Arial,sans-serif;color:#17263e;max-width:760px;margin:48px auto;padding:24px}header{border-bottom:3px solid #35d6bc;padding-bottom:20px;margin-bottom:28px}h1{margin:0 0 8px}table{width:100%;border-collapse:collapse;margin:24px 0}th,td{text-align:left;padding:12px;border-bottom:1px solid #dfe7f1}.total{text-align:right;font-size:22px;font-weight:bold}.muted{color:#71839d}@media print{body{margin:0;padding:0}}</style></head><body><header><h1>RepAppBuro</h1><div class="muted">Facture ${escapeHtml(facture.id)}</div></header><p><strong>Client :</strong> ${escapeHtml(facture.client)}</p><p><strong>Appareil :</strong> ${escapeHtml(facture.deviceName)}</p><p><strong>Date d’émission :</strong> ${escapeHtml(new Date(facture.date).toLocaleDateString('fr-FR'))}</p><table><thead><tr><th>Description</th><th>Montant convenu</th></tr></thead><tbody><tr><td>Réparation ${escapeHtml(facture.deviceName)}</td><td>${Number(facture.montant).toFixed(2)} €</td></tr></tbody></table><p class="total">Total : ${Number(facture.montant).toFixed(2)} €</p><p class="muted">Aucune taxe ou échéance n’est ajoutée automatiquement par l’application.</p></body></html>`);
+    popup.document.close();
+    popup.focus();
+    popup.print();
   };
 
   if (loading && devices.length === 0) {
@@ -477,7 +348,7 @@ const DashboardResponsable = () => {
           <div className="stat-icon">⏰</div>
           <div className="stat-info">
             <h3>{calculerRetards()}</h3>
-            <p>Retards paiement</p>
+            <p>Factures à encaisser</p>
           </div>
         </div>
       </div>
@@ -595,6 +466,28 @@ const DashboardResponsable = () => {
                 </tbody>
               </table>
             </div>
+
+            {selectedDevice && <section className="tab-content repair-review-panel" aria-label="Contrôle de la réparation">
+              <div className="section-header">
+                <div>
+                  <h3>Contrôle de la réparation</h3>
+                  <p>{selectedDevice.name || `${selectedDevice.marque} ${selectedDevice.modele}`} · {getStatutLabel(selectedDevice.status)}</p>
+                </div>
+                <button type="button" className="action-btn small" onClick={() => setSelectedDevice(null)}>Fermer</button>
+              </div>
+              <p><strong>Diagnostic :</strong> {selectedDevice.diagnostic || 'Non renseigné'}</p>
+              <p><strong>Pièces :</strong> {(selectedDevice.piecesUtilisees || []).map(part => `${part.nom} × ${part.quantite}`).join(', ') || 'Aucune déclarée'}</p>
+              <p><strong>Temps déclaré :</strong> {selectedDevice.tempsTravail || 0} min</p>
+              <p><strong>Historique :</strong></p>
+              <ul>{(selectedDevice.historique || []).map((entry, index) => <li key={`${entry.date || index}-${index}`}>{entry.date ? new Date(entry.date).toLocaleString('fr-FR') : ''} · {entry.message}</li>)}</ul>
+              {selectedDevice.status === 'termine' && <div className="repair-review-actions">
+                <label htmlFor="correction-reason">Motif si une correction est nécessaire</label>
+                <textarea id="correction-reason" value={correctionReason} onChange={event => setCorrectionReason(event.target.value)} maxLength={2000} placeholder="Décrivez le point à reprendre" />
+                <button type="button" className="action-btn" disabled={!correctionReason.trim()} onClick={() => updateRepairStatus('en_reparation', correctionReason.trim())}>Demander une correction</button>
+                <button type="button" className="action-btn validate-btn" onClick={() => updateRepairStatus('pret_a_recuperer')}>Valider et informer de la disponibilité</button>
+              </div>}
+              {selectedDevice.status === 'pret_a_recuperer' && <button type="button" className="action-btn validate-btn" onClick={() => updateRepairStatus('recupere')}>Enregistrer la restitution</button>}
+            </section>}
           </div>
         )}
 
@@ -633,8 +526,7 @@ const DashboardResponsable = () => {
                       <div className="facture-id">
                         <h3>{facture.id}</h3>
                         <span className={`paiement-badge badge-${getStatutPaiementColor(facture.statutPaiement)}`}>
-                          {facture.statutPaiement === 'paye' ? 'Payé' : 
-                           new Date(facture.dateEcheance) < new Date() ? 'En retard' : 'En attente'}
+                          {facture.statutPaiement === 'paye' ? 'Payée' : 'En attente'}
                         </span>
                       </div>
                       <div className="facture-montant">
@@ -646,29 +538,24 @@ const DashboardResponsable = () => {
                       <p><strong>Appareil:</strong> {facture.deviceName}</p>
                       <p><strong>Client:</strong> {facture.client}</p>
                       <p><strong>Date:</strong> {facture.date}</p>
-                      <p><strong>Échéance:</strong> {facture.dateEcheance}</p>
+                      <p><strong>Émise le :</strong> {new Date(facture.date).toLocaleDateString('fr-FR')}</p>
                       {facture.pieces && facture.pieces.length > 0 && (
                         <p><strong>Pièces:</strong> {facture.pieces.length} type(s)</p>
                       )}
                     </div>
                     
                     <div className="facture-actions">
-                      <button className="action-btn">
-                        📄 PDF
+                      <button className="action-btn" type="button" onClick={() => imprimerFacture(facture)}>
+                        Imprimer / PDF
                       </button>
                       {facture.statutPaiement !== 'paye' && (
                         <>
-                          <button 
-                            onClick={() => validerPaiement(facture.id)}
-                            className="action-btn validate-btn"
-                          >
-                            ✅ Payer
-                          </button>
+                          {user?.demo && <button type="button" onClick={() => validerPaiement(facture.id)} className="action-btn validate-btn">Simuler un règlement</button>}
                           <button 
                             onClick={() => envoyerRappel(facture)}
                             className="action-btn reminder-btn"
                           >
-                            🔔 Rappeler
+                            Préparer un e-mail
                           </button>
                         </>
                       )}

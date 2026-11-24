@@ -850,3 +850,36 @@
     font-size: 0.8rem;
   }
 }
+.repair-review-panel {
+  margin-top: 18px;
+  padding: 22px;
+  border: 1px solid #dfe7f1;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(23, 38, 62, .06);
+}
+
+.repair-review-panel .section-header,
+.repair-review-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.repair-review-panel .section-header { justify-content: space-between; margin-bottom: 14px; }
+.repair-review-panel h3 { margin: 0 0 5px; color: #17263e; }
+.repair-review-panel p,
+.repair-review-panel li { color: #64748b; line-height: 1.6; }
+.repair-review-panel ul { padding-left: 20px; }
+.repair-review-actions { margin-top: 18px; }
+.repair-review-actions label { flex-basis: 100%; font-weight: 650; }
+.repair-review-actions textarea {
+  flex: 1 1 100%;
+  min-height: 86px;
+  padding: 12px;
+  border: 1px solid #d5e0ec;
+  border-radius: 10px;
+  resize: vertical;
+}
+.repair-review-actions button:disabled { opacity: .55; cursor: not-allowed; }
