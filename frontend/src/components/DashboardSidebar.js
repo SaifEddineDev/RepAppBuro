@@ -44,7 +44,7 @@ const ROLE_ITEMS = {
 };
 
 const DashboardSidebar = ({ role, user, activeItem, onNavigate, onLogout, onCollapseChange, disabledItems = [] }) => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const toggleCollapsed = () => {
@@ -75,6 +75,10 @@ const DashboardSidebar = ({ role, user, activeItem, onNavigate, onLogout, onColl
       <aside className={`dashboard-sidebar${collapsed ? ' is-collapsed' : ''}${mobileOpen ? ' is-mobile-open' : ''}`} aria-label={`Navigation ${role}`}>
         <div className="dashboard-sidebar-brand">
           <BrandLockup className="dashboard-sidebar-lockup" />
+          <div className="dashboard-sidebar-user-copy dashboard-sidebar-user-heading">
+            <strong>{[user?.prenom, user?.nom].filter(Boolean).join(' ') || user?.username || 'Compte'}</strong>
+            <span>{role}</span>
+          </div>
           <button type="button" className="dashboard-sidebar-collapse" aria-label={collapsed ? 'Développer le menu' : 'Réduire le menu'} onClick={toggleCollapsed}>
             {collapsed ? '›' : '‹'}
           </button>
@@ -101,10 +105,6 @@ const DashboardSidebar = ({ role, user, activeItem, onNavigate, onLogout, onColl
 
         <div className="dashboard-sidebar-account">
           <div className="dashboard-sidebar-avatar" aria-hidden="true">{(user?.prenom || user?.username || role || '?').slice(0, 1).toUpperCase()}</div>
-          <div className="dashboard-sidebar-user-copy">
-            <strong>{[user?.prenom, user?.nom].filter(Boolean).join(' ') || user?.username || 'Compte'}</strong>
-            <span>{role}</span>
-          </div>
           <button type="button" className="dashboard-sidebar-logout" onClick={onLogout} title="Déconnexion" aria-label="Déconnexion">
             <span aria-hidden="true">↪</span><span className="dashboard-sidebar-label">Déconnexion</span>
           </button>

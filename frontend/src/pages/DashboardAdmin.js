@@ -19,7 +19,7 @@ const DashboardAdmin = () => {
   const [utilisateurs, setUtilisateurs] = useState([]);
   const [devices, setDevices] = useState([]); // Ajout des appareils
   const [activeTab, setActiveTab] = useDashboardNavigation('overview', ['overview', 'utilisateurs', 'appareils', 'droits', 'finances', 'systeme']);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
   const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(true);
   

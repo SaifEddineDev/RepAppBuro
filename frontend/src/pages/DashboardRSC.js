@@ -45,7 +45,7 @@ const DashboardRSC = () => {
   });
   
   const [activeTab, setActiveTab] = useDashboardNavigation('overview', ['overview', 'nouveau-client', 'nouvelle-reparation', 'clients', 'reparations', 'etiquettes']);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
   const [selectedClient, setSelectedClient] = useState(null);
   const [labelsToPrint, setLabelsToPrint] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

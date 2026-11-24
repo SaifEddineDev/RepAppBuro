@@ -26,7 +26,7 @@ const TechnicienDashboard = () => {
   const [tempsTravail, setTempsTravail] = useState({ heures: 0, minutes: 0 });
   const [statut, setStatut] = useState('en_diagnostic');
   const [activeTab, setActiveTab] = useDashboardNavigation('overview', ['overview', 'mes-taches', 'non-assignes', 'fiche-reparation', 'tous', 'statistiques']);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [noteTechnicien, setNoteTechnicien] = useState('');
 

@@ -25,7 +25,7 @@ const DashboardResponsable = () => {
   const [clients, setClients] = useState([]);
   const [rapports, setRapports] = useState([]);
   const [activeTab, setActiveTab] = useDashboardNavigation('overview', ['overview', 'supervision', 'facturation', 'rapports', 'clients']);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [correctionReason, setCorrectionReason] = useState('');

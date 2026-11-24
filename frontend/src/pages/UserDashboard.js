@@ -145,7 +145,7 @@ const UserDashboard = () => {
   
   const [devices, setDevices] = useState([]);
   const [activeSection, setActiveSection] = useDashboardNavigation('overview', ['overview', 'new-repair', 'repairs', 'invoices', 'support']);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const invoicedDevices = devices.filter((device) => Number(device.facture?.montant) > 0);
