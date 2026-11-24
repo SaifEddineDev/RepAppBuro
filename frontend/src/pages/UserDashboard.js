@@ -400,9 +400,11 @@ const UserDashboard = () => {
 
   return (
     <div className={`user-dashboard${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}>
-      <DashboardSidebar role="USER" user={user} activeItem={activeSection} onNavigate={setActiveSection} onLogout={handleLogout} onCollapseChange={setSidebarCollapsed} />
       {/* Header */}
       <DashboardHeader role="USER" roleLabel="Espace client" title="Votre espace client" subtitle={`Bonjour, ${user?.prenom || user?.username} ! Suivez vos r\u00e9parations et vos appareils.`} user={user} onLogout={handleLogout} onRefresh={fetchDevices} />
+      <div className={`dashboard-workspace${sidebarCollapsed ? ' is-sidebar-collapsed' : ''}`}>
+      <DashboardSidebar role="USER" user={user} activeItem={activeSection} onNavigate={setActiveSection} onLogout={handleLogout} onCollapseChange={setSidebarCollapsed} />
+        <main className="dashboard-workspace-main">
 
       <div className="dashboard-content">
         {/* Section de dépôt d'appareil */}
@@ -662,6 +664,8 @@ const UserDashboard = () => {
         </div>
       </div>
 
+        </main>
+      </div>
       <DashboardFooter />
     </div>
   );

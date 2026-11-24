@@ -234,9 +234,11 @@ const DashboardAdmin = () => {
 
   return (
     <div className={`dashboard-admin${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}>
-      <DashboardSidebar role="ADMIN" user={user} activeItem={activeTab} onNavigate={setActiveTab} onLogout={handleLogout} onCollapseChange={setSidebarCollapsed} />
       {/* Header */}
       <DashboardHeader role="ADMIN" roleLabel="Administrateur" title="Tableau de bord administrateur" subtitle={'Gestion compl\u00e8te du syst\u00e8me'} user={user} onLogout={handleLogout} onRefresh={fetchAllData} />
+      <div className={`dashboard-workspace${sidebarCollapsed ? ' is-sidebar-collapsed' : ''}`}>
+      <DashboardSidebar role="ADMIN" user={user} activeItem={activeTab} onNavigate={setActiveTab} onLogout={handleLogout} onCollapseChange={setSidebarCollapsed} />
+        <main className="dashboard-workspace-main">
 
       {/* Statistiques système */}
       <div className="system-stats">
@@ -741,6 +743,8 @@ const DashboardAdmin = () => {
             </div>
           </div>
         )}
+      </div>
+        </main>
       </div>
       <DashboardFooter />
     </div>

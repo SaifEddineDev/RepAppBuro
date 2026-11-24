@@ -577,9 +577,11 @@ const DashboardRSC = () => {
 
   return (
     <div className={`dashboard-rsc${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}>
-      <DashboardSidebar role="RSC" user={user} activeItem={activeTab} onNavigate={setActiveTab} onLogout={handleLogout} onCollapseChange={setSidebarCollapsed} />
       {/* Header */}
       <DashboardHeader role="RSC" roleLabel={'Accueil et r\u00e9ception'} title={'R\u00e9ception service client'} subtitle={'Gestion des clients et des d\u00e9p\u00f4ts d\u2019appareils'} user={user} onLogout={handleLogout} onRefresh={fetchData} />
+      <div className={`dashboard-workspace${sidebarCollapsed ? ' is-sidebar-collapsed' : ''}`}>
+      <DashboardSidebar role="RSC" user={user} activeItem={activeTab} onNavigate={setActiveTab} onLogout={handleLogout} onCollapseChange={setSidebarCollapsed} />
+        <main className="dashboard-workspace-main">
 
       {/* Afficher les erreurs */}
       {error && (
@@ -1129,6 +1131,8 @@ const DashboardRSC = () => {
             </div>
           </div>
         )}
+      </div>
+        </main>
       </div>
       <DashboardFooter />
     </div>

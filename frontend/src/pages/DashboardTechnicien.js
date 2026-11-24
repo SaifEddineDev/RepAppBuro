@@ -249,9 +249,11 @@ const TechnicienDashboard = () => {
 
   return (
     <div className={`dashboard-technicien${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}>
-      <DashboardSidebar role="TECHNICIEN" user={user} activeItem={activeTab} onNavigate={setActiveTab} onLogout={handleLogout} onCollapseChange={setSidebarCollapsed} disabledItems={selectedDevice ? [] : ['fiche-reparation']} />
       {/* Header */}
       <DashboardHeader role="TECHNICIEN" roleLabel={'\u00c9quipe technique'} title="Tableau de bord technicien" subtitle={`Suivi des r\u00e9parations \u00b7 ${counts.total} appareils`} user={user} onLogout={handleLogout} onRefresh={fetchDevices} />
+      <div className={`dashboard-workspace${sidebarCollapsed ? ' is-sidebar-collapsed' : ''}`}>
+      <DashboardSidebar role="TECHNICIEN" user={user} activeItem={activeTab} onNavigate={setActiveTab} onLogout={handleLogout} onCollapseChange={setSidebarCollapsed} disabledItems={selectedDevice ? [] : ['fiche-reparation']} />
+        <main className="dashboard-workspace-main">
 
       {/* Navigation */}
       <div className="technicien-tabs">
@@ -762,6 +764,8 @@ const TechnicienDashboard = () => {
             </div>
           </div>
         )}
+      </div>
+        </main>
       </div>
       <DashboardFooter />
     </div>

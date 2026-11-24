@@ -315,9 +315,11 @@ const DashboardResponsable = () => {
 
   return (
     <div className={`dashboard-responsable${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}>
-      <DashboardSidebar role="RESPONSABLE" user={user} activeItem={activeTab} onNavigate={setActiveTab} onLogout={handleLogout} onCollapseChange={setSidebarCollapsed} />
       {/* Header */}
       <DashboardHeader role="RESPONSABLE" roleLabel="Pilotage atelier" title="Tableau de bord responsable" subtitle={'Supervision et gestion financi\u00e8re'} user={user} onLogout={handleLogout} onRefresh={fetchData} />
+      <div className={`dashboard-workspace${sidebarCollapsed ? ' is-sidebar-collapsed' : ''}`}>
+      <DashboardSidebar role="RESPONSABLE" user={user} activeItem={activeTab} onNavigate={setActiveTab} onLogout={handleLogout} onCollapseChange={setSidebarCollapsed} />
+        <main className="dashboard-workspace-main">
 
       {error && (
         <div className="error-message">
@@ -701,6 +703,8 @@ const DashboardResponsable = () => {
             </div>
           </div>
         )}
+      </div>
+        </main>
       </div>
       <DashboardFooter />
     </div>
