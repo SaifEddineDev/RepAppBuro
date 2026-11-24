@@ -104,7 +104,6 @@ const DashboardSidebar = ({ role, user, activeItem, onNavigate, onLogout, onColl
         </nav>
 
         <div className="dashboard-sidebar-account">
-          <div className="dashboard-sidebar-avatar" aria-hidden="true">{(user?.prenom || user?.username || role || '?').slice(0, 1).toUpperCase()}</div>
           <button type="button" className="dashboard-sidebar-logout" onClick={onLogout} title="Déconnexion" aria-label="Déconnexion">
             <span aria-hidden="true">↪</span><span className="dashboard-sidebar-label">Déconnexion</span>
           </button>

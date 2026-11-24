@@ -1823,7 +1823,7 @@ body .dashboard-technicien .dashboard-workspace,
 body .dashboard-responsable .dashboard-workspace,
 body .user-dashboard .dashboard-workspace {
   display: grid;
-  grid-template-columns: minmax(210px, .95fr) minmax(0, 3fr);
+  grid-template-columns: minmax(190px, .72fr) minmax(0, 3fr);
   align-items: start;
   gap: clamp(32px, 3vw, 44px);
   width: min(100%, 1580px) !important;
