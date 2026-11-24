@@ -2076,3 +2076,23 @@ body .user-dashboard > :not(.workspace-footer) {
   margin-right: auto !important;
   margin-left: auto !important;
 }
+
+/* Let the dashboard content use the room released by the collapse button. */
+@media (min-width: 1051px) {
+  body .dashboard-admin .dashboard-workspace.is-sidebar-collapsed,
+  body .dashboard-rsc .dashboard-workspace.is-sidebar-collapsed,
+  body .dashboard-technicien .dashboard-workspace.is-sidebar-collapsed,
+  body .dashboard-responsable .dashboard-workspace.is-sidebar-collapsed,
+  body .user-dashboard .dashboard-workspace.is-sidebar-collapsed {
+    grid-template-columns: 78px minmax(0, 1fr);
+  }
+
+  body .dashboard-admin .dashboard-workspace .dashboard-sidebar.is-collapsed,
+  body .dashboard-rsc .dashboard-workspace .dashboard-sidebar.is-collapsed,
+  body .dashboard-technicien .dashboard-workspace .dashboard-sidebar.is-collapsed,
+  body .dashboard-responsable .dashboard-workspace .dashboard-sidebar.is-collapsed,
+  body .user-dashboard .dashboard-workspace .dashboard-sidebar.is-collapsed {
+    width: 78px !important;
+    max-width: 78px !important;
+  }
+}
