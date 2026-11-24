@@ -60,7 +60,7 @@
 
 @media (max-width: 700px) {
   .dashboard-sidebar-mobile-toggle { position: fixed; z-index: 1002; top: 13px; left: 12px; display: grid; width: 40px; height: 40px; place-items: center; border: 1px solid #dce5ee; border-radius: 11px; color: #087d76; background: #fff; box-shadow: 0 5px 15px rgba(23, 38, 62, .12); font-size: 18px; cursor: pointer; }
-  .dashboard-sidebar { z-index: 1004; width: min(360px, 75vw); padding: 18px 14px 14px; transform: translateX(-105%); }
+  .dashboard-sidebar { z-index: 1004; width: min(320px, 68vw); padding: 18px 14px 14px; transform: translateX(-105%); }
   .dashboard-sidebar.is-mobile-open { transform: translateX(0); }
   .dashboard-sidebar.is-mobile-open .dashboard-sidebar-lockup .brand-copy,
   .dashboard-sidebar.is-mobile-open .dashboard-sidebar-caption,
