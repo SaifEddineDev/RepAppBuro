@@ -2007,3 +2007,59 @@ body .user-dashboard .workspace-footer {
   body .dashboard-responsable .workspace-footer,
   body .user-dashboard .workspace-footer { margin-left: -10px !important; }
 }
+
+/* Keep every dashboard panel inside its 80% workspace column. */
+body .dashboard-admin .dashboard-workspace-main > *,
+body .dashboard-rsc .dashboard-workspace-main > *,
+body .dashboard-technicien .dashboard-workspace-main > *,
+body .dashboard-responsable .dashboard-workspace-main > *,
+body .user-dashboard .dashboard-workspace-main > * {
+  box-sizing: border-box;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+
+body .dashboard-admin .dashboard-workspace-main .admin-content,
+body .dashboard-rsc .dashboard-workspace-main .rsc-content,
+body .dashboard-technicien .dashboard-workspace-main .technicien-content,
+body .dashboard-responsable .dashboard-workspace-main .responsable-content,
+body .user-dashboard .dashboard-workspace-main .dashboard-content {
+  box-sizing: border-box;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body .user-dashboard .dashboard-workspace-main .depot-section,
+body .user-dashboard .dashboard-workspace-main .devices-section,
+body .dashboard-admin .dashboard-workspace-main .tab-content,
+body .dashboard-rsc .dashboard-workspace-main .tab-content,
+body .dashboard-technicien .dashboard-workspace-main .tab-content,
+body .dashboard-responsable .dashboard-workspace-main .tab-content {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+
+body .dashboard-admin .dashboard-workspace-main .form-grid,
+body .dashboard-rsc .dashboard-workspace-main .form-grid,
+body .dashboard-technicien .dashboard-workspace-main .form-grid,
+body .dashboard-responsable .dashboard-workspace-main .form-grid,
+body .user-dashboard .dashboard-workspace-main .depot-form .form-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+}
+
+body .dashboard-admin .dashboard-workspace-main table,
+body .dashboard-rsc .dashboard-workspace-main table,
+body .dashboard-technicien .dashboard-workspace-main table,
+body .dashboard-responsable .dashboard-workspace-main table {
+  max-width: 100%;
+}
