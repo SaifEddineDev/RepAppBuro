@@ -2064,6 +2064,14 @@ body .dashboard-responsable .dashboard-workspace-main table {
   max-width: 100%;
 }
 
+/* Overview pages use their dedicated overview panel, so hide empty tab shells. */
+body .dashboard-admin .admin-content[data-active-tab="overview"],
+body .dashboard-rsc .rsc-content[data-active-tab="overview"],
+body .dashboard-technicien .technicien-content[data-active-tab="overview"],
+body .dashboard-responsable .responsable-content[data-active-tab="overview"] {
+  display: none !important;
+}
+
 /* Keep each dashboard's main layout at three quarters of the viewport. */
 body .dashboard-admin > :not(.workspace-footer),
 body .dashboard-rsc > :not(.workspace-footer),

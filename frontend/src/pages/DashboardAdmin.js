@@ -289,7 +289,7 @@ const DashboardAdmin = () => {
 
       {/* Recherche */}
       {/* Contenu */}
-      <div className="admin-content">
+      <div className="admin-content" data-active-tab={activeTab}>
         {/* Onglet: Utilisateurs */}
         {activeTab === 'utilisateurs' && (
           <div className="tab-content">

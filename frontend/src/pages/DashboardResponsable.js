@@ -381,7 +381,7 @@ const DashboardResponsable = () => {
       </div>}
 
       {/* Contenu */}
-      <div className="responsable-content">
+      <div className="responsable-content" data-active-tab={activeTab}>
         {/* Onglet: Supervision */}
         {activeTab === 'supervision' && (
           <div className="tab-content">

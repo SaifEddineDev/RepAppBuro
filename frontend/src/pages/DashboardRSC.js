@@ -650,7 +650,7 @@ const DashboardRSC = () => {
       </div>}
 
       {/* Contenu selon l'onglet */}
-      <div className="rsc-content">
+      <div className="rsc-content" data-active-tab={activeTab}>
         {/* Onglet: Nouveau Client */}
         {activeTab === 'nouveau-client' && (
           <div className="tab-content">

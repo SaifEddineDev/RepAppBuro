@@ -316,7 +316,7 @@ const TechnicienDashboard = () => {
       </div>}
 
       {/* Contenu */}
-      <div className="technicien-content">
+      <div className="technicien-content" data-active-tab={activeTab}>
         {/* Onglet: Mes appareils assignés */}
         {activeTab === 'mes-taches' && (
           <div className="tab-content">
