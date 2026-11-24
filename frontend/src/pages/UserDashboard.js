@@ -483,6 +483,17 @@ const UserDashboard = () => {
                   disabled={loading}
                 />
               </div>
+
+              <div className="form-group">
+                <label>Numéro de série (optionnel)</label>
+                <input
+                  type="text"
+                  value={newDevice.serialNumber}
+                  onChange={(e) => setNewDevice({...newDevice, serialNumber: e.target.value})}
+                  placeholder="SN123456789"
+                  disabled={loading}
+                />
+              </div>
               
               <div className="form-group full-width">
                 <label>Problème rencontré *</label>
@@ -496,16 +507,6 @@ const UserDashboard = () => {
                 />
               </div>
               
-              <div className="form-group">
-                <label>Numéro de série (optionnel)</label>
-                <input
-                  type="text"
-                  value={newDevice.serialNumber}
-                  onChange={(e) => setNewDevice({...newDevice, serialNumber: e.target.value})}
-                  placeholder="SN123456789"
-                  disabled={loading}
-                />
-              </div>
             </div>
             
             <button 
