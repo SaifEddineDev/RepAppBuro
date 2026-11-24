@@ -2,6 +2,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import DashboardHeader from '../components/DashboardHeader';
 import DashboardFooter from '../components/DashboardFooter';
+import DashboardSidebar from '../components/DashboardSidebar';
+import useDashboardNavigation from '../hooks/useDashboardNavigation';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -141,6 +143,8 @@ const UserDashboard = () => {
   const navigate = useNavigate();
   
   const [devices, setDevices] = useState([]);
+  const [activeSection, setActiveSection] = useDashboardNavigation('overview', ['overview', 'new-repair', 'repairs', 'invoices', 'support']);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -395,13 +399,14 @@ const UserDashboard = () => {
   }
 
   return (
-    <div className="user-dashboard">
+    <div className={`user-dashboard${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}>
+      <DashboardSidebar role="USER" user={user} activeItem={activeSection} onNavigate={setActiveSection} onLogout={handleLogout} onCollapseChange={setSidebarCollapsed} />
       {/* Header */}
       <DashboardHeader role="USER" roleLabel="Espace client" title="Votre espace client" subtitle={`Bonjour, ${user?.prenom || user?.username} ! Suivez vos r\u00e9parations et vos appareils.`} user={user} onLogout={handleLogout} onRefresh={fetchDevices} />
 
       <div className="dashboard-content">
         {/* Section de dépôt d'appareil */}
-        <div className="depot-section">
+        <div className="depot-section" id="new-repair">
           <h2 className="section-title">
             <span className="icon">🖨️</span>
             Déposer un appareil bureautique
@@ -501,7 +506,7 @@ const UserDashboard = () => {
         </div>
 
         {/* Section des appareils en cours */}
-        <div className="devices-section">
+        <div className="devices-section" id="repairs">
           <h2 className="section-title">
             <span className="icon">📊</span>
             Suivi de vos équipements bureautiques ({devices.length})
@@ -611,7 +616,7 @@ const UserDashboard = () => {
         </div>
 
         {/* Section informations */}
-        <div className="info-section">
+        <div className="info-section" id="support">
           <div className="info-card">
             <div className="info-icon">🏢</div>
             <div className="info-content">

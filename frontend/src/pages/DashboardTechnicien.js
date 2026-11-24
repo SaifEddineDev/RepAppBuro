@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import DashboardHeader from '../components/DashboardHeader';
 import DashboardFooter from '../components/DashboardFooter';
+import DashboardSidebar from '../components/DashboardSidebar';
+import useDashboardNavigation from '../hooks/useDashboardNavigation';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -22,7 +24,8 @@ const TechnicienDashboard = () => {
   const [nouvellePiece, setNouvellePiece] = useState({ nom: '', quantite: 1, prix: 0 });
   const [tempsTravail, setTempsTravail] = useState({ heures: 0, minutes: 0 });
   const [statut, setStatut] = useState('en_diagnostic');
-  const [activeTab, setActiveTab] = useState('mes-taches');
+  const [activeTab, setActiveTab] = useDashboardNavigation('mes-taches', ['mes-taches', 'non-assignes', 'fiche-reparation', 'tous', 'statistiques']);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [noteTechnicien, setNoteTechnicien] = useState('');
 
@@ -245,7 +248,8 @@ const TechnicienDashboard = () => {
   }
 
   return (
-    <div className="dashboard-technicien">
+    <div className={`dashboard-technicien${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}>
+      <DashboardSidebar role="TECHNICIEN" user={user} activeItem={activeTab} onNavigate={setActiveTab} onLogout={handleLogout} onCollapseChange={setSidebarCollapsed} disabledItems={selectedDevice ? [] : ['fiche-reparation']} />
       {/* Header */}
       <DashboardHeader role="TECHNICIEN" roleLabel={'\u00c9quipe technique'} title="Tableau de bord technicien" subtitle={`Suivi des r\u00e9parations \u00b7 ${counts.total} appareils`} user={user} onLogout={handleLogout} onRefresh={fetchDevices} />
 

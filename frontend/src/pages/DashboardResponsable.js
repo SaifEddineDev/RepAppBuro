@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import DashboardHeader from '../components/DashboardHeader';
 import DashboardFooter from '../components/DashboardFooter';
+import DashboardSidebar from '../components/DashboardSidebar';
+import useDashboardNavigation from '../hooks/useDashboardNavigation';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -21,7 +23,8 @@ const DashboardResponsable = () => {
   const [factures, setFactures] = useState([]);
   const [clients, setClients] = useState([]);
   const [rapports, setRapports] = useState([]);
-  const [activeTab, setActiveTab] = useState('supervision');
+  const [activeTab, setActiveTab] = useDashboardNavigation('supervision', ['supervision', 'facturation', 'rapports', 'clients']);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [correctionReason, setCorrectionReason] = useState('');
@@ -311,7 +314,8 @@ const DashboardResponsable = () => {
   }
 
   return (
-    <div className="dashboard-responsable">
+    <div className={`dashboard-responsable${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}>
+      <DashboardSidebar role="RESPONSABLE" user={user} activeItem={activeTab} onNavigate={setActiveTab} onLogout={handleLogout} onCollapseChange={setSidebarCollapsed} />
       {/* Header */}
       <DashboardHeader role="RESPONSABLE" roleLabel="Pilotage atelier" title="Tableau de bord responsable" subtitle={'Supervision et gestion financi\u00e8re'} user={user} onLogout={handleLogout} onRefresh={fetchData} />
 

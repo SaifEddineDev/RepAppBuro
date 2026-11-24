@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import DashboardHeader from '../components/DashboardHeader';
 import DashboardFooter from '../components/DashboardFooter';
+import DashboardSidebar from '../components/DashboardSidebar';
+import useDashboardNavigation from '../hooks/useDashboardNavigation';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -41,7 +43,8 @@ const DashboardRSC = () => {
     urgence: 'standard'
   });
   
-  const [activeTab, setActiveTab] = useState('nouveau-client');
+  const [activeTab, setActiveTab] = useDashboardNavigation('nouveau-client', ['nouveau-client', 'nouvelle-reparation', 'clients', 'reparations', 'etiquettes']);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [selectedClient, setSelectedClient] = useState(null);
   const [labelsToPrint, setLabelsToPrint] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -573,7 +576,8 @@ const DashboardRSC = () => {
   }
 
   return (
-    <div className="dashboard-rsc">
+    <div className={`dashboard-rsc${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}>
+      <DashboardSidebar role="RSC" user={user} activeItem={activeTab} onNavigate={setActiveTab} onLogout={handleLogout} onCollapseChange={setSidebarCollapsed} />
       {/* Header */}
       <DashboardHeader role="RSC" roleLabel={'Accueil et r\u00e9ception'} title={'R\u00e9ception service client'} subtitle={'Gestion des clients et des d\u00e9p\u00f4ts d\u2019appareils'} user={user} onLogout={handleLogout} onRefresh={fetchData} />
 

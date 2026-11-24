@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import DashboardHeader from '../components/DashboardHeader';
 import DashboardFooter from '../components/DashboardFooter';
+import DashboardSidebar from '../components/DashboardSidebar';
+import useDashboardNavigation from '../hooks/useDashboardNavigation';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -15,7 +17,8 @@ const DashboardAdmin = () => {
   
   const [utilisateurs, setUtilisateurs] = useState([]);
   const [devices, setDevices] = useState([]); // Ajout des appareils
-  const [activeTab, setActiveTab] = useState('utilisateurs');
+  const [activeTab, setActiveTab] = useDashboardNavigation('utilisateurs', ['utilisateurs', 'appareils', 'droits', 'finances', 'systeme']);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
@@ -230,7 +233,8 @@ const DashboardAdmin = () => {
   }
 
   return (
-    <div className="dashboard-admin">
+    <div className={`dashboard-admin${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}>
+      <DashboardSidebar role="ADMIN" user={user} activeItem={activeTab} onNavigate={setActiveTab} onLogout={handleLogout} onCollapseChange={setSidebarCollapsed} />
       {/* Header */}
       <DashboardHeader role="ADMIN" roleLabel="Administrateur" title="Tableau de bord administrateur" subtitle={'Gestion compl\u00e8te du syst\u00e8me'} user={user} onLogout={handleLogout} onRefresh={fetchAllData} />
 
