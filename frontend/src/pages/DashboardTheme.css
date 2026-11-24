@@ -2063,3 +2063,16 @@ body .dashboard-technicien .dashboard-workspace-main table,
 body .dashboard-responsable .dashboard-workspace-main table {
   max-width: 100%;
 }
+
+/* Keep each dashboard's main layout at three quarters of the viewport. */
+body .dashboard-admin > :not(.workspace-footer),
+body .dashboard-rsc > :not(.workspace-footer),
+body .dashboard-technicien > :not(.workspace-footer),
+body .dashboard-responsable > :not(.workspace-footer),
+body .user-dashboard > :not(.workspace-footer) {
+  box-sizing: border-box;
+  width: min(75vw, 1580px) !important;
+  max-width: min(75vw, 1580px) !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+}
